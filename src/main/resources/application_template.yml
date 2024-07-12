@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: "Group Project"
+    message: "####### WELCOME #######"
+  datasource:
+    url: jdbc:mysql://localhost:3306/recordShop?createDatabaseIfNotExist=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password:
