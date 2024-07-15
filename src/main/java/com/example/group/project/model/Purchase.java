@@ -2,9 +2,8 @@ package com.example.group.project.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.time.LocalDate;
-import java.util.List;
+
 
 @Entity
 @Table(name = "Purchases")
