@@ -23,7 +23,7 @@ public class Purchase {
     @Column(name = "purchase_date", nullable = false)
     private LocalDate date;
 
-    @OneToOne
-    @JoinColumn(name = "item_id", referencedColumnName = "record_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id", nullable = false)
     private Record recordLink;
 }

@@ -1,4 +1,4 @@
-package com.example.group.project;
+package com.example.group.project.controller;
 
 import com.example.group.project.model.Record;
 import com.example.group.project.model.RecordRepository;
