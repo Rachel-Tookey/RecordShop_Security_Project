@@ -50,6 +50,17 @@ Before you begin, please ensure you have the following:
 
     Once the application is running, you can access it at `http://localhost:8080`.
 
+
+Post body data:
+{
+"customer": "John Doe",
+"price": 9.99,
+"date": "2024-07-15",
+"recordLink": {
+"id": 3
+}
+}
+
 ### Developers + Github profiles:
 
 [Rachel](https://github.com/Tookles)

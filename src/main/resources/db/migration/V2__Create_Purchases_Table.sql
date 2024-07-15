@@ -13,4 +13,5 @@ ALTER TABLE Purchases
 
 INSERT INTO Purchases (customer_name, item_id, price, purchase_date)
 VALUES
-("Gillian Thompson", 2, 2.98, '2024-07-12');
+("Gillian Thompson", 2, 2.98, '2024-07-12'),
+("Sarah Thompson", 2, 2.98, '2024-07-14');
