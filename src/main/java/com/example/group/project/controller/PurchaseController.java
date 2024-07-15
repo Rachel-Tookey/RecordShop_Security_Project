@@ -33,15 +33,21 @@ public class PurchaseController {
     @Transactional
     @PostMapping("/makePurchase")
     public ResponseEntity<?> makePurchase(@RequestBody Map<String, Object> userPurchase){
-        log.info("Attempting to make new purchase: " + userPurchase);
+        log.info("Attempting to make new purchase:");
 
         // get record id from the input:
         Integer recordIDInt = (Integer) userPurchase.get("id");
         Long recordID = recordIDInt.longValue();
-        log.info("The purchase ID is: " + recordID);
 
+        if (!userPurchase.containsKey("customer")) {
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer name not provided");
+        }
         // get customer name:
         String customerName = userPurchase.get("customer").toString();
+
+        if (customerName.length() < 3) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer name too short");
+        }
 
         // check item id exists:
         if (!recordRepository.existsById(recordID)) {
@@ -60,20 +66,17 @@ public class PurchaseController {
         // get item price and apply discount
         double itemPrice = recordRepository.getReferenceById(recordID).getPrice();
 
-        String userDiscount = (String) userPurchase.get("discount");
-
-        if (userDiscount.equals("CFG")) {
-            itemPrice = itemPrice * 0.8;
+        if (userPurchase.containsKey("discount")) {
+            String userDiscount = (String) userPurchase.get("discount");
+            if (userDiscount.equals("CFG")) {
+                itemPrice = itemPrice * 0.8;
+            }
         }
 
         // getting today's date:
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         String newDate = formatter.format(date);
-
-
-
-
 
         // save purchase:
         Purchase newPurchase = Purchase.builder()
