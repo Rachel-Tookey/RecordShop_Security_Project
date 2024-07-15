@@ -24,5 +24,7 @@ public class Record {
     @Column(name = "price", nullable = false)
     private double price;
 
+    @OneToOne(mappedBy = "recordLink", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Purchase purchase;
 }
 
