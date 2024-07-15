@@ -16,7 +16,7 @@ public class Record {
     private String name;
 
     @Column(name = "artist", nullable = false)
-    private String address;
+    private String artist;
 
     @Column(name = "quantity", nullable = false)
     private int quantity;
