@@ -10,5 +10,5 @@ INSERT INTO Records (record_name, artist, quantity, price)
 VALUES
 ('Thriller', 'Michael Jackson', 1, 9.99),
 ('Back in Black', 'AC/DC', 2, 2.98),
-('The Dark Side of the Moon', 'Pink Floyd', 5, 9.90),
+('The Dark Side of the Moon', 'Pink Floyd', 5, 9.95),
 ('The Wall', 'Pink Floyd', 8, 19.99);
