@@ -24,8 +24,8 @@ public class PurchaseController {
 
 
     // POST endpoint to make purchase
-    @PostMapping("/makePurchase")
     @Transactional
+    @PostMapping("/makePurchase")
     public String makePurchase(@RequestBody Purchase newPurchase){
         log.info("Attempting to make new purchase: " + newPurchase);
 
