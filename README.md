@@ -63,6 +63,7 @@ Before you begin, please ensure you have the following:
 
 This will help in generating an interactive API documentation so you can play around with the API calls. Please see [here](http://localhost:8080/swagger-ui/index.html).
 
+
 ### Developers + Github profiles:
 
 [Rachel](https://github.com/Tookles)
