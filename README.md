@@ -35,10 +35,11 @@ Before you begin, please ensure you have the following:
 
 2. **Configure the database**:
 
-- Go to [application_template.yml](src/main/resources/application_template.yml)
+- Go to [application_template.yml](src/main/resources/application.yml)
+- Make sure to rename `application_template.yml` to `application.yml`
 - Put your mySQL's database password in `password`
 
-3. **Ensure the proper dependencies are installed. Please refer to `pom.xml`**
+3. **Ensure the proper dependencies are installed. Please refer to `pom.xml` in the file for your reference**
 
 ## How to Run the Application
 
@@ -46,20 +47,21 @@ Before you begin, please ensure you have the following:
 
     In the project's root directory, run [GroupProjectApplication](src/main/java/com/example/group/project/GroupProjectApplication.java)
 
-2. **Access the application (Fetch requests to be updated)**:
 
-    Once the application is running, you can access it at `http://localhost:8080`.
+2. **API Endpoints (Fetch requests to be updated)**:
+
+    Once the application is running, you can access the following end points:
 
 
-Post body data:
-{
-"customer": "John Doe",
-"price": 9.99,
-"date": "2024-07-15",
-"recordLink": {
-"id": 3
-}
-}
+   | Endpoint URL | Method | Description | Example Request |
+|--------------|--------|-------------|-----------------|
+| `http://localhost:8080/makePurchase` | POST | Endpoint to make a purchase. | ```json { "customer": "John Doe", "price": 9.99, "date": "2024-07-15", "recordLink": { "id": 3 } }``` |
+| `http://localhost:8080/getRecord?artist={ARTISTNAME}&name={ALBUM}` | GET | Endpoint to retrieve the information on a specific artist. | http://localhost:8080/getRecord?artist=Michael%20Jackson&name=Thriller |
+
+
+### API Spec:
+
+This will help in generating an interactive API documentation so you can play around with the API calls. Please see [here](http://localhost:8080/swagger-ui/index.html).
 
 ### Developers + Github profiles:
 
