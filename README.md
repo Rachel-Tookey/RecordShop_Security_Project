@@ -50,7 +50,7 @@ Before you begin, please ensure you have the following:
 
     Once the application is running, you can access it at `http://localhost:8080`.
 
-
+```
 Post body data:
 {
 "customer": "John Doe",
@@ -60,6 +60,7 @@ Post body data:
 "id": 3
 }
 }
+```
 
 ### Developers + Github profiles:
 
