@@ -43,7 +43,7 @@ public class PurchaseController {
         if (purchaseServiceImpl.checkSuccess(purchaseID)) {
             return ResponseEntity.ok("Purchase successful! Purchase ID " + purchaseID);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Something has gone wrong");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Something has gone wrong. Please try again later");
         }
     }
 
