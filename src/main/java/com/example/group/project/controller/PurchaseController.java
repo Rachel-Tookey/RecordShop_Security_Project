@@ -2,6 +2,7 @@ package com.example.group.project.controller;
 
 
 import com.example.group.project.service.PurchaseService;
+import com.example.group.project.service.PurchaseServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ import java.util.Map;
 public class PurchaseController {
 
     @Autowired
-    private PurchaseService purchaseService;
+    public PurchaseServiceImpl purchaseServiceImpl;
 
     // POST endpoint to make purchase
     @PostMapping("/makePurchase")
@@ -31,15 +32,15 @@ public class PurchaseController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer name too short");
         }
 
-        if (!purchaseService.checkIdExists(userPurchase)) {
+        if (!purchaseServiceImpl.checkIdExists(userPurchase)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This is not a valid item id");
-        } else if (!purchaseService.checkStock(userPurchase)) {
+        } else if (purchaseServiceImpl.checkStock(userPurchase)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not in stock");
         }
 
-        Long purchaseID = purchaseService.commitPurchase(userPurchase);
+        Long purchaseID = purchaseServiceImpl.commitPurchase(userPurchase);
 
-        if (purchaseService.checkSuccess(purchaseID)) {
+        if (purchaseServiceImpl.checkSuccess(purchaseID)) {
             return ResponseEntity.ok("Purchase successful! Purchase ID " + purchaseID);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Something has gone wrong");
