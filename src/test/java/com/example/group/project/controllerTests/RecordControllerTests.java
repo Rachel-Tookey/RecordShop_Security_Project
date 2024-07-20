@@ -35,6 +35,7 @@ public class RecordControllerTests {
         String baseURI = "http://localhost:8080";
     }
 
+    // Test successful requests
     @Test
     public void getRecord_givenExistingArtist_returnsArtistRecords () {
         Record record1 = new Record();
@@ -118,5 +119,8 @@ public class RecordControllerTests {
                 .body("[1].name", equalTo(record2.getName()))
                 .body("[2].name", equalTo(record3.getName()));
     }
+
+    // Test unsuccessful requests
+
 
 }
