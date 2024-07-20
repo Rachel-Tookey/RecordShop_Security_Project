@@ -1,10 +1,9 @@
 package com.example.group.project.controller;
 
-
-import com.example.group.project.model.Purchase;
-import com.example.group.project.model.PurchaseRepository;
-import com.example.group.project.model.Record;
-import com.example.group.project.model.RecordRepository;
+import com.example.group.project.model.entity.Purchase;
+import com.example.group.project.model.repository.PurchaseRepository;
+import com.example.group.project.model.entity.Record;
+import com.example.group.project.model.repository.RecordRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.Map;
+import static com.example.group.project.util.PurchaseUtil.getDate;
 
 @Slf4j
 @RestController
@@ -28,42 +25,88 @@ public class PurchaseController {
     @Autowired
     private RecordRepository recordRepository;
 
-
     // POST endpoint to make purchase
-    @Transactional
     @PostMapping("/makePurchase")
     public ResponseEntity<?> makePurchase(@RequestBody Map<String, Object> userPurchase){
         log.info("Attempting to make new purchase:");
 
-        // get record id from the input:
-        Integer recordIDInt = (Integer) userPurchase.get("id");
-        Long recordID = recordIDInt.longValue();
-
         if (!userPurchase.containsKey("customer")) {
             return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer name not provided");
         }
-        // get customer name:
-        String customerName = userPurchase.get("customer").toString();
 
-        if (customerName.length() < 3) {
+        if (userPurchase.get("customer").toString().length() < 3) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer name too short");
         }
 
-        // check item id exists:
-        if (!recordRepository.existsById(recordID)) {
+        // get record id from the input & check item id exists:
+        Long recordID = (Long) userPurchase.get("id");
+
+        if (!checkIdExists(recordID)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This is not a valid item id");
+        } else if (!checkStock(recordID)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not in stock");
         }
 
-        // check quantity & adjust if in stock:
+        Long purchaseID = makePurchase(recordID, userPurchase);
+
+        if (checkSuccess(purchaseID)) {
+            return ResponseEntity.ok("Purchase successful! Purchase ID " + purchaseID);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Something has gone wrong");
+        }
+    }
+
+
+    // non-endpoint methods:
+
+    @Transactional
+    public Long makePurchase(Long recordID, Map<String, Object>userPurchase){
+
+        double itemPrice = adjustPrice(recordID, userPurchase);
+
+        Record newRecord = recordRepository.getReferenceById(recordID);
+        int newQuant = newRecord.getQuantity();
+        newRecord.setQuantity(newQuant - 1);
+
+        String customerName = userPurchase.get("customer").toString();
+
+        Purchase newPurchase = Purchase.builder()
+                .customer(customerName)
+                .price(itemPrice)
+                .date(getDate())
+                .recordLink(newRecord)
+                .build();
+
+        purchaseRepository.save(newPurchase);
+
+        log.info("Purchase made");
+
+        return newPurchase.getId();
+    };
+
+
+    public boolean checkSuccess(Long purchaseID){
+        return purchaseRepository.existsById(purchaseID);
+    }
+
+
+    public boolean checkStock(Long recordID){
         Record newRecord = recordRepository.getReferenceById(recordID);
         int newQuant = newRecord.getQuantity();
         if (newQuant == 0) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not in stock");
-        } else {
-            newRecord.setQuantity(newQuant - 1);
+            return false;
         }
+        return true;
+    }
 
-        // get item price and apply discount
+
+    public boolean checkIdExists(Long recordID){
+        return purchaseRepository.existsById(recordID);
+    };
+
+
+    public double adjustPrice(Long recordID,  Map<String, Object>  userPurchase){
+
         double itemPrice = recordRepository.getReferenceById(recordID).getPrice();
 
         if (userPurchase.containsKey("discount")) {
@@ -72,23 +115,7 @@ public class PurchaseController {
                 itemPrice = itemPrice * 0.8;
             }
         }
-
-        // getting today's date:
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        String newDate = formatter.format(date);
-
-        // save purchase:
-        Purchase newPurchase = Purchase.builder()
-                .customer(customerName)
-                .price(itemPrice)
-                .date(LocalDate.parse(newDate))
-                .recordLink(newRecord)
-                .build();
-        purchaseRepository.save(newPurchase);
-        log.info("Purchase made");
-        return ResponseEntity.ok("Purchase successful!");
+        return Math.round(itemPrice);
     }
-
 
 }

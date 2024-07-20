@@ -1,7 +1,7 @@
 package com.example.group.project.controller;
 
-import com.example.group.project.model.Record;
-import com.example.group.project.model.RecordRepository;
+import com.example.group.project.model.entity.Record;
+import com.example.group.project.model.repository.RecordRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
