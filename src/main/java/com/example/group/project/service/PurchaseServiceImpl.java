@@ -16,9 +16,9 @@ import static com.example.group.project.util.PurchaseUtil.getDate;
 @Service
 public class PurchaseServiceImpl implements PurchaseService {
 
-    private RecordRepository recordRepository;
+    private final RecordRepository recordRepository;
 
-    private PurchaseRepository purchaseRepository;
+    private final PurchaseRepository purchaseRepository;
 
     @Autowired
     public PurchaseServiceImpl(PurchaseRepository purchaseRepository, RecordRepository recordRepository) {
@@ -43,10 +43,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     public boolean checkStock(Map<String, Object>userPurchase){
         Record newRecord = recordRepository.getReferenceById(pullID(userPurchase));
         int newQuant = newRecord.getQuantity();
-        if (newQuant == 0) {
-            return false;
-        }
-        return true;
+        return newQuant != 0;
     }
 
     // checks if the item requested exists
@@ -92,7 +89,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         log.info("Purchase made");
 
         return newPurchase.getId();
-    };
+    }
 
 
 }
