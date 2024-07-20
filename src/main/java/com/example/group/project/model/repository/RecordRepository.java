@@ -12,5 +12,4 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
     List<Record> findByNameIgnoreCase(String recordName);
     List<Record> findByArtistIgnoreCase(String artistName);
     List<Record> findByNameAndArtistIgnoreCase(String recordName, String Artist);
-
 }
