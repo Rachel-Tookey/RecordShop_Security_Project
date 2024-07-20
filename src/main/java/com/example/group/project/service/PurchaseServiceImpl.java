@@ -16,9 +16,9 @@ import static com.example.group.project.util.PurchaseUtil.getDate;
 @Service
 public class PurchaseServiceImpl implements PurchaseService {
 
-    private RecordRepository recordRepository;
+    private final RecordRepository recordRepository;
 
-    private PurchaseRepository purchaseRepository;
+    private final PurchaseRepository purchaseRepository;
 
     @Autowired
     public PurchaseServiceImpl(PurchaseRepository purchaseRepository, RecordRepository recordRepository) {
@@ -43,10 +43,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     public boolean checkStock(Map<String, Object>userPurchase){
         Record newRecord = recordRepository.getReferenceById(pullID(userPurchase));
         int newQuant = newRecord.getQuantity();
-        if (newQuant == 0) {
-            return false;
-        }
-        return true;
+        return newQuant != 0;
     }
 
     // checks if the item requested exists
@@ -72,27 +69,30 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Transactional
     public Long commitPurchase(Map<String, Object> userPurchase){
 
+        // getting variables
         double itemPrice = adjustPrice(userPurchase);
-
-        Record newRecord = recordRepository.getReferenceById(pullID(userPurchase));
-        int newQuant = newRecord.getQuantity();
-        newRecord.setQuantity(newQuant - 1);
-
         String customerName = userPurchase.get("customer").toString();
+        Record newRecord = recordRepository.getReferenceById(pullID(userPurchase));
 
+        // make new purchase:
         Purchase newPurchase = Purchase.builder()
                 .customer(customerName)
                 .price(itemPrice)
                 .date(getDate())
                 .recordLink(newRecord)
                 .build();
-
         purchaseRepository.save(newPurchase);
 
         log.info("Purchase made");
 
+        // adjust quantity in record table:
+        int newQuant = newRecord.getQuantity() - 1;
+        newRecord.setQuantity(newQuant);
+
+        log.info("Record table adjusted");
+
         return newPurchase.getId();
-    };
+    }
 
 
 }
