@@ -19,5 +19,4 @@ public class CustomErrorController implements ErrorController {
         log.error("User sent request to " + url + " and an error message has been thrown");
         return "An error has occured. Please try again later";
     }
-
 }

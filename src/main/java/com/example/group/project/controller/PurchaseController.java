@@ -1,52 +1,50 @@
 package com.example.group.project.controller;
 
 
-import com.example.group.project.model.Purchase;
-import com.example.group.project.model.PurchaseRepository;
-import com.example.group.project.model.Record;
-import com.example.group.project.model.RecordRepository;
-import jakarta.transaction.Transactional;
+import com.example.group.project.service.PurchaseService;
+import com.example.group.project.service.PurchaseServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.Map;
 
 @Slf4j
 @RestController
 public class PurchaseController {
 
     @Autowired
-    private PurchaseRepository purchaseRepository;
-
-    @Autowired
-    private RecordRepository recordRepository;
-
+    public PurchaseServiceImpl purchaseServiceImpl;
 
     // POST endpoint to make purchase
-    @Transactional
     @PostMapping("/makePurchase")
-    public String makePurchase(@RequestBody Purchase newPurchase){
-        log.info("Attempting to make new purchase: " + newPurchase);
+    public ResponseEntity<?> makePurchase(@RequestBody Map<String, Object> userPurchase){
+        log.info("Attempting to make new purchase:");
 
-        // get record id from the input:
-        Long recordID = newPurchase.getRecordLink().getId();
-        log.info("The purchase ID is: " + recordID);
-
-        // check quantity & adjust if in stock:
-        Record newRecord = recordRepository.getReferenceById(recordID);
-        int newQuant = newRecord.getQuantity();
-        if (newQuant == 0) {
-            return "This item is not in stock";
-        } else {
-            newRecord.setQuantity(newQuant - 1);
+        if (!userPurchase.containsKey("customer")) {
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer name not provided");
         }
 
-        // save purchase:
-        purchaseRepository.save(newPurchase);
-        log.info("Purchase made");
-        return "Your purchase has been made";
-    }
+        if (userPurchase.get("customer").toString().length() < 3) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer name too short");
+        }
 
+        if (!purchaseServiceImpl.checkIdExists(userPurchase)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This is not a valid item id");
+        } else if (!purchaseServiceImpl.checkStock(userPurchase)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not in stock");
+        }
+
+        Long purchaseID = purchaseServiceImpl.commitPurchase(userPurchase);
+
+        if (purchaseServiceImpl.checkSuccess(purchaseID)) {
+            return ResponseEntity.ok("Purchase successful! Purchase ID " + purchaseID);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Something has gone wrong. Please try again later");
+        }
+    }
 
 }

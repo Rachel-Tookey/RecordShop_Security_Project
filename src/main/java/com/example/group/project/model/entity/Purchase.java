@@ -1,13 +1,16 @@
-package com.example.group.project.model;
+package com.example.group.project.model.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
+
 import java.time.LocalDate;
 
 
 @Entity
 @Table(name = "Purchases")
 @Data
+@Builder
 public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
