@@ -37,6 +37,35 @@ public class RecordControllerTests {
 
     // Test successful requests
     @Test
+    public void getRecord_givenExistingArtistAndName_returnsCorrectRecords () {
+        String recordName = "Thriller";
+        String artist = "Michael Jackson";
+
+        Record record1 = new Record();
+        record1.setName(recordName);
+        record1.setArtist(artist);
+
+        List<Record> recordByNameAndArtist = List.of(record1);
+
+        Mockito
+                .when(recordRepository.findByNameAndArtistIgnoreCase(recordName, artist))
+                .thenReturn(recordByNameAndArtist);
+
+
+        RestAssuredMockMvc
+                .given()
+                .param("artist","Michael Jackson")
+                .param("name", "Thriller")
+                .when()
+                .get("/getRecord")
+                .then()
+                .statusCode(200)
+                .body("$.size()", equalTo(recordByNameAndArtist.size()))
+                .body("[0].artist", equalTo(record1.getArtist()))
+                .body("[0].name", equalTo(record1.getName()));
+    }
+
+    @Test
     public void getRecord_givenExistingArtist_returnsArtistRecords () {
         Record record1 = new Record();
         Record record2 = new Record();
