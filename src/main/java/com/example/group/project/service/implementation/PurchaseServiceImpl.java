@@ -36,9 +36,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     // checks if the item requested is present in the stock
     public boolean checkStock(Map<String, Object>userPurchase){
-        Record newRecord = recordRepository.getReferenceById(pullID(userPurchase));
-        int newQuant = newRecord.getQuantity();
-        return newQuant != 0;
+        return recordRepository.getReferenceById(pullID(userPurchase)).getQuantity() != 0;
     }
 
     // checks if the item requested exists
@@ -54,11 +52,14 @@ public class PurchaseServiceImpl implements PurchaseService {
             try {
                 String userDiscount = (String) userPurchase.get("discount");
                 if (userDiscount.equals("CFG")) {
+                    log.info("Discount code applied");
                     itemPrice = itemPrice * 0.8;
                 }
             } catch (ClassCastException e) {
                 log.error("User discount code could not be cast {}", userPurchase.get("discount"));
             }
+        } else {
+            log.info("No discount code applied");
         }
         itemPrice = (Math.round(itemPrice));
         return itemPrice / 100;
@@ -68,7 +69,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Transactional
     public Long commitPurchase(Map<String, Object> userPurchase){
 
-        // getting variables
+        // getting object fields
         double itemPrice = adjustPrice(userPurchase);
         String customerName = userPurchase.get("customer").toString();
         Record newRecord = recordRepository.getReferenceById(pullID(userPurchase));
