@@ -21,13 +21,9 @@ public class PurchaseServiceImpl implements PurchaseService {
     private PurchaseRepository purchaseRepository;
 
     @Autowired
-    public PurchaseServiceImpl(PurchaseRepository purchaseRepository) {
-        this.purchaseRepository = purchaseRepository;
-    }
-
-    @Autowired
-    public PurchaseServiceImpl(RecordRepository recordRepository) {
+    public PurchaseServiceImpl(PurchaseRepository purchaseRepository, RecordRepository recordRepository) {
         this.recordRepository = recordRepository;
+        this.purchaseRepository = purchaseRepository;
     }
 
 

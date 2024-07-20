@@ -34,7 +34,7 @@ public class PurchaseController {
 
         if (!purchaseServiceImpl.checkIdExists(userPurchase)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This is not a valid item id");
-        } else if (purchaseServiceImpl.checkStock(userPurchase)) {
+        } else if (!purchaseServiceImpl.checkStock(userPurchase)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not in stock");
         }
 
