@@ -1,8 +1,8 @@
 package com.example.group.project.controllerTests;
 
 import com.example.group.project.controller.RecordController;
-import com.example.group.project.model.Record;
-import com.example.group.project.model.RecordRepository;
+import com.example.group.project.model.entity.Record;
+import com.example.group.project.model.repository.RecordRepository;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
