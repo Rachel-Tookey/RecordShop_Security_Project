@@ -25,6 +25,8 @@ public class PurchaseController {
     @Autowired
     private RecordRepository recordRepository;
 
+
+
     // POST endpoint to make purchase
     @PostMapping("/makePurchase")
     public ResponseEntity<?> makePurchase(@RequestBody Map<String, Object> userPurchase){
@@ -38,16 +40,13 @@ public class PurchaseController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer name too short");
         }
 
-        // get record id from the input & check item id exists:
-        Long recordID = (Long) userPurchase.get("id");
-
-        if (!checkIdExists(recordID)) {
+        if (!checkIdExists(userPurchase)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This is not a valid item id");
-        } else if (!checkStock(recordID)) {
+        } else if (!checkStock(userPurchase)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not in stock");
         }
 
-        Long purchaseID = makePurchase(recordID, userPurchase);
+        Long purchaseID = commitPurchase(userPurchase);
 
         if (checkSuccess(purchaseID)) {
             return ResponseEntity.ok("Purchase successful! Purchase ID " + purchaseID);
@@ -60,11 +59,11 @@ public class PurchaseController {
     // non-endpoint methods:
 
     @Transactional
-    public Long makePurchase(Long recordID, Map<String, Object>userPurchase){
+    public Long commitPurchase(Map<String, Object>userPurchase){
 
-        double itemPrice = adjustPrice(recordID, userPurchase);
+        double itemPrice = adjustPrice(userPurchase);
 
-        Record newRecord = recordRepository.getReferenceById(recordID);
+        Record newRecord = recordRepository.getReferenceById(pullID(userPurchase));
         int newQuant = newRecord.getQuantity();
         newRecord.setQuantity(newQuant - 1);
 
@@ -90,8 +89,12 @@ public class PurchaseController {
     }
 
 
-    public boolean checkStock(Long recordID){
-        Record newRecord = recordRepository.getReferenceById(recordID);
+    public Long pullID(Map<String, Object>userPurchase) {
+        return (Long) userPurchase.get("id");
+    }
+
+    public boolean checkStock(Map<String, Object>userPurchase){
+        Record newRecord = recordRepository.getReferenceById(pullID(userPurchase));
         int newQuant = newRecord.getQuantity();
         if (newQuant == 0) {
             return false;
@@ -99,15 +102,14 @@ public class PurchaseController {
         return true;
     }
 
-
-    public boolean checkIdExists(Long recordID){
-        return purchaseRepository.existsById(recordID);
+    public boolean checkIdExists(Map<String, Object>userPurchase){
+        return purchaseRepository.existsById(pullID(userPurchase));
     };
 
 
-    public double adjustPrice(Long recordID,  Map<String, Object>  userPurchase){
+    public double adjustPrice(Map<String, Object>  userPurchase){
 
-        double itemPrice = recordRepository.getReferenceById(recordID).getPrice();
+        double itemPrice = recordRepository.getReferenceById(pullID(userPurchase)).getPrice();
 
         if (userPurchase.containsKey("discount")) {
             String userDiscount = (String) userPurchase.get("discount");
