@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 @SpringBootTest
-public class PurchaseControllerUnitTests {
+public class PurchaseControllerTests {
 
     @Mock
     private PurchaseRepository purchaseRepository;
