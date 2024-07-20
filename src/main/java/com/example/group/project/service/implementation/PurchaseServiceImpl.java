@@ -1,9 +1,10 @@
-package com.example.group.project.service;
+package com.example.group.project.service.implementation;
 
 import com.example.group.project.model.entity.Purchase;
 import com.example.group.project.model.entity.Record;
 import com.example.group.project.model.repository.PurchaseRepository;
 import com.example.group.project.model.repository.RecordRepository;
+import com.example.group.project.service.PurchaseService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,6 @@ public class PurchaseServiceImpl implements PurchaseService {
     public PurchaseServiceImpl(PurchaseRepository purchaseRepository, RecordRepository recordRepository) {
         this.recordRepository = recordRepository;
         this.purchaseRepository = purchaseRepository;
-    }
-
-
-    // checks purchase ID is present in the table
-    public boolean checkSuccess(Long purchaseID){
-        return purchaseRepository.existsById(purchaseID);
     }
 
     // takes out record ID json input, converts it to Long record ID:
@@ -56,9 +51,13 @@ public class PurchaseServiceImpl implements PurchaseService {
         double itemPrice = recordRepository.getReferenceById(pullID(userPurchase)).getPrice();
         itemPrice = itemPrice * 100;
         if (userPurchase.containsKey("discount")) {
-            String userDiscount = (String) userPurchase.get("discount");
-            if (userDiscount.equals("CFG")) {
-                itemPrice = itemPrice * 0.8;
+            try {
+                String userDiscount = (String) userPurchase.get("discount");
+                if (userDiscount.equals("CFG")) {
+                    itemPrice = itemPrice * 0.8;
+                }
+            } catch (ClassCastException e) {
+                log.error("User discount code could not be cast {}", userPurchase.get("discount"));
             }
         }
         itemPrice = (Math.round(itemPrice));

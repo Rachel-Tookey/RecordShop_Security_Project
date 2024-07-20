@@ -1,7 +1,7 @@
 package com.example.group.project.controller;
 
 
-import com.example.group.project.service.PurchaseServiceImpl;
+import com.example.group.project.service.implementation.PurchaseServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,25 +24,32 @@ public class PurchaseController {
         log.info("Attempting to make new purchase:");
 
         if (!userPurchase.containsKey("customer")) {
-            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer name not provided");
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Customer name not provided");
         }
 
         if (userPurchase.get("customer").toString().length() < 3) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer name too short");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Customer name too short");
+        } else if (!userPurchase.containsKey("id")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No ID provided");
+        }
+
+        try {
+            purchaseServiceImpl.pullID(userPurchase);
+        } catch (ClassCastException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID must be integer value");
         }
 
         if (!purchaseServiceImpl.checkIdExists(userPurchase)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This is not a valid item id");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This is not a valid item id");
         } else if (!purchaseServiceImpl.checkStock(userPurchase)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not in stock");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Item not in stock");
         }
 
-        Long purchaseID = purchaseServiceImpl.commitPurchase(userPurchase);
-
-        if (purchaseServiceImpl.checkSuccess(purchaseID)) {
+        try {
+            Long purchaseID = purchaseServiceImpl.commitPurchase(userPurchase);
             return ResponseEntity.ok("Purchase successful! Purchase ID " + purchaseID);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Something has gone wrong. Please try again later");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unable to complete purchase. Please try again later");
         }
     }
 
