@@ -13,7 +13,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-public class RecordController {
+public class  RecordController {
 
     @Autowired
     RecordRepository recordRepository;
@@ -23,7 +23,12 @@ public class RecordController {
                                           @RequestParam(required = false) String name) {
 
         List<Record> records;
-        if (artist != null) {
+
+        if (artist != null && name != null) {
+            log.debug("Artist and record name provided: {}, {}", artist, name);
+            records = recordRepository.findByNameAndArtistIgnoreCase(name, artist);
+        }
+        else if (artist != null) {
             log.debug("Artist name provided: {}", artist);
             records = recordRepository.findByArtistIgnoreCase(artist);
 
