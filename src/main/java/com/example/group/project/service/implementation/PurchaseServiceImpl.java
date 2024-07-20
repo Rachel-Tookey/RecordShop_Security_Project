@@ -65,7 +65,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         return itemPrice / 100;
     }
 
-    // makes the purchase -> adding the purchase table, adjusting stock and returning a purchae ID
+    // makes the purchase -> adding the purchase table, adjusting stock and returning a purchase ID
     @Transactional
     public Long commitPurchase(Map<String, Object> userPurchase){
 

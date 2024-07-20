@@ -39,7 +39,7 @@ public class PurchaseController {
         try {
             purchaseServiceImpl.pullID(userPurchase);
         } catch (ClassCastException e) {
-            log.info("Abort. ID incorrect type");
+            log.error("Abort. ID incorrect type");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID must be integer value");
         }
 
