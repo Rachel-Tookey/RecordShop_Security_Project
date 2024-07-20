@@ -13,7 +13,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-public class RecordController {
+public class  RecordController {
 
     @Autowired
     RecordRepository recordRepository;
