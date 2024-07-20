@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import static org.hamcrest.Matchers.equalTo;
 import java.util.List;
 
@@ -149,7 +150,102 @@ public class RecordControllerTests {
                 .body("[2].name", equalTo(record3.getName()));
     }
 
-    // Test unsuccessful requests
 
+    // Test unsuccessful requests
+    @Test
+    public void getRecord_givenNotExistingDetails_returnsEmptyList () {
+        String artist = "Bob Dylan";
+        String record = "Blowing in the wind";
+
+        List<Record> noRecordsFound = List.of();
+
+        Mockito
+                .when(recordRepository
+                        .findByNameAndArtistIgnoreCase(record, artist))
+                .thenReturn(noRecordsFound);
+
+        RestAssuredMockMvc
+                .given()
+                .param("artist",artist)
+                .param("name", record)
+                .when()
+                .get("/getRecord")
+                .then()
+                .statusCode(200)
+                .body("$.size()", equalTo(0));
+    }
+
+    @Test
+    public void getRecord_givenNotExistingArtist_returnsEmptyList () {
+
+        String artist = "Bob Dylan";
+
+
+        List<Record> noRecordsFound = List.of();
+
+        Mockito
+                .when(recordRepository.findByArtistIgnoreCase(artist))
+                .thenReturn(noRecordsFound);
+
+
+        RestAssuredMockMvc
+                .given()
+                .param("artist", artist)
+                .when()
+                .get("/getRecord")
+                .then()
+                .statusCode(200)
+                .body("$.size()", equalTo(0));
+    }
+
+    @Test
+    public void getRecord_givenNotExistingRecord_returnsEmptyList () {
+        String recordName = "Blowing in the wind";
+        List<Record> noRecordsFound = List.of();
+
+        Mockito
+                .when(recordRepository.findByNameIgnoreCase(recordName))
+                .thenReturn(noRecordsFound);
+
+
+        RestAssuredMockMvc
+                .given()
+                .param("name", recordName)
+                .when()
+                .get("/getRecord")
+                .then()
+                .statusCode(200)
+                .body("$.size()", equalTo(0));
+    }
+
+    @Test
+    public void getRecord_givenWrongParameterKeys_returnsAllRecords () {
+        Record record1 = new Record();
+        Record record2 = new Record();
+        Record record3 = new Record();
+
+        record1.setName("Rec1");
+        record2.setName("Rec2");
+        record3.setName("Rec3");
+
+        List<Record> allRecords = List.of(record1, record2, record3);
+
+        Mockito
+                .when(recordRepository.findAll())
+                .thenReturn(allRecords);
+
+
+        RestAssuredMockMvc
+                .given()
+                .param("not a param", "not a value")
+                .when()
+                .get("/getRecord")
+                .then()
+                .statusCode(200)
+                .body("$.size()", equalTo(allRecords.size()))
+                .body("[0].name", equalTo(record1.getName()))
+                .body("[1].name", equalTo(record2.getName()))
+                .body("[2].name", equalTo(record3.getName()));
+    }
 
 }
