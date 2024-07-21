@@ -1,4 +1,4 @@
-package com.example.group.project.service.implementation;
+package com.example.group.project.service.impl;
 
 import com.example.group.project.model.entity.Purchase;
 import com.example.group.project.model.entity.Record;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
-import static com.example.group.project.util.PurchaseUtil.getDate;
+import static com.example.group.project.util.DateUtil.getDate;
 
 @Slf4j
 @Service

@@ -4,8 +4,8 @@ import com.example.group.project.model.entity.Purchase;
 import com.example.group.project.model.entity.Record;
 import com.example.group.project.model.repository.PurchaseRepository;
 import com.example.group.project.model.repository.RecordRepository;
-import com.example.group.project.service.implementation.PurchaseServiceImpl;
-import com.example.group.project.util.PurchaseUtil;
+import com.example.group.project.service.impl.PurchaseServiceImpl;
+import com.example.group.project.util.DateUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -228,7 +228,7 @@ public class PurchaseServiceImplTests {
         Purchase purchaseTest = Purchase.builder()
                 .customer("John")
                 .price(9.99)
-                .date(PurchaseUtil.getDate())
+                .date(DateUtil.getDate())
                 .recordLink(recordTest)
                 .build();
 
