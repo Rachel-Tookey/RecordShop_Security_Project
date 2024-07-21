@@ -1,7 +1,7 @@
 package com.example.group.project.controller;
 
 
-import com.example.group.project.service.implementation.PurchaseServiceImpl;
+import com.example.group.project.service.impl.PurchaseServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

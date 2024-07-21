@@ -5,7 +5,7 @@ import com.example.group.project.model.entity.Purchase;
 import com.example.group.project.model.entity.Record;
 import com.example.group.project.model.repository.PurchaseRepository;
 import com.example.group.project.model.repository.RecordRepository;
-import com.example.group.project.service.implementation.PurchaseServiceImpl;
+import com.example.group.project.service.impl.PurchaseServiceImpl;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

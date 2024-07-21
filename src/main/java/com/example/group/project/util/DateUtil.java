@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class PurchaseUtil {
+public class DateUtil {
 
     public static LocalDate getDate(){
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
