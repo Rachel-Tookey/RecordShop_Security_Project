@@ -103,4 +103,105 @@ public class PurchaseControllerTests {
 
     }
 
+    @Test
+    public void makePurchaseMissingCustomerReturnsBadRequest () {
+
+        Map<String, Object> userPurchase = new HashMap<>();
+        userPurchase.put("id", 1l);
+
+        RestAssuredMockMvc
+                .given()
+                .contentType("application/json")
+                .body(userPurchase)
+                .when()
+                .post("/makePurchase")
+                .then()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body(equalTo("Customer name not provided"));
+    }
+
+    @Test
+    public void makePurchaseTooShortCustomerReturnsBadRequest () {
+
+        Map<String, Object> userPurchase = new HashMap<>();
+        userPurchase.put("customer", "Jo");
+        userPurchase.put("id", 1l);
+
+        RestAssuredMockMvc
+                .given()
+                .contentType("application/json")
+                .body(userPurchase)
+                .when()
+                .post("/makePurchase")
+                .then()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body(equalTo("Customer name too short"));
+    }
+
+    @Test
+    public void makePurchaseMissingIDReturnsBadRequest () {
+
+        Map<String, Object> userPurchase = new HashMap<>();
+        userPurchase.put("customer", "John");
+
+        RestAssuredMockMvc
+                .given()
+                .contentType("application/json")
+                .body(userPurchase)
+                .when()
+                .post("/makePurchase")
+                .then()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body(equalTo("No ID provided"));
+    }
+
+
+    @Test
+    public void makePurchaseWrongIDReturnsBadRequest () {
+
+        Map<String, Object> userPurchase = new HashMap<>();
+        userPurchase.put("customer", "John");
+        userPurchase.put("id", 1l);
+
+        RestAssuredMockMvc
+                .given()
+                .contentType("application/json")
+                .body(userPurchase)
+                .when()
+                .post("/makePurchase")
+                .then()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body(equalTo("This is not a valid item id"));
+    }
+
+    @Test
+    public void makePurchaseOutofStockReturnsConflict () {
+
+        Record recordTest = Record.builder()
+                .id(1l)
+                .name("Thriller")
+                .artist("Michael Jackson")
+                .quantity(0)
+                .price(9.99)
+                .build();
+
+        lenient().when(purchaseServiceImpl.pullID(any(Map.class))).thenReturn(recordTest.getId());
+        lenient().when(purchaseServiceImpl.checkIdExists(any(Map.class))).thenReturn(true);
+        lenient().when(recordRepository.existsById(1l)).thenReturn(true);
+        lenient().when(recordRepository.getReferenceById(1l)).thenReturn(recordTest);
+
+        Map<String, Object> userPurchase = new HashMap<>();
+        userPurchase.put("customer", "John");
+        userPurchase.put("id", recordTest.getId());
+
+        RestAssuredMockMvc
+                .given()
+                .contentType("application/json")
+                .body(userPurchase)
+                .when()
+                .post("/makePurchase")
+                .then()
+                .statusCode(HttpStatus.CONFLICT.value())
+                .body(equalTo("Item not in stock"));
+    }
 }
