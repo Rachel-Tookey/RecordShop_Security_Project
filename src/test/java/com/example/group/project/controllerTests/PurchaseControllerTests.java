@@ -3,8 +3,7 @@ package com.example.group.project.controllerTests;
 import com.example.group.project.controller.PurchaseController;
 import com.example.group.project.model.entity.Purchase;
 import com.example.group.project.model.entity.Record;
-import com.example.group.project.model.repository.PurchaseRepository;
-import com.example.group.project.model.repository.RecordRepository;
+
 import com.example.group.project.service.impl.PurchaseServiceImpl;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,25 +16,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-// Full stack testing of the purchase controller interaction with the purchase service later
 
 @ExtendWith(MockitoExtension.class)
 public class PurchaseControllerTests {
-
-    @Mock
-    private PurchaseRepository purchaseRepository;
-
-    @Mock
-    private RecordRepository recordRepository;
 
     @Mock
     private PurchaseServiceImpl purchaseServiceImpl; // Mock the service
@@ -70,13 +60,10 @@ public class PurchaseControllerTests {
                 .recordLink(recordTest)
                 .build();
 
-        lenient().when(recordRepository.existsById(recordTest.getId())).thenReturn(true);
-        lenient().when(recordRepository.getReferenceById(recordTest.getId())).thenReturn(recordTest);
-        lenient().when(purchaseRepository.save(any(Purchase.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        lenient().when(purchaseServiceImpl.pullID(any(Map.class))).thenReturn(recordTest.getId());
-        lenient().when(purchaseServiceImpl.checkIdExists(any(Map.class))).thenReturn(true);
-        lenient().when(purchaseServiceImpl.checkStock(any(Map.class))).thenReturn(true);
-        lenient().when(purchaseServiceImpl.commitPurchase(any(Map.class))).thenReturn(purchaseTest.getId());
+        when(purchaseServiceImpl.pullID(any(Map.class))).thenReturn(recordTest.getId());
+        when(purchaseServiceImpl.checkIdExists(any(Map.class))).thenReturn(true);
+        when(purchaseServiceImpl.checkStock(any(Map.class))).thenReturn(true);
+        when(purchaseServiceImpl.commitPurchase(any(Map.class))).thenReturn(purchaseTest.getId());
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("customer", "John");
@@ -198,14 +185,13 @@ public class PurchaseControllerTests {
                 .price(9.99)
                 .build();
 
-        lenient().when(purchaseServiceImpl.pullID(any(Map.class))).thenReturn(recordTest.getId());
-        lenient().when(purchaseServiceImpl.checkIdExists(any(Map.class))).thenReturn(true);
-        lenient().when(recordRepository.existsById(1l)).thenReturn(true);
-        lenient().when(recordRepository.getReferenceById(1l)).thenReturn(recordTest);
-
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("customer", "John");
         userPurchase.put("id", recordTest.getId());
+
+        when(purchaseServiceImpl.pullID(any(Map.class))).thenReturn(recordTest.getId());
+        when(purchaseServiceImpl.checkIdExists(any(Map.class))).thenReturn(true);
+
 
         RestAssuredMockMvc
                 .given()
