@@ -18,7 +18,6 @@ The application should have the following:
 |                | Get records sorted in specific order             |
 |                | Get purchases from a date                        |
 |                | Get purchases of a specific customer             |
-| **Deleting**   | Remove records                                   |
 
 ## Prerequisites
 
@@ -56,7 +55,7 @@ Before you begin, please ensure you have the following:
 
 ### API Spec:
 
-This will help in generating interactive API documentation so you can play around with the API calls. Please see [here](http://localhost:8080/swagger-ui/index.html).
+This will help in generating interactive API documentation so you can play around with the API calls. Please see Open AI: [here](http://localhost:8080/swagger-ui/index.html).
 
 ### Developers + Github profiles:
 

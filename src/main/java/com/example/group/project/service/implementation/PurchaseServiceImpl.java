@@ -29,21 +29,26 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     // takes out record ID json input, converts it to Long record ID:
     public Long pullID(Map<String, Object>userPurchase) {
-        Integer recordIDInt = (Integer) userPurchase.get("id");
-        Long recordID = recordIDInt.longValue();
-        return recordID;
+        Object userID = userPurchase.get("id");
+        if (userID instanceof Long) {
+            return (Long) userID;
+        } else if (userID instanceof Integer) {
+            Integer userIDInt = (Integer) userID;
+            return userIDInt.longValue();
+        } else {
+        throw new IllegalArgumentException("Not correct variable type");
+        }
     }
 
     // checks if the item requested is present in the stock
     public boolean checkStock(Map<String, Object>userPurchase){
-        Record newRecord = recordRepository.getReferenceById(pullID(userPurchase));
-        int newQuant = newRecord.getQuantity();
-        return newQuant != 0;
+        return recordRepository.getReferenceById(pullID(userPurchase)).getQuantity() != 0;
     }
 
     // checks if the item requested exists
     public boolean checkIdExists(Map<String, Object>userPurchase){
-        return recordRepository.existsById(pullID(userPurchase));
+        Long newID = pullID(userPurchase);
+        return recordRepository.existsById(newID);
     }
 
     // gets item price and adjusts it if a valid discount code is provided
@@ -54,21 +59,24 @@ public class PurchaseServiceImpl implements PurchaseService {
             try {
                 String userDiscount = (String) userPurchase.get("discount");
                 if (userDiscount.equals("CFG")) {
+                    log.info("Discount code applied");
                     itemPrice = itemPrice * 0.8;
                 }
             } catch (ClassCastException e) {
                 log.error("User discount code could not be cast {}", userPurchase.get("discount"));
             }
+        } else {
+            log.info("No discount code applied");
         }
         itemPrice = (Math.round(itemPrice));
         return itemPrice / 100;
     }
 
-    // makes the purchase -> adding the purchase table, adjusting stock and returning a purchae ID
+    // makes the purchase -> adding the purchase table, adjusting stock and returning a purchase ID
     @Transactional
     public Long commitPurchase(Map<String, Object> userPurchase){
 
-        // getting variables
+        // getting object fields
         double itemPrice = adjustPrice(userPurchase);
         String customerName = userPurchase.get("customer").toString();
         Record newRecord = recordRepository.getReferenceById(pullID(userPurchase));
