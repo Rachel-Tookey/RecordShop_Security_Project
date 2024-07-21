@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 
 import java.time.LocalDate;
@@ -155,9 +156,29 @@ public class PurchaseControllerTests {
                 .body(equalTo("No ID provided"));
     }
 
+    @Test
+    public void makePurchaseWrongTypeReturnsBadRequest () {
+
+        Map<String, Object> userPurchase = new HashMap<>();
+        userPurchase.put("customer", "John");
+        userPurchase.put("id", "three");
+
+        when(purchaseServiceImpl.pullID(any(Map.class))).thenThrow(ClassCastException.class);
+
+        RestAssuredMockMvc
+                .given()
+                .contentType("application/json")
+                .body(userPurchase)
+                .when()
+                .post("/makePurchase")
+                .then()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body(equalTo("ID must be numerical value"));
+    }
+
 
     @Test
-    public void makePurchaseWrongIDReturnsBadRequest () {
+    public void makePurchaseInvalidIDReturnsBadRequest () {
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("customer", "John");
