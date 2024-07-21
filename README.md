@@ -7,17 +7,14 @@ This project is a Spring Boot application that manages purchases and records of 
 
 The application should have the following:
 
-| Functionality  | Description                                      |
-|----------------|--------------------------------------------------|
-| **Inserting**  | Add records to the `Records` table               |
-|                | Add purchases to the `Purchases` table           |
-| **Updating**   | Update the quantity of records after a purchase  |
-|                | Update the quantity of records when re-stocking  |
-| **Retrieving** | Find specific record by name                     |
-|                | Get list of records by artist                    |
-|                | Get records sorted in specific order             |
-|                | Get purchases from a date                        |
-|                | Get purchases of a specific customer             |
+| Functionality  | Description                                     |
+|----------------|-------------------------------------------------|
+| **Inserting**  | Add purchases to the `Purchases` table          |
+| **Updating**   | Update the quantity of records after a purchase |
+| **Retrieving** | Find specific record by name                    |
+|                | Get list of records by artist                   |
+|                | Find record by name and artist                  |
+
 
 ## Prerequisites
 
@@ -34,8 +31,9 @@ Before you begin, please ensure you have the following:
 
 2. **Configure the database**:
     - Go to [application_template.yml](src/main/resources/application.yml)
-    - Make sure to rename `application_template.yml` to `application.yml`
+    - Rename `application_template.yml` to `application.yml`
     - Put your MySQL database password in `password`
+    - Deploy the database to your SQL by clicking on the database icon. Alternatively, click on the lightbulb icon when the cursor is on line 6 and select `create or open an existing datasource`.
 
 3. **Ensure the proper dependencies are installed. Please refer to `pom.xml` in the file for your reference**
 
@@ -48,14 +46,15 @@ Before you begin, please ensure you have the following:
 
     Once the application is running, you can access the following endpoints:
 
-    | Endpoint URL | Method | Description | Example Request |
-    |--------------|--------|-------------|-----------------|
-    | `http://localhost:8080/makePurchase` | POST | Endpoint to make a purchase. | ```json { "customer": "John Doe", "price": 9.99, "date": "2024-07-15", "recordLink": { "id": 3 } }``` |
-    | `http://localhost:8080/getRecord?artist={ARTISTNAME}&name={ALBUM}` | GET | Endpoint to retrieve the information on a specific artist. | http://localhost:8080/getRecord?artist=Michael%20Jackson&name=Thriller |
+    | Endpoint URL                                                       | Method | Description                                                                                                                                 | Example Request                                                           |
+    |--------------------------------------------------------------------|--------|---------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
+    | `http://localhost:8080/makePurchase`                               | POST   | Endpoint to make a purchase.<br><br>**Please note:** Discount is optional, and the customer field must be contain more than two characters. | ```{"customer": "John",```<br>```"id": 3,```<br>```"discount": "CFG" }``` |
+    |                                                                    |        |                                                                                                                                             |                                                                           |     |
+    | `http://localhost:8080/getRecord?artist={ARTISTNAME}&name={ALBUM}` | GET    | Endpoint to retrieve the information on a specific artist.                                                                                  | http://localhost:8080/getRecord?artist=Michael%20Jackson&name=Thriller    |
 
 ### API Spec:
 
-This will help in generating interactive API documentation so you can play around with the API calls. Please see Open AI: [here](http://localhost:8080/swagger-ui/index.html).
+This will help in generating interactive API documentation so you can play around with the API calls. Please see Open API: [here](http://localhost:8080/swagger-ui/index.html).
 
 ### Developers + Github profiles:
 
