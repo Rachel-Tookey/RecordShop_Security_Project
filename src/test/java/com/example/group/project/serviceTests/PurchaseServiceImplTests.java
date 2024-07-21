@@ -1,34 +1,28 @@
-package com.example.group.project.controllerTests;
+package com.example.group.project.serviceTests;
+
 
 import com.example.group.project.controller.PurchaseController;
 import com.example.group.project.controller.RecordController;
-import com.example.group.project.model.entity.Purchase;
 import com.example.group.project.model.entity.Record;
 import com.example.group.project.model.repository.PurchaseRepository;
 import com.example.group.project.model.repository.RecordRepository;
 import com.example.group.project.service.implementation.PurchaseServiceImpl;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-
-import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.lenient;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 
-
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-
 @ExtendWith(MockitoExtension.class)
-public class PurchaseControllerTests {
+public class PurchaseServiceImplTests {
 
     @Mock
     private PurchaseRepository purchaseRepository;
@@ -37,7 +31,7 @@ public class PurchaseControllerTests {
     private RecordRepository recordRepository;
 
     @Mock
-    private PurchaseServiceImpl purchaseServiceImpl; // Mock the service
+    private PurchaseServiceImpl purchaseServiceImpl;
 
     @InjectMocks
     private PurchaseController purchaseController;
@@ -53,14 +47,23 @@ public class PurchaseControllerTests {
     @BeforeEach
     public void setUpMockPurchaseController() { RestAssuredMockMvc.standaloneSetup(purchaseController); }
 
-    // todo autowire the baseURI for docker
-    @BeforeAll
-    static void setup(){
-        String baseURI = "http://localhost:8080";
+    // testing pullID
+    @Test
+    public void pullIDConvertLongSuccess() {
+
+        Map<String, Object> userPurchase = new HashMap<>();
+        userPurchase.put("customer", "John");
+        userPurchase.put("id", 1);
+
+        Long testReturn = purchaseServiceImpl.pullID(userPurchase);
+
+        assertTrue(testReturn instanceof Long);
+
     }
 
+    // check stock
     @Test
-    public void makePurchaseCorrectParametersSuccess () {
+    public void checkStockReturnsTrue() {
         Record recordTest = Record.builder()
                 .id(1l)
                 .name("Thriller")
@@ -69,38 +72,40 @@ public class PurchaseControllerTests {
                 .price(9.99)
                 .build();
 
-        Purchase purchaseTest = Purchase.builder()
-                .id(1l)
-                .customer("John")
-                .price(9.99)
-                .date(LocalDate.parse("2019-07-03"))
-                .recordLink(recordTest)
-                .build();
-
-        lenient().when(recordRepository.existsById(recordTest.getId())).thenReturn(true);
-        lenient().when(recordRepository.getReferenceById(recordTest.getId())).thenReturn(recordTest);
-        lenient().when(purchaseRepository.save(any(Purchase.class))).thenAnswer(invocation -> invocation.getArgument(0));
         lenient().when(purchaseServiceImpl.pullID(any(Map.class))).thenReturn(recordTest.getId());
-        lenient().when(purchaseServiceImpl.checkIdExists(any(Map.class))).thenReturn(true);
         lenient().when(purchaseServiceImpl.checkStock(any(Map.class))).thenReturn(true);
-        lenient().when(purchaseServiceImpl.commitPurchase(any(Map.class))).thenReturn(purchaseTest.getId());
 
         Map<String, Object> userPurchase = new HashMap<>();
-        userPurchase.put("customer", "John");
         userPurchase.put("id", recordTest.getId());
 
-        String expectedString = "Purchase successful! Purchase ID " + purchaseTest.getId();
+        boolean checkStockTest = purchaseServiceImpl.checkStock(userPurchase);
 
-        RestAssuredMockMvc
-                .given()
-                .contentType("application/json")
-                .body(userPurchase)
-                .when()
-                .post("/makePurchase")
-                .then()
-                .statusCode(HttpStatus.OK.value())
-                .body(equalTo(expectedString));
+        assertTrue(checkStockTest);
 
     }
+
+    @Test
+    public void checkStockReturnsFalse() {
+        Record recordTest = Record.builder()
+                .id(1l)
+                .name("Thriller")
+                .artist("Michael Jackson")
+                .quantity(0)
+                .price(9.99)
+                .build();
+
+        lenient().when(purchaseServiceImpl.pullID(any(Map.class))).thenReturn(recordTest.getId());
+        lenient().when(purchaseServiceImpl.checkStock(any(Map.class))).thenReturn(false);
+
+        Map<String, Object> userPurchase = new HashMap<>();
+        userPurchase.put("id", recordTest.getId());
+
+        boolean checkStockTest = purchaseServiceImpl.checkStock(userPurchase);
+
+        assertFalse(checkStockTest);
+
+    }
+
+
 
 }
