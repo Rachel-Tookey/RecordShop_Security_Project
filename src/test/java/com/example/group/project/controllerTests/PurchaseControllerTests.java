@@ -163,7 +163,7 @@ public class PurchaseControllerTests {
         userPurchase.put("customer", "John");
         userPurchase.put("id", "three");
 
-        when(purchaseServiceImpl.pullID(any(Map.class))).thenThrow(ClassCastException.class);
+        when(purchaseServiceImpl.pullID(any(Map.class))).thenThrow(IllegalArgumentException.class);
 
         RestAssuredMockMvc
                 .given()
