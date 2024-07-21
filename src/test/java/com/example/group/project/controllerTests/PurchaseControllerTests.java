@@ -27,6 +27,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+// Full stack testing of the purchase controller interaction with the purchase service later
 
 @ExtendWith(MockitoExtension.class)
 public class PurchaseControllerTests {
@@ -42,14 +43,6 @@ public class PurchaseControllerTests {
 
     @InjectMocks
     private PurchaseController purchaseController;
-
-    @InjectMocks
-    private RecordController recordController;
-
-    @BeforeEach
-    public void setUpMockRecordController() {
-        RestAssuredMockMvc.standaloneSetup(recordController);
-    }
 
     @BeforeEach
     public void setUpMockPurchaseController() { RestAssuredMockMvc.standaloneSetup(purchaseController); }
