@@ -84,7 +84,6 @@ public class PurchaseServiceImplTests {
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("id", recordTest.getId());
 
-        //when(recordRepository.existsById(1l)).thenReturn(true);
         when(recordRepository.getReferenceById(1l)).thenReturn(recordTest);
 
         boolean checkStockTest = purchaseServiceImpl.checkStock(userPurchase);
