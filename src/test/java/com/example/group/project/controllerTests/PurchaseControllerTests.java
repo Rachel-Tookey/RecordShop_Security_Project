@@ -1,7 +1,6 @@
 package com.example.group.project.controllerTests;
 
 import com.example.group.project.controller.PurchaseController;
-import com.example.group.project.controller.RecordController;
 import com.example.group.project.model.entity.Purchase;
 import com.example.group.project.model.entity.Record;
 import com.example.group.project.model.repository.PurchaseRepository;
