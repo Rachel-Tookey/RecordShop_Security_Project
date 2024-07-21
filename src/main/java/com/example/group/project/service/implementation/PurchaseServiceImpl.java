@@ -28,6 +28,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     // takes out record ID json input, converts it to Long record ID:
+    @Override
     public Long pullID(Map<String, Object>userPurchase) {
         Object userID = userPurchase.get("id");
         if (userID instanceof Long) {
@@ -41,17 +42,20 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     // checks if the item requested is present in the stock
+    @Override
     public boolean checkStock(Map<String, Object>userPurchase){
         return recordRepository.getReferenceById(pullID(userPurchase)).getQuantity() != 0;
     }
 
     // checks if the item requested exists
+    @Override
     public boolean checkIdExists(Map<String, Object>userPurchase){
         Long newID = pullID(userPurchase);
         return recordRepository.existsById(newID);
     }
 
     // gets item price and adjusts it if a valid discount code is provided
+    @Override
     public double adjustPrice(Map<String, Object>  userPurchase){
         double itemPrice = recordRepository.getReferenceById(pullID(userPurchase)).getPrice();
         itemPrice = itemPrice * 100;
@@ -73,6 +77,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     // makes the purchase -> adding the purchase table, adjusting stock and returning a purchase ID
+    @Override
     @Transactional
     public Long commitPurchase(Map<String, Object> userPurchase){
 
