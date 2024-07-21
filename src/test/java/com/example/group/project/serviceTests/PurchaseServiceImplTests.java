@@ -63,8 +63,7 @@ public class PurchaseServiceImplTests {
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("id", recordTest.getId());
 
-        lenient().when(recordRepository.existsById(1l)).thenReturn(true);
-        lenient().when(recordRepository.getReferenceById(1l)).thenReturn(recordTest);
+        when(recordRepository.getReferenceById(1l)).thenReturn(recordTest);
 
         boolean checkStockTest = purchaseServiceImpl.checkStock(userPurchase);
 
@@ -85,8 +84,8 @@ public class PurchaseServiceImplTests {
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("id", recordTest.getId());
 
-        lenient().when(recordRepository.existsById(1l)).thenReturn(true);
-        lenient().when(recordRepository.getReferenceById(1l)).thenReturn(recordTest);
+        //when(recordRepository.existsById(1l)).thenReturn(true);
+        when(recordRepository.getReferenceById(1l)).thenReturn(recordTest);
 
         boolean checkStockTest = purchaseServiceImpl.checkStock(userPurchase);
 
@@ -110,7 +109,7 @@ public class PurchaseServiceImplTests {
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("id", 2l);
 
-        lenient().when(recordRepository.existsById(recordTestID)).thenReturn(true);
+        when(recordRepository.existsById(recordTestID)).thenReturn(true);
 
         boolean checkStockTest = purchaseServiceImpl.checkIdExists(userPurchase);
 
@@ -123,7 +122,7 @@ public class PurchaseServiceImplTests {
 
         Long testID = 2l;
 
-        lenient().when(recordRepository.existsById(testID)).thenReturn(false);
+        when(recordRepository.existsById(testID)).thenReturn(false);
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("id", testID);
@@ -233,8 +232,8 @@ public class PurchaseServiceImplTests {
                 .build();
 
 
-        lenient().when(recordRepository.getReferenceById(recordTestID)).thenReturn(recordTest);
-        lenient().when(purchaseRepository.save(purchaseTest)).thenAnswer(invocation -> invocation.getArgument(0));
+        when(recordRepository.getReferenceById(recordTestID)).thenReturn(recordTest);
+        when(purchaseRepository.save(purchaseTest)).thenAnswer(invocation -> invocation.getArgument(0));
 
         purchaseServiceImpl.commitPurchase(userPurchase);
 
