@@ -1,14 +1,9 @@
 package com.example.group.project.serviceTests;
 
-
-import com.example.group.project.controller.PurchaseController;
-import com.example.group.project.controller.RecordController;
 import com.example.group.project.model.entity.Record;
-import com.example.group.project.model.entity.Purchase;
 import com.example.group.project.model.repository.PurchaseRepository;
 import com.example.group.project.model.repository.RecordRepository;
 import com.example.group.project.service.implementation.PurchaseServiceImpl;
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
@@ -99,7 +93,6 @@ public class PurchaseServiceImplTests {
     }
 
     // check id exits:
-
     @Test
     public void checkIDExitsValidIDReturnsTrue() {
         Record recordTest = Record.builder()
@@ -140,10 +133,76 @@ public class PurchaseServiceImplTests {
     }
 
     // adjust price
+    @Test
+    public void adjustPriceValidInputNoDiscountReturnPrice(){
+        Record recordTest = Record.builder()
+                .name("Thriller")
+                .artist("Michael Jackson")
+                .quantity(0)
+                .price(9.99)
+                .build();
 
-    // check discount works
+        Long recordTestID = 1l;
+        recordTest.setId(recordTestID);
 
-    // check it doesn't work
+        Map<String, Object> userPurchase = new HashMap<>();
+        userPurchase.put("id", 1l);
+
+        when(recordRepository.getReferenceById(recordTestID)).thenReturn(recordTest);
+
+        double recordPrice = purchaseServiceImpl.adjustPrice(userPurchase);
+
+        assertEquals(recordTest.getPrice(), recordPrice);
+
+    }
+
+    @Test
+    public void adjustPriceValidInputDiscountReturnPrice(){
+        Record recordTest = Record.builder()
+                .name("Thriller")
+                .artist("Michael Jackson")
+                .quantity(0)
+                .price(9.99)
+                .build();
+
+        Long recordTestID = 1l;
+        recordTest.setId(recordTestID);
+
+        Map<String, Object> userPurchase = new HashMap<>();
+        userPurchase.put("id", 1l);
+        userPurchase.put("discount", "CFG");
+
+        when(recordRepository.getReferenceById(recordTestID)).thenReturn(recordTest);
+
+        double recordPrice = purchaseServiceImpl.adjustPrice(userPurchase);
+
+        assertEquals(7.99, recordPrice);
+
+    }
+
+    @Test
+    public void adjustPriceValidInputWrongDiscountReturnPrice(){
+        Record recordTest = Record.builder()
+                .name("Thriller")
+                .artist("Michael Jackson")
+                .quantity(0)
+                .price(9.99)
+                .build();
+
+        Long recordTestID = 1l;
+        recordTest.setId(recordTestID);
+
+        Map<String, Object> userPurchase = new HashMap<>();
+        userPurchase.put("id", 1l);
+        userPurchase.put("discount", "cfg");
+
+        when(recordRepository.getReferenceById(recordTestID)).thenReturn(recordTest);
+
+        double recordPrice = purchaseServiceImpl.adjustPrice(userPurchase);
+
+        assertEquals(9.99, recordPrice);
+
+    }
 
     // check purchase works
 
