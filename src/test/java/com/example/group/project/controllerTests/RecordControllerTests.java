@@ -153,7 +153,7 @@ public class RecordControllerTests {
 
     // Test unsuccessful requests
     @Test
-    public void getRecord_givenNotExistingDetails_returnsEmptyList () {
+    public void getRecord_givenNotExistingDetails_returnsMessageWithArtistAndRecord () {
         String artist = "Bob Dylan";
         String record = "Blowing in the wind";
 
@@ -164,22 +164,22 @@ public class RecordControllerTests {
                         .findByNameAndArtistIgnoreCase(record, artist))
                 .thenReturn(noRecordsFound);
 
+        String expectedMessage = "No record found with name " + record + " and artist " + artist;
+
         RestAssuredMockMvc
                 .given()
-                .param("artist",artist)
-                .param("name", record)
+                    .param("artist",artist)
+                    .param("name", record)
                 .when()
-                .get("/getRecord")
+                    .get("/getRecord")
                 .then()
-                .statusCode(200)
-                .body("$.size()", equalTo(0));
+                    .statusCode(200)
+                    .body(equalTo(expectedMessage));
     }
 
     @Test
-    public void getRecord_givenNotExistingArtist_returnsEmptyList () {
-
+    public void getRecord_givenNotExistingArtist_returnsMessageWithArtist () {
         String artist = "Bob Dylan";
-
 
         List<Record> noRecordsFound = List.of();
 
@@ -187,6 +187,7 @@ public class RecordControllerTests {
                 .when(recordRepository.findByArtistIgnoreCase(artist))
                 .thenReturn(noRecordsFound);
 
+        String expectedMessage = "No record found having artist " + artist;
 
         RestAssuredMockMvc
                 .given()
@@ -195,11 +196,11 @@ public class RecordControllerTests {
                 .get("/getRecord")
                 .then()
                 .statusCode(200)
-                .body("$.size()", equalTo(0));
+                .body(equalTo(expectedMessage));
     }
 
     @Test
-    public void getRecord_givenNotExistingRecord_returnsEmptyList () {
+    public void getRecord_givenNotExistingRecord_returnsMessageWithRecord () {
         String recordName = "Blowing in the wind";
         List<Record> noRecordsFound = List.of();
 
@@ -207,6 +208,7 @@ public class RecordControllerTests {
                 .when(recordRepository.findByNameIgnoreCase(recordName))
                 .thenReturn(noRecordsFound);
 
+        String expectedMessage = "No record found with name " + recordName;
 
         RestAssuredMockMvc
                 .given()
@@ -215,7 +217,7 @@ public class RecordControllerTests {
                 .get("/getRecord")
                 .then()
                 .statusCode(200)
-                .body("$.size()", equalTo(0));
+                .body(equalTo(expectedMessage));
     }
 
     @Test

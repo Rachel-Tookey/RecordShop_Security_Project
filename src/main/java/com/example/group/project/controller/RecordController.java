@@ -19,28 +19,32 @@ public class  RecordController {
     RecordRepository recordRepository;
 
     @GetMapping("/getRecord")
-    public ResponseEntity<List<Record>> getRecord(@RequestParam(required = false) String artist,
+    public ResponseEntity<?> getRecord(@RequestParam(required = false) String artist,
                                           @RequestParam(required = false) String name) {
 
         List<Record> records;
+        String message = "";
 
         if (artist != null && name != null) {
             log.debug("Artist and record name provided: {}, {}", artist, name);
             records = recordRepository.findByNameAndArtistIgnoreCase(name, artist);
+            message = "No record found with name " + name + " and artist " + artist;
+
         }
         else if (artist != null) {
             log.debug("Artist name provided: {}", artist);
             records = recordRepository.findByArtistIgnoreCase(artist);
+            message = "No record found having artist " + artist;
 
         } else if (name != null) {
             log.debug("Record name provided: {}", name);
             records = recordRepository.findByNameIgnoreCase(name);
-
+            message = "No record found with name " + name;
         } else {
             log.debug("No param provided");
             records = recordRepository.findAll();
+            message = "No records found in the database";
         }
-
-        return ResponseEntity.ok(records);
+        return ResponseEntity.ok(records.isEmpty() ? message : records);
     }
 }
