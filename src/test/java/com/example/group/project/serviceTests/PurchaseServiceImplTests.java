@@ -4,6 +4,7 @@ package com.example.group.project.serviceTests;
 import com.example.group.project.controller.PurchaseController;
 import com.example.group.project.controller.RecordController;
 import com.example.group.project.model.entity.Record;
+import com.example.group.project.model.entity.Purchase;
 import com.example.group.project.model.repository.PurchaseRepository;
 import com.example.group.project.model.repository.RecordRepository;
 import com.example.group.project.service.implementation.PurchaseServiceImpl;
@@ -17,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,22 +32,12 @@ public class PurchaseServiceImplTests {
     @Mock
     private RecordRepository recordRepository;
 
-    @Mock
+    @InjectMocks
     private PurchaseServiceImpl purchaseServiceImpl;
 
-    @InjectMocks
-    private PurchaseController purchaseController;
-
-    @InjectMocks
-    private RecordController recordController;
-
     @BeforeEach
-    public void setUpMockRecordController() {
-        RestAssuredMockMvc.standaloneSetup(recordController);
+    public void setUp() {
     }
-
-    @BeforeEach
-    public void setUpMockPurchaseController() { RestAssuredMockMvc.standaloneSetup(purchaseController); }
 
     // testing pullID
     @Test
@@ -53,7 +45,7 @@ public class PurchaseServiceImplTests {
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("customer", "John");
-        userPurchase.put("id", 1);
+        userPurchase.put("id", 1l);
 
         Long testReturn = purchaseServiceImpl.pullID(userPurchase);
 
@@ -72,11 +64,11 @@ public class PurchaseServiceImplTests {
                 .price(9.99)
                 .build();
 
-        lenient().when(purchaseServiceImpl.pullID(any(Map.class))).thenReturn(recordTest.getId());
-        lenient().when(purchaseServiceImpl.checkStock(any(Map.class))).thenReturn(true);
-
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("id", recordTest.getId());
+
+        lenient().when(recordRepository.existsById(1l)).thenReturn(true);
+        lenient().when(recordRepository.getReferenceById(1l)).thenReturn(recordTest);
 
         boolean checkStockTest = purchaseServiceImpl.checkStock(userPurchase);
 
@@ -94,11 +86,11 @@ public class PurchaseServiceImplTests {
                 .price(9.99)
                 .build();
 
-        lenient().when(purchaseServiceImpl.pullID(any(Map.class))).thenReturn(recordTest.getId());
-        lenient().when(purchaseServiceImpl.checkStock(any(Map.class))).thenReturn(false);
-
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("id", recordTest.getId());
+
+        lenient().when(recordRepository.existsById(1l)).thenReturn(true);
+        lenient().when(recordRepository.getReferenceById(1l)).thenReturn(recordTest);
 
         boolean checkStockTest = purchaseServiceImpl.checkStock(userPurchase);
 
@@ -106,6 +98,54 @@ public class PurchaseServiceImplTests {
 
     }
 
+    // check id exits:
+
+    @Test
+    public void checkIDExitsValidIDReturnsTrue() {
+        Record recordTest = Record.builder()
+                .name("Thriller")
+                .artist("Michael Jackson")
+                .quantity(0)
+                .price(9.99)
+                .build();
+
+        Long recordTestID = 2l;
+        recordTest.setId(recordTestID);
+
+        Map<String, Object> userPurchase = new HashMap<>();
+        userPurchase.put("id", 2l);
+
+        lenient().when(recordRepository.existsById(recordTestID)).thenReturn(true);
+
+        boolean checkStockTest = purchaseServiceImpl.checkIdExists(userPurchase);
+
+        assertTrue(checkStockTest);
+
+    }
+
+    @Test
+    public void checkIDExitsInvalidIDReturnsFalse() {
+
+        Long testID = 2l;
+
+        lenient().when(recordRepository.existsById(testID)).thenReturn(false);
+
+        Map<String, Object> userPurchase = new HashMap<>();
+        userPurchase.put("id", testID);
+
+        boolean checkStockTest = purchaseServiceImpl.checkIdExists(userPurchase);
+
+        assertFalse(checkStockTest);
+
+    }
+
+    // adjust price
+
+    // check discount works
+
+    // check it doesn't work
+
+    // check purchase works
 
 
 }

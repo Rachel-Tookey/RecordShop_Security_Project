@@ -29,9 +29,15 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     // takes out record ID json input, converts it to Long record ID:
     public Long pullID(Map<String, Object>userPurchase) {
-        Integer recordIDInt = (Integer) userPurchase.get("id");
-        Long recordID = recordIDInt.longValue();
-        return recordID;
+        Object userID = userPurchase.get("id");
+        if (userID instanceof Long) {
+            return (Long) userID;
+        } else if (userID instanceof Integer) {
+            Integer userIDInt = (Integer) userID;
+            return userIDInt.longValue();
+        } else {
+        throw new IllegalArgumentException("Not correct variable type");
+        }
     }
 
     // checks if the item requested is present in the stock
@@ -41,7 +47,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     // checks if the item requested exists
     public boolean checkIdExists(Map<String, Object>userPurchase){
-        return recordRepository.existsById(pullID(userPurchase));
+        Long newID = pullID(userPurchase);
+        return recordRepository.existsById(newID);
     }
 
     // gets item price and adjusts it if a valid discount code is provided
