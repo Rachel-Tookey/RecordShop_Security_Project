@@ -29,12 +29,7 @@ public class RecordServiceImpl implements RecordService {
     }
 
     public List<Record> getAllRecords(){
-        List<Record> allRecords = recordRepository.findAll();
-        if (allRecords.isEmpty()) {
-            throw new ResourceNotFoundException("No records found in the database.");
-        }
-        return allRecords;
-
+        return recordRepository.findAll();
     }
 
     public List<Record> getRecordByName(String recordName) {
@@ -50,18 +45,35 @@ public class RecordServiceImpl implements RecordService {
     }
 
     public List<Record> paramHandler(Map<String, String> param) {
+
         if (param.containsKey(artist) && param.containsKey(record)) {
-            return getRecordsByNameAndArtist(param.get(record), param.get(artist));
+            List<Record> recordsByNameAndArtist = getRecordsByNameAndArtist(param.get(record), param.get(artist));
+            if (recordsByNameAndArtist.isEmpty()) {
+                String exceptionMessage =
+                        "No record found with name "+ param.get(record) + " and artist " + param.get(artist);
+                throw new ResourceNotFoundException(exceptionMessage);
+            } else { return recordsByNameAndArtist; }
 
         } else if(param.containsKey(record)) {
-            return getRecordByName(param.get(artist));
+            List<Record> recordByName = getRecordByName(param.get(record));
+            if (recordByName.isEmpty()) {
+                String exceptionMessage = "No record found with name " + param.get(record);
+                throw new ResourceNotFoundException(exceptionMessage);
+            } else { return recordByName; }
 
         } else if (param.containsKey(artist)) {
-            return getRecordsByArtist(param.get(artist));
+            List<Record> recordsByArtist = getRecordsByArtist(param.get(artist));
+            if (recordsByArtist.isEmpty()) {
+                String exceptionMessage = "No record found having artist " + param.get(artist);
+                throw new ResourceNotFoundException(exceptionMessage);
+            } else { return recordsByArtist; }
 
         } else if(param.isEmpty()){
-            return getAllRecords();
-
+            List<Record> allRecords = getAllRecords();
+            if (allRecords.isEmpty()) {
+                String exceptionMessage = "No records found in the database";
+                throw new ResourceNotFoundException(exceptionMessage);
+            } else { return allRecords; }
         } else {
             throw new InvalidParameterException("Invalid Parameters used in the request");
         }
