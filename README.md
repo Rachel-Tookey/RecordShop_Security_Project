@@ -16,6 +16,8 @@ The application should have the following:
 |                | Find record by name and artist                  |
 
 
+---
+
 ## Prerequisites
 
 Before you begin, please ensure you have the following:
@@ -24,6 +26,7 @@ Before you begin, please ensure you have the following:
 - The latest version of Maven
 - An SQL database (e.g., MySQL)
 - IntelliJ Community / Ultimate
+---
 
 ## Setup Instructions
 
@@ -37,6 +40,8 @@ Before you begin, please ensure you have the following:
 
 3. **Ensure the proper dependencies are installed. Please refer to `pom.xml` in the file for your reference**
 
+---
+
 ## How to Run the Application
 
 1. **Start the application**:
@@ -46,15 +51,23 @@ Before you begin, please ensure you have the following:
 
     Once the application is running, you can access the following endpoints:
 
-    | Endpoint URL                                                       | Method | Description                                                                                                                                 | Example Request                                                           |
-    |--------------------------------------------------------------------|--------|---------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
-    | `http://localhost:8080/makePurchase`                               | POST   | Endpoint to make a purchase.<br><br>**Please note:** Discount is optional, and the customer field must be contain more than two characters. | ```{"customer": "John",```<br>```"id": 3,```<br>```"discount": "CFG" }``` |
-    |                                                                    |        |                                                                                                                                             |                                                                           |     |
-    | `http://localhost:8080/getRecord?artist={ARTISTNAME}&name={ALBUM}` | GET    | Endpoint to retrieve the information on a specific artist.                                                                                  | http://localhost:8080/getRecord?artist=Michael%20Jackson&name=Thriller    |
+    | Endpoint URL                                                       | Method | Description                                                                                                                              | Example Request                                                           |
+    |--------------------------------------------------------------------|--------|------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
+    | `http://localhost:8080/makePurchase`                               | POST   | Endpoint to make a purchase.<br><br>**Please note:** Discount is optional, and the customer field must contain more than two characters. | ```{"customer": "John",```<br>```"id": 3,```<br>```"discount": "CFG" }``` |
+    | `http://localhost:8080/getRecord?artist={ARTISTNAME}&name={ALBUM}` | GET    | Endpoint to retrieve the information on a specific artist.                                                                               | http://localhost:8080/getRecord?artist=Michael%20Jackson&name=Thriller    |
+
+---
 
 ### API Spec:
 
 This will help in generating interactive API documentation so you can play around with the API calls. Please see Open API: [here](http://localhost:8080/swagger-ui/index.html).
+
+---
+
+### Docker Instructions:
+(TBC)
+
+---
 
 ### Developers + Github profiles:
 
