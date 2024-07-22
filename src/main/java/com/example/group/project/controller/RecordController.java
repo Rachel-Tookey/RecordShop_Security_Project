@@ -13,19 +13,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
 @RestController
 public class  RecordController {
     @Autowired
-    public RecordServiceImpl recordServiceImpl;
+    private RecordServiceImpl recordServiceImpl;
 
     @GetMapping("/getRecord")
     public ResponseEntity<?> getRecord(@RequestParam(required = false) String artist,
                                           @RequestParam(required = false) String name) {
         try {
-            Map<String, String> params = Map.of(RecordParam.RECORD_PARAM, name, RecordParam.ARTIST_PARAM, artist);
+            Map<String, String> params = new HashMap<>(Map.of());
+            if (name != null) { params.put(RecordParam.RECORD_PARAM, name); }
+            if (artist != null) { params.put(RecordParam.ARTIST_PARAM, artist); }
+
             return ResponseEntity.status(HttpStatus.OK).body(recordServiceImpl.requestHandler(params));
         } catch (InvalidParameterException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

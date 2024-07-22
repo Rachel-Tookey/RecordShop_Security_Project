@@ -2,7 +2,7 @@ package com.example.group.project.controllerTests;
 
 import com.example.group.project.controller.RecordController;
 import com.example.group.project.model.entity.Record;
-import com.example.group.project.model.repository.RecordRepository;
+import com.example.group.project.service.impl.RecordServiceImpl;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,15 +12,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 
 import static org.hamcrest.Matchers.equalTo;
 import java.util.List;
 
-
+@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class RecordControllerTests {
     @Mock
-    private RecordRepository recordRepository;
+    private RecordServiceImpl recordServiceImpl;
 
     @InjectMocks
     private RecordController recordController;
@@ -49,18 +51,18 @@ public class RecordControllerTests {
         List<Record> recordByNameAndArtist = List.of(record1);
 
         Mockito
-                .when(recordRepository.findByNameAndArtistIgnoreCase(recordName, artist))
+                .when(recordServiceImpl.getRecordsByNameAndArtist(recordName, artist))
                 .thenReturn(recordByNameAndArtist);
 
 
         RestAssuredMockMvc
                 .given()
-                .param("artist","Michael Jackson")
-                .param("name", "Thriller")
+                    .param("name", "Thriller")
+                    .param("artist","Michael Jackson")
                 .when()
-                .get("/getRecord")
+                    .get("/getRecord")
                 .then()
-                .statusCode(200)
+                .statusCode(HttpStatus.OK.value())
                 .body("$.size()", equalTo(recordByNameAndArtist.size()))
                 .body("[0].artist", equalTo(record1.getArtist()))
                 .body("[0].name", equalTo(record1.getName()));
@@ -82,7 +84,7 @@ public class RecordControllerTests {
         List<Record> recordsByArtist = List.of(record1, record2);
 
         Mockito
-                .when(recordRepository.findByArtistIgnoreCase(artist))
+                .when(recordServiceImpl.getRecordsByArtist(artist))
                 .thenReturn(recordsByArtist);
 
 
@@ -107,7 +109,7 @@ public class RecordControllerTests {
         List<Record> recordByName = List.of(record1);
 
         Mockito
-                .when(recordRepository.findByNameIgnoreCase(recordName))
+                .when(recordServiceImpl.getRecordByName(recordName))
                 .thenReturn(recordByName);
 
 
@@ -135,7 +137,7 @@ public class RecordControllerTests {
         List<Record> allRecords = List.of(record1, record2, record3);
 
         Mockito
-                .when(recordRepository.findAll())
+                .when(recordServiceImpl.getAllRecords())
                 .thenReturn(allRecords);
 
 
@@ -153,15 +155,15 @@ public class RecordControllerTests {
 
     // Test unsuccessful requests
     @Test
-    public void getRecord_givenNotExistingDetails_returnsMessageWithArtistAndRecord () {
+    public void getRecord_givenNotExistingDetails_returnsNotFoundStatus () {
         String artist = "Bob Dylan";
         String record = "Blowing in the wind";
 
         List<Record> noRecordsFound = List.of();
 
         Mockito
-                .when(recordRepository
-                        .findByNameAndArtistIgnoreCase(record, artist))
+                .when(recordServiceImpl
+                        .getRecordsByNameAndArtist(record, artist))
                 .thenReturn(noRecordsFound);
 
         String expectedMessage = "No record found with name " + record + " and artist " + artist;
@@ -173,7 +175,7 @@ public class RecordControllerTests {
                 .when()
                     .get("/getRecord")
                 .then()
-                    .statusCode(200)
+                    .statusCode(HttpStatus.NOT_FOUND.value())
                     .body(equalTo(expectedMessage));
     }
 
@@ -184,7 +186,7 @@ public class RecordControllerTests {
         List<Record> noRecordsFound = List.of();
 
         Mockito
-                .when(recordRepository.findByArtistIgnoreCase(artist))
+                .when(recordServiceImpl.getRecordsByArtist(artist))
                 .thenReturn(noRecordsFound);
 
         String expectedMessage = "No record found having artist " + artist;
@@ -205,7 +207,7 @@ public class RecordControllerTests {
         List<Record> noRecordsFound = List.of();
 
         Mockito
-                .when(recordRepository.findByNameIgnoreCase(recordName))
+                .when(recordServiceImpl.getRecordByName(recordName))
                 .thenReturn(noRecordsFound);
 
         String expectedMessage = "No record found with name " + recordName;
@@ -233,7 +235,7 @@ public class RecordControllerTests {
         List<Record> allRecords = List.of(record1, record2, record3);
 
         Mockito
-                .when(recordRepository.findAll())
+                .when(recordServiceImpl.getAllRecords())
                 .thenReturn(allRecords);
 
 

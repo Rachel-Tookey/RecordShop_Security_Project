@@ -132,9 +132,9 @@ public class RecordServiceImplTests {
                 .when(recordRepository.findByNameAndArtistIgnoreCase(recordName, artist))
                 .thenReturn(recordByNameAndArtist);
 
-        Assertions.assertEquals(recordByNameAndArtist.size(), recordServiceImpl.getRecordsByNameAndArtist(artist,
-                recordName).size());
-        Assertions.assertEquals(recordByNameAndArtist, recordServiceImpl.getRecordsByNameAndArtist(artist, recordName));
+        Assertions.assertEquals(recordByNameAndArtist.size(), recordServiceImpl.getRecordsByNameAndArtist(recordName,
+                artist).size());
+        Assertions.assertEquals(recordByNameAndArtist, recordServiceImpl.getRecordsByNameAndArtist(recordName, artist));
     }
 
     @Test
@@ -148,8 +148,8 @@ public class RecordServiceImplTests {
                 .when(recordRepository.findByNameAndArtistIgnoreCase(recordName, artist))
                 .thenReturn(recordByNameAndArtist);
 
-        Assertions.assertTrue(recordServiceImpl.getRecordsByNameAndArtist(artist,
-                recordName).isEmpty());
+        Assertions.assertTrue(recordServiceImpl.getRecordsByNameAndArtist(recordName,
+                artist).isEmpty());
 
     }
 
