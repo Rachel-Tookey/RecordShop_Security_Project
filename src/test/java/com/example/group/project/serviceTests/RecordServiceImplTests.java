@@ -1,6 +1,7 @@
 package com.example.group.project.serviceTests;
 
 
+import com.example.group.project.exceptions.InvalidParameterException;
 import com.example.group.project.model.entity.Record;
 import com.example.group.project.model.repository.RecordRepository;
 import com.example.group.project.service.impl.RecordServiceImpl;
@@ -14,6 +15,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.Matchers.equalTo;
 
@@ -151,4 +153,10 @@ public class RecordServiceImplTests {
 
     }
 
+    @Test
+    public void paramHandler_givenInvalidParameters_throwsException() {
+        Map<String, String> param = Map.of("notAKey","value");
+
+        Assertions.assertThrows(InvalidParameterException.class, () -> recordServiceImpl.paramHandler(param));
+    }
 }

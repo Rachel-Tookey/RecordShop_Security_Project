@@ -29,7 +29,7 @@ public class  RecordController {
         if (artist != null && name != null) {
             log.debug("Artist and record name provided: {}, {}", artist, name);
             records = recordRepository.findByNameAndArtistIgnoreCase(name, artist);
-            message = "No record found with name " + name + " and artist " + artist;
+            message = "";
 
         }
         else if (artist != null) {

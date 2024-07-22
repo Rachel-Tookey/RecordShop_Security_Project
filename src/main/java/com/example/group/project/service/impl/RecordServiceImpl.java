@@ -1,5 +1,6 @@
 package com.example.group.project.service.impl;
 
+import com.example.group.project.constant.RecordParam;
 import com.example.group.project.exceptions.InvalidParameterException;
 import com.example.group.project.exceptions.ResourceNotFoundException;
 import com.example.group.project.model.entity.Record;
@@ -20,11 +21,10 @@ public class RecordServiceImpl implements RecordService {
     private final RecordRepository recordRepository;
 
     @Autowired
-    public RecordServiceImpl(RecordRepository recordRepository, String ARTIST_PARAM,
-                             String RECORD_PARAM) {
+    public RecordServiceImpl(RecordRepository recordRepository) {
         this.recordRepository = recordRepository;
-        this.artist = ARTIST_PARAM;
-        this.record = RECORD_PARAM;
+        this.artist = RecordParam.ARTIST_PARAM;
+        this.record = RecordParam.RECORD_PARAM;
 
     }
 
