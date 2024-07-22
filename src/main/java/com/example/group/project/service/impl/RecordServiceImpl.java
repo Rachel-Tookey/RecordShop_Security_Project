@@ -14,6 +14,7 @@ import java.util.Map;
 
 @Service
 public class RecordServiceImpl implements RecordService {
+
     private final String artist;
     private final String record;
 
