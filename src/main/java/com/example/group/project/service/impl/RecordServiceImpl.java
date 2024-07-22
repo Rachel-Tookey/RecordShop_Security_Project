@@ -40,7 +40,7 @@ public class RecordServiceImpl implements RecordService {
         return recordRepository.findByArtistIgnoreCase(artist);
     }
 
-    public List<Record> getRecordsByNameAndArtist(String artist, String recordName) {
+    public List<Record> getRecordsByNameAndArtist(String recordName, String artist) {
         return recordRepository.findByNameAndArtistIgnoreCase(recordName, artist);
     }
 

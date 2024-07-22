@@ -7,7 +7,6 @@ import com.example.group.project.exceptions.ResourceNotFoundException;
 import com.example.group.project.model.entity.Record;
 import com.example.group.project.model.repository.RecordRepository;
 import com.example.group.project.service.impl.RecordServiceImpl;
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.Matchers.equalTo;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -181,6 +179,30 @@ public class RecordServiceImplTests {
 
         Mockito
                 .when(recordRepository.findByNameAndArtistIgnoreCase(record, artist))
+                .thenReturn(List.of());
+
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> recordServiceImpl.requestHandler(param));
+    }
+
+    @Test
+    public void requestHandler_givenNotExistingRecord_throwsResourceNotFoundException() {
+        String record = "not a record";
+        Map<String, String> param = Map.of(RecordParam.RECORD_PARAM, record);
+
+        Mockito
+                .when(recordRepository.findByNameIgnoreCase(record))
+                .thenReturn(List.of());
+
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> recordServiceImpl.requestHandler(param));
+    }
+
+    @Test
+    public void requestHandler_givenNotExistingArtist_throwsResourceNotFoundException() {
+        String artist = "not an artist";
+        Map<String, String> param = Map.of(RecordParam.ARTIST_PARAM, artist);
+
+        Mockito
+                .when(recordRepository.findByArtistIgnoreCase(artist))
                 .thenReturn(List.of());
 
         Assertions.assertThrows(ResourceNotFoundException.class, () -> recordServiceImpl.requestHandler(param));
