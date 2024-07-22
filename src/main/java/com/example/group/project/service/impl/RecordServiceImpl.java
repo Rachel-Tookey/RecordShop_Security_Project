@@ -29,22 +29,27 @@ public class RecordServiceImpl implements RecordService {
 
     }
 
+    @Override
     public List<Record> getAllRecords(){
         return recordRepository.findAll();
     }
 
+    @Override
     public List<Record> getRecordByName(String recordName) {
         return recordRepository.findByNameIgnoreCase(recordName);
     }
 
+    @Override
     public List<Record> getRecordsByArtist(String artist) {
         return recordRepository.findByArtistIgnoreCase(artist);
     }
 
+    @Override
     public List<Record> getRecordsByNameAndArtist(String recordName, String artist) {
         return recordRepository.findByNameAndArtistIgnoreCase(recordName, artist);
     }
 
+    @Override
     public List<Record> requestHandler(Map<String, String> param) throws ResourceNotFoundException,
             InvalidParameterException{
 
