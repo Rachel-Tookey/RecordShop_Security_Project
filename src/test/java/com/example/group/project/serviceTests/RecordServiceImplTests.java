@@ -1,7 +1,9 @@
 package com.example.group.project.serviceTests;
 
 
+import com.example.group.project.constant.RecordParam;
 import com.example.group.project.exceptions.InvalidParameterException;
+import com.example.group.project.exceptions.ResourceNotFoundException;
 import com.example.group.project.model.entity.Record;
 import com.example.group.project.model.repository.RecordRepository;
 import com.example.group.project.service.impl.RecordServiceImpl;
@@ -154,9 +156,33 @@ public class RecordServiceImplTests {
     }
 
     @Test
-    public void paramHandler_givenInvalidParameters_throwsException() {
+    public void requestHandler_givenInvalidParameters_throwsInvalidParameterException() {
         Map<String, String> param = Map.of("notAKey","value");
 
-        Assertions.assertThrows(InvalidParameterException.class, () -> recordServiceImpl.paramHandler(param));
+        Assertions.assertThrows(InvalidParameterException.class, () -> recordServiceImpl.requestHandler(param));
+    }
+
+    @Test
+    public void requestHandler_givenNoParametersAndEmptyDatabase_throwsResourceNotFoundException() {
+        Map<String, String> param = Map.of();
+
+        Mockito
+                .when(recordRepository.findAll())
+                .thenReturn(List.of());
+
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> recordServiceImpl.requestHandler(param));
+    }
+
+    @Test
+    public void requestHandler_givenNotExistingParamValues_throwsResourceNotFoundException() {
+        String artist = "not an artist";
+        String record = "not a record";
+        Map<String, String> param = Map.of(RecordParam.RECORD_PARAM, record, RecordParam.ARTIST_PARAM, artist);
+
+        Mockito
+                .when(recordRepository.findByNameAndArtistIgnoreCase(record, artist))
+                .thenReturn(List.of());
+
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> recordServiceImpl.requestHandler(param));
     }
 }

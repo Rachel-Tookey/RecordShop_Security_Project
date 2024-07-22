@@ -44,7 +44,8 @@ public class RecordServiceImpl implements RecordService {
         return recordRepository.findByNameAndArtistIgnoreCase(recordName, artist);
     }
 
-    public List<Record> paramHandler(Map<String, String> param) {
+    public List<Record> requestHandler(Map<String, String> param) throws ResourceNotFoundException,
+            InvalidParameterException{
 
         if (param.containsKey(artist) && param.containsKey(record)) {
             List<Record> recordsByNameAndArtist = getRecordsByNameAndArtist(param.get(record), param.get(artist));
