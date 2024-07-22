@@ -6,11 +6,13 @@ import com.example.group.project.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RecordServiceImpl implements RecordService {
-
+    @Autowired
     private final RecordRepository recordRepository;
 
     @Autowired
@@ -22,8 +24,12 @@ public class RecordServiceImpl implements RecordService {
         return recordRepository.findAll();
     }
 
-    public List<Record> getRecordsByName(String recordName) {
+    public List<Record> getRecordByName(String recordName) {
         return recordRepository.findByNameIgnoreCase(recordName);
+    }
+
+    public List<Record> getRecordsByArtist(String artist) {
+        return recordRepository.findByArtistIgnoreCase(artist);
     }
 
     public List<Record> getRecordsByNameAndArtist(String artist, String recordName) {
