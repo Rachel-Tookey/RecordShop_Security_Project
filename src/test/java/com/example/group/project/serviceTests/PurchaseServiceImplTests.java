@@ -41,7 +41,7 @@ public class PurchaseServiceImplTests {
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("customer", "John");
-        userPurchase.put("id", 1l);
+        userPurchase.put("id", 1L);
 
         Long testReturn = purchaseServiceImpl.pullID(userPurchase);
 
@@ -53,7 +53,7 @@ public class PurchaseServiceImplTests {
     @Test
     public void checkStock_Called_ReturnsTrue() {
         Record recordTest = Record.builder()
-                .id(1l)
+                .id(1L)
                 .name("Thriller")
                 .artist("Michael Jackson")
                 .quantity(1)
@@ -63,7 +63,7 @@ public class PurchaseServiceImplTests {
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("id", recordTest.getId());
 
-        when(recordRepository.getReferenceById(1l)).thenReturn(recordTest);
+        when(recordRepository.getReferenceById(1L)).thenReturn(recordTest);
 
         boolean checkStockTest = purchaseServiceImpl.checkStock(userPurchase);
 
@@ -74,7 +74,7 @@ public class PurchaseServiceImplTests {
     @Test
     public void checkStock_Called_ReturnsFalse() {
         Record recordTest = Record.builder()
-                .id(1l)
+                .id(1L)
                 .name("Thriller")
                 .artist("Michael Jackson")
                 .quantity(0)
@@ -84,7 +84,7 @@ public class PurchaseServiceImplTests {
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("id", recordTest.getId());
 
-        when(recordRepository.getReferenceById(1l)).thenReturn(recordTest);
+        when(recordRepository.getReferenceById(1L)).thenReturn(recordTest);
 
         boolean checkStockTest = purchaseServiceImpl.checkStock(userPurchase);
 
@@ -102,11 +102,11 @@ public class PurchaseServiceImplTests {
                 .price(9.99)
                 .build();
 
-        Long recordTestID = 2l;
+        Long recordTestID = 2L;
         recordTest.setId(recordTestID);
 
         Map<String, Object> userPurchase = new HashMap<>();
-        userPurchase.put("id", 2l);
+        userPurchase.put("id", 2L);
 
         when(recordRepository.existsById(recordTestID)).thenReturn(true);
 
@@ -119,7 +119,7 @@ public class PurchaseServiceImplTests {
     @Test
     public void checkIDExists_InvalidID_ReturnsFalse() {
 
-        Long testID = 2l;
+        Long testID = 2L;
 
         when(recordRepository.existsById(testID)).thenReturn(false);
 
@@ -142,11 +142,11 @@ public class PurchaseServiceImplTests {
                 .price(9.99)
                 .build();
 
-        Long recordTestID = 1l;
+        Long recordTestID = 1L;
         recordTest.setId(recordTestID);
 
         Map<String, Object> userPurchase = new HashMap<>();
-        userPurchase.put("id", 1l);
+        userPurchase.put("id", 1L);
 
         when(recordRepository.getReferenceById(recordTestID)).thenReturn(recordTest);
 
@@ -165,11 +165,11 @@ public class PurchaseServiceImplTests {
                 .price(9.99)
                 .build();
 
-        Long recordTestID = 1l;
+        Long recordTestID = 1L;
         recordTest.setId(recordTestID);
 
         Map<String, Object> userPurchase = new HashMap<>();
-        userPurchase.put("id", 1l);
+        userPurchase.put("id", 1L);
         userPurchase.put("discount", "CFG");
 
         when(recordRepository.getReferenceById(recordTestID)).thenReturn(recordTest);
@@ -189,11 +189,11 @@ public class PurchaseServiceImplTests {
                 .price(9.99)
                 .build();
 
-        Long recordTestID = 1l;
+        Long recordTestID = 1L;
         recordTest.setId(recordTestID);
 
         Map<String, Object> userPurchase = new HashMap<>();
-        userPurchase.put("id", 1l);
+        userPurchase.put("id", 1L);
         userPurchase.put("discount", "cfg");
 
         when(recordRepository.getReferenceById(recordTestID)).thenReturn(recordTest);
@@ -210,17 +210,17 @@ public class PurchaseServiceImplTests {
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("customer", "John");
-        userPurchase.put("id", 1l);
+        userPurchase.put("id", 1L);
 
         Record recordTest = Record.builder()
-                .id(1l)
+                .id(1L)
                 .name("Thriller")
                 .artist("Michael Jackson")
                 .quantity(0)
                 .price(9.99)
                 .build();
 
-        Long recordTestID = 1l;
+        Long recordTestID = 1L;
         recordTest.setId(recordTestID);
 
         Purchase purchaseTest = Purchase.builder()
