@@ -22,8 +22,8 @@ We have identified the following stages.
 **Stage 3: Test**
 
 - We will now perform further testing including: 
-1. Integration tests (do all parts of teh application work together seemlessly?)
-2. End to end testing (does it work as expected from an end-users perspective?)
+1. Integration tests (do all parts of teh application work together seamlessly?)
+2. End-to-end testing (does it work as expected from an end-users perspective?)
 3. Performance / stress testing (can it handle the anticipated load?)
 4. Security testing (what are the vulnerabilities and security risks of the application? How can these be addressed?)
 
@@ -32,4 +32,4 @@ We have identified the following stages.
 - We will now release the application into a production environment 
 - We would consider the following options: 
 1. Hosting it on a Cloud service like Google Cloud 
-2. Deploying our Docker container to a Kubernetes cluser 
+2. Deploying our Docker container to a Kubernetes cluster 

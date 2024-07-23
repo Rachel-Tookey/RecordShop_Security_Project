@@ -33,6 +33,7 @@ Before you begin, please ensure you have the following:
 
 1. **Clone the repository**.
 
+
 2. **Ensure the proper dependencies are installed. Please refer to `pom.xml` in the file for your reference**
     - Spring Boot 
     - Spring Web
@@ -47,10 +48,12 @@ Before you begin, please ensure you have the following:
     - Open AI 
     - Rest Assured 
 
+
 3. **Ensure the proper plugins are installed. Please refer to `pom.xml` in the file for your reference**
     - Jacoco
     - Maven Surefire Plugin
     - Springboot Maven plugin 
+
 
 4. **Configure the database**:
     - Go to your IntelliJ configuration
@@ -59,7 +62,8 @@ Before you begin, please ensure you have the following:
     - Then run [GroupProjectApplication](src/main/java/com/example/group/project/GroupProjectApplication.java)
     - The Flyway integration should automatically create the database and migrate the relevant files to create and populate the tables.
 
-Debugging: 
+
+5. **Debugging:**
     - Should you have any issue with the Flyway integration, you can manually deploy the MySQL by running the MySQL script includes in resources/db/migration 
     - Please add the following lines of codes at the start:
 
@@ -88,12 +92,11 @@ USE recordShop;
 
 ### API Spec:
 
-This will help in generating interactive API documentation so you can play around with the API calls. Please see Open API: [here](http://localhost:8080/swagger-ui/index.html).
+This will help in generating interactive API documentation in order to test the API calls. Please see Open API: [here](http://localhost:8080/swagger-ui/index.html).
 
 ---
 
-### Docker Instructions:
-(TBC)
+## Docker Instructions please help lol:
 
 ---
 
@@ -107,3 +110,8 @@ This will help in generating interactive API documentation so you can play aroun
 - [Rachel](https://github.com/Tookles)
 - [Fabiola](https://github.com/Fabi-P)
 - [Alyssa](https://github.com/lyscodes)
+
+---
+### Notes to the Marker:
+
+Annotations were not set up in this code as it was not utilised. (Rachel and Fabi, please check this.)
