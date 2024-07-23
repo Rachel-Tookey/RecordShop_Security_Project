@@ -6,7 +6,6 @@ import com.example.group.project.model.entity.Record;
 
 import com.example.group.project.service.impl.PurchaseServiceImpl;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,15 +34,10 @@ public class PurchaseControllerTests {
     @BeforeEach
     public void setUpMockPurchaseController() { RestAssuredMockMvc.standaloneSetup(purchaseController); }
 
-    @BeforeAll
-    static void setup(){
-        String baseURI = "http://localhost:8080";
-    }
-
     @Test
     public void purchase_CorrectParameters_Success () {
         Record recordTest = Record.builder()
-                .id(1l)
+                .id(1L)
                 .name("Thriller")
                 .artist("Michael Jackson")
                 .quantity(1)
@@ -51,7 +45,7 @@ public class PurchaseControllerTests {
                 .build();
 
         Purchase purchaseTest = Purchase.builder()
-                .id(1l)
+                .id(1L)
                 .customer("John")
                 .price(9.99)
                 .date(LocalDate.parse("2019-07-03"))
@@ -85,7 +79,7 @@ public class PurchaseControllerTests {
     public void purchase_MissingCustomer_ReturnsBadRequest () {
 
         Map<String, Object> userPurchase = new HashMap<>();
-        userPurchase.put("id", 1l);
+        userPurchase.put("id", 1L);
 
         RestAssuredMockMvc
                 .given()
@@ -103,7 +97,7 @@ public class PurchaseControllerTests {
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("customer", "Jo");
-        userPurchase.put("id", 1l);
+        userPurchase.put("id", 1L);
 
         RestAssuredMockMvc
                 .given()
@@ -159,7 +153,7 @@ public class PurchaseControllerTests {
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("customer", "John");
-        userPurchase.put("id", 1l);
+        userPurchase.put("id", 1L);
 
         RestAssuredMockMvc
                 .given()
@@ -176,7 +170,7 @@ public class PurchaseControllerTests {
     public void purchase_OutOfStock_ReturnsConflict () {
 
         Record recordTest = Record.builder()
-                .id(1l)
+                .id(1L)
                 .name("Thriller")
                 .artist("Michael Jackson")
                 .quantity(0)
