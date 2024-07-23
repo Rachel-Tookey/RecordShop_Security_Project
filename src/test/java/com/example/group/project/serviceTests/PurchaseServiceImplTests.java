@@ -37,7 +37,7 @@ public class PurchaseServiceImplTests {
 
     // testing pullID
     @Test
-    public void pullIDConvertLongSuccess() {
+    public void pullID_ConvertLong_Success() {
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("customer", "John");
@@ -51,7 +51,7 @@ public class PurchaseServiceImplTests {
 
     // check stock
     @Test
-    public void checkStockReturnsTrue() {
+    public void checkStock_Called_ReturnsTrue() {
         Record recordTest = Record.builder()
                 .id(1l)
                 .name("Thriller")
@@ -72,7 +72,7 @@ public class PurchaseServiceImplTests {
     }
 
     @Test
-    public void checkStockReturnsFalse() {
+    public void checkStock_Called_ReturnsFalse() {
         Record recordTest = Record.builder()
                 .id(1l)
                 .name("Thriller")
@@ -94,7 +94,7 @@ public class PurchaseServiceImplTests {
 
     // check id exits:
     @Test
-    public void checkIDExitsValidIDReturnsTrue() {
+    public void checkIDExists_ValidID_ReturnsTrue() {
         Record recordTest = Record.builder()
                 .name("Thriller")
                 .artist("Michael Jackson")
@@ -117,7 +117,7 @@ public class PurchaseServiceImplTests {
     }
 
     @Test
-    public void checkIDExitsInvalidIDReturnsFalse() {
+    public void checkIDExists_InvalidID_ReturnsFalse() {
 
         Long testID = 2l;
 
@@ -134,7 +134,7 @@ public class PurchaseServiceImplTests {
 
     // adjust price
     @Test
-    public void adjustPriceValidInputNoDiscountReturnPrice(){
+    public void adjustPrice_ValidInputNoDiscount_ReturnPrice(){
         Record recordTest = Record.builder()
                 .name("Thriller")
                 .artist("Michael Jackson")
@@ -157,7 +157,7 @@ public class PurchaseServiceImplTests {
     }
 
     @Test
-    public void adjustPriceValidInputDiscountReturnPrice(){
+    public void adjustPrice_ValidInputDiscount_ReturnPrice(){
         Record recordTest = Record.builder()
                 .name("Thriller")
                 .artist("Michael Jackson")
@@ -181,7 +181,7 @@ public class PurchaseServiceImplTests {
     }
 
     @Test
-    public void adjustPriceValidInputWrongDiscountReturnPrice(){
+    public void adjustPrice_ValidInputWrongDiscount_ReturnPrice(){
         Record recordTest = Record.builder()
                 .name("Thriller")
                 .artist("Michael Jackson")
@@ -206,7 +206,7 @@ public class PurchaseServiceImplTests {
 
     // commit purchase:
     @Test
-    public void commitPurchaseValidInputReturnsID() {
+    public void commitPurchase_ValidInput_ReturnsID() {
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("customer", "John");
