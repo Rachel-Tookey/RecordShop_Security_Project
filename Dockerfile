@@ -1,6 +1,5 @@
 FROM eclipse-temurin:21-jdk
 WORKDIR /src
-COPY target/library-service-0.0.1-SNAPSHOT.jar
-/src/library-service.jar
+COPY target/group-project-0.0.1-SNAPSHOT.jar /src/group-project.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "library-service.jar"]
+ENTRYPOINT ["java", "-jar", "group-project.jar"]
