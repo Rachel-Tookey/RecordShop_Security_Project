@@ -57,8 +57,8 @@ Before you begin, please ensure you have the following:
 
 4. **Configure the database**:
     - Go to your IntelliJ configuration
-    - Navigate to [GroupProjectApplication], and edit the configuration to add in a new environment variable "MY_SQL_PASSWORD" and set it to your password for your database. For example "MY_SQL_PASSWORD="your password""
-    - Navigate to [GroupProjectApplicationTests](src/test/java/com/example/group/project/GroupProjectApplicationTests.java) and add in a new environment variable "MY_SQL_PASSWORD" and set it to your password for your database. For example "MY_SQL_PASSWORD="your password""
+    - Navigate to [GroupProjectApplication], and edit the configuration to add in a new environment variable `MY_SQL_PASSWORD` and set it to your password for your database. For example `MY_SQL_PASSWORD="your password"`
+    - Navigate to [GroupProjectApplicationTests](src/test/java/com/example/group/project/GroupProjectApplicationTests.java) and add in a new environment variable "MY_SQL_PASSWORD" and set it to your password for your database. For example `MY_SQL_PASSWORD="your password"`
     - Then run [GroupProjectApplication](src/main/java/com/example/group/project/GroupProjectApplication.java)
     - The Flyway integration should automatically create the database and migrate the relevant files to create and populate the tables.
 
@@ -93,6 +93,10 @@ USE recordShop;
 ### API Spec:
 
 This will help in generating interactive API documentation in order to test the API calls. Please see Open API: [here](http://localhost:8080/swagger-ui/index.html).
+
+### Documentstion:
+
+Located [here](https://github.com/Tookles/cfg_mastersplus_java_group_two/tree/main/documentation)
 
 ---
 
