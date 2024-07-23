@@ -4,19 +4,18 @@ import com.example.group.project.util.DateUtil;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DateUtilTests {
 
     @Test
-    public void getDateCalledCorrectType() {
+    public void getDate_Called_CorrectType() {
         Object testDate = DateUtil.getDate();
-        assertTrue(testDate instanceof LocalDate);
+        assertInstanceOf(LocalDate.class, testDate);
     }
 
     @Test
-    public void getDateCalledCorrectDate() {
+    public void getDate_Called_CorrectDate() {
         LocalDate expectedDate = LocalDate.now();
         LocalDate actualDate = DateUtil.getDate();
         assertEquals(expectedDate, actualDate);

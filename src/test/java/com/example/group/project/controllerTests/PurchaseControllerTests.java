@@ -43,7 +43,7 @@ public class PurchaseControllerTests {
     }
 
     @Test
-    public void makePurchaseCorrectParametersSuccess () {
+    public void purchase_CorrectParameters_Success () {
         Record recordTest = Record.builder()
                 .id(1l)
                 .name("Thriller")
@@ -76,7 +76,7 @@ public class PurchaseControllerTests {
                 .contentType("application/json")
                 .body(userPurchase)
                 .when()
-                .post("/makePurchase")
+                .post("/purchase")
                 .then()
                 .statusCode(HttpStatus.OK.value())
                 .body(equalTo(expectedString));
@@ -84,7 +84,7 @@ public class PurchaseControllerTests {
     }
 
     @Test
-    public void makePurchaseMissingCustomerReturnsBadRequest () {
+    public void purchase_MissingCustomer_ReturnsBadRequest () {
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("id", 1l);
@@ -94,14 +94,14 @@ public class PurchaseControllerTests {
                 .contentType("application/json")
                 .body(userPurchase)
                 .when()
-                .post("/makePurchase")
+                .post("/purchase")
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .body(equalTo("Customer name not provided"));
     }
 
     @Test
-    public void makePurchaseTooShortCustomerReturnsBadRequest () {
+    public void purchase_TooShortCustomer_ReturnsBadRequest () {
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("customer", "Jo");
@@ -112,14 +112,14 @@ public class PurchaseControllerTests {
                 .contentType("application/json")
                 .body(userPurchase)
                 .when()
-                .post("/makePurchase")
+                .post("/purchase")
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .body(equalTo("Customer name too short"));
     }
 
     @Test
-    public void makePurchaseMissingIDReturnsBadRequest () {
+    public void purchase_MissingID_ReturnsBadRequest () {
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("customer", "John");
@@ -129,14 +129,14 @@ public class PurchaseControllerTests {
                 .contentType("application/json")
                 .body(userPurchase)
                 .when()
-                .post("/makePurchase")
+                .post("/purchase")
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .body(equalTo("No ID provided"));
     }
 
     @Test
-    public void makePurchaseWrongTypeReturnsBadRequest () {
+    public void purchase_WrongType_ReturnsBadRequest () {
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("customer", "John");
@@ -149,7 +149,7 @@ public class PurchaseControllerTests {
                 .contentType("application/json")
                 .body(userPurchase)
                 .when()
-                .post("/makePurchase")
+                .post("/purchase")
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .body(equalTo("ID must be numerical value"));
@@ -157,7 +157,7 @@ public class PurchaseControllerTests {
 
 
     @Test
-    public void makePurchaseInvalidIDReturnsBadRequest () {
+    public void purchase_InvalidID_ReturnsBadRequest () {
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("customer", "John");
@@ -168,14 +168,14 @@ public class PurchaseControllerTests {
                 .contentType("application/json")
                 .body(userPurchase)
                 .when()
-                .post("/makePurchase")
+                .post("/purchase")
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .body(equalTo("This is not a valid item id"));
     }
 
     @Test
-    public void makePurchaseOutofStockReturnsConflict () {
+    public void purchase_OutOfStock_ReturnsConflict () {
 
         Record recordTest = Record.builder()
                 .id(1l)
@@ -198,7 +198,7 @@ public class PurchaseControllerTests {
                 .contentType("application/json")
                 .body(userPurchase)
                 .when()
-                .post("/makePurchase")
+                .post("/purchase")
                 .then()
                 .statusCode(HttpStatus.CONFLICT.value())
                 .body(equalTo("Item not in stock"));
