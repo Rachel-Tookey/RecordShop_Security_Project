@@ -6,7 +6,6 @@ import com.example.group.project.exceptions.ResourceNotFoundException;
 import com.example.group.project.model.entity.Record;
 import com.example.group.project.service.impl.RecordServiceImpl;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
