@@ -22,7 +22,6 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-
 @ExtendWith(MockitoExtension.class)
 public class PurchaseControllerTests {
 
@@ -34,7 +33,6 @@ public class PurchaseControllerTests {
 
     @BeforeEach
     public void setUpMockPurchaseController() { RestAssuredMockMvc.standaloneSetup(purchaseController); }
-
 
     @Test
     public void purchase_CorrectParameters_Success () {
@@ -54,7 +52,7 @@ public class PurchaseControllerTests {
                 .recordLink(recordTest)
                 .build();
 
-        when(purchaseServiceImpl.pullID(any(Map.class))).thenReturn(recordTest.getId());
+        when(purchaseServiceImpl.pullId(any(Map.class))).thenReturn(recordTest.getId());
         when(purchaseServiceImpl.checkIdExists(any(Map.class))).thenReturn(true);
         when(purchaseServiceImpl.checkStock(any(Map.class))).thenReturn(true);
         when(purchaseServiceImpl.commitPurchase(any(Map.class))).thenReturn(purchaseTest.getId());
@@ -63,7 +61,7 @@ public class PurchaseControllerTests {
         userPurchase.put("customer", "John");
         userPurchase.put("id", recordTest.getId());
 
-        String expectedString = "Purchase successful! Purchase ID " + purchaseTest.getId();
+        String expectedString = "Purchase successful! Purchase Id " + purchaseTest.getId();
 
         RestAssuredMockMvc
                 .given()
@@ -126,7 +124,7 @@ public class PurchaseControllerTests {
                 .post("/purchase")
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body(equalTo("No ID provided"));
+                .body(equalTo("No Id provided"));
     }
 
     @Test
@@ -136,7 +134,7 @@ public class PurchaseControllerTests {
         userPurchase.put("customer", "John");
         userPurchase.put("id", "three");
 
-        when(purchaseServiceImpl.pullID(any(Map.class))).thenThrow(IllegalArgumentException.class);
+        when(purchaseServiceImpl.pullId(any(Map.class))).thenThrow(IllegalArgumentException.class);
 
         RestAssuredMockMvc
                 .given()
@@ -146,7 +144,7 @@ public class PurchaseControllerTests {
                 .post("/purchase")
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body(equalTo("ID must be numerical value"));
+                .body(equalTo("Id must be numerical value"));
     }
 
 
@@ -165,7 +163,7 @@ public class PurchaseControllerTests {
                 .post("/purchase")
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body(equalTo("This is not a valid item id"));
+                .body(equalTo("This is not a valid item Id"));
     }
 
     @Test
@@ -183,7 +181,7 @@ public class PurchaseControllerTests {
         userPurchase.put("customer", "John");
         userPurchase.put("id", recordTest.getId());
 
-        when(purchaseServiceImpl.pullID(any(Map.class))).thenReturn(recordTest.getId());
+        when(purchaseServiceImpl.pullId(any(Map.class))).thenReturn(recordTest.getId());
         when(purchaseServiceImpl.checkIdExists(any(Map.class))).thenReturn(true);
 
 

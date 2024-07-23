@@ -4,7 +4,7 @@ import java.util.Map;
 
 public interface PurchaseService {
 
-    Long pullID(Map<String,Object> userPurchase);
+    Long pullId(Map<String,Object> userPurchase);
 
     boolean checkStock(Map<String,Object> userPurchase);
 

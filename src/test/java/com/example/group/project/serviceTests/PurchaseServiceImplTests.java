@@ -37,13 +37,13 @@ public class PurchaseServiceImplTests {
 
     // testing pullID
     @Test
-    public void pullID_ConvertLong_Success() {
+    public void pullId_ConvertLong_Success() {
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("customer", "John");
         userPurchase.put("id", 1L);
 
-        Long testReturn = purchaseServiceImpl.pullID(userPurchase);
+        Long testReturn = purchaseServiceImpl.pullId(userPurchase);
 
         assertTrue(testReturn instanceof Long);
 
@@ -94,7 +94,7 @@ public class PurchaseServiceImplTests {
 
     // check id exits:
     @Test
-    public void checkIDExists_ValidID_ReturnsTrue() {
+    public void checkIdExists_ValidId_ReturnsTrue() {
         Record recordTest = Record.builder()
                 .name("Thriller")
                 .artist("Michael Jackson")
@@ -117,7 +117,7 @@ public class PurchaseServiceImplTests {
     }
 
     @Test
-    public void checkIDExists_InvalidID_ReturnsFalse() {
+    public void checkIdExists_InvalidId_ReturnsFalse() {
 
         Long testID = 2L;
 
@@ -142,13 +142,13 @@ public class PurchaseServiceImplTests {
                 .price(9.99)
                 .build();
 
-        Long recordTestID = 1L;
-        recordTest.setId(recordTestID);
+        Long recordTestId = 1l;
+        recordTest.setId(recordTestId);
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("id", 1L);
 
-        when(recordRepository.getReferenceById(recordTestID)).thenReturn(recordTest);
+        when(recordRepository.getReferenceById(recordTestId)).thenReturn(recordTest);
 
         double recordPrice = purchaseServiceImpl.adjustPrice(userPurchase);
 
@@ -165,14 +165,14 @@ public class PurchaseServiceImplTests {
                 .price(9.99)
                 .build();
 
-        Long recordTestID = 1L;
-        recordTest.setId(recordTestID);
+        Long recordTestId = 1l;
+        recordTest.setId(recordTestId);
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("id", 1L);
         userPurchase.put("discount", "CFG");
 
-        when(recordRepository.getReferenceById(recordTestID)).thenReturn(recordTest);
+        when(recordRepository.getReferenceById(recordTestId)).thenReturn(recordTest);
 
         double recordPrice = purchaseServiceImpl.adjustPrice(userPurchase);
 
@@ -189,14 +189,15 @@ public class PurchaseServiceImplTests {
                 .price(9.99)
                 .build();
 
-        Long recordTestID = 1L;
-        recordTest.setId(recordTestID);
+
+        Long recordTestId = 1l;
+        recordTest.setId(recordTestId);
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("id", 1L);
         userPurchase.put("discount", "cfg");
 
-        when(recordRepository.getReferenceById(recordTestID)).thenReturn(recordTest);
+        when(recordRepository.getReferenceById(recordTestId)).thenReturn(recordTest);
 
         double recordPrice = purchaseServiceImpl.adjustPrice(userPurchase);
 
@@ -206,7 +207,7 @@ public class PurchaseServiceImplTests {
 
     // commit purchase:
     @Test
-    public void commitPurchase_ValidInput_ReturnsID() {
+    public void commitPurchase_ValidInput_MakesSave() {
 
         Map<String, Object> userPurchase = new HashMap<>();
         userPurchase.put("customer", "John");
