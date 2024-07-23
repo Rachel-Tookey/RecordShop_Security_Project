@@ -1,6 +1,5 @@
 package com.example.group.project.controller;
 
-import com.example.group.project.constant.RecordParam;
 import com.example.group.project.exceptions.InvalidParameterException;
 import com.example.group.project.exceptions.ResourceNotFoundException;
 import com.example.group.project.service.impl.RecordServiceImpl;
@@ -23,14 +22,11 @@ public class  RecordController {
     private RecordServiceImpl recordServiceImpl;
 
     @GetMapping("/records")
-    public ResponseEntity<?> getRecords(@RequestParam(required = false) String artist,
-                                        @RequestParam(required = false) String name) {
+    public ResponseEntity<?> getRecords(@RequestParam(required = false) Map<String, String> requestParams) {
         try {
-            Map<String, String> params = new HashMap<>(Map.of());
-            if (name != null) { params.put(RecordParam.RECORD_PARAM, name); }
-            if (artist != null) { params.put(RecordParam.ARTIST_PARAM, artist); }
+            Map<String, String> params = (requestParams == null) ? new HashMap<>(Map.of()) : requestParams;
 
-            return ResponseEntity.status(HttpStatus.OK).body(recordServiceImpl.requestHandler(params));
+               return ResponseEntity.status(HttpStatus.OK).body(recordServiceImpl.requestHandler(params));
         } catch (InvalidParameterException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (ResourceNotFoundException e) {
