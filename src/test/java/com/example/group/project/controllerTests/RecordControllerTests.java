@@ -14,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
@@ -35,12 +34,6 @@ public class RecordControllerTests {
     @BeforeEach
     public void setUpMockRecordController() {
         RestAssuredMockMvc.standaloneSetup(recordController);
-    }
-
-    // todo autowire the baseURI for docker
-    @BeforeAll
-    static void setup(){
-        String baseURI = "http://localhost:8080";
     }
 
     // Test successful requests
