@@ -1,0 +1,61 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MY_SQL_PASSWORD }}
+          MYSQL_DATABASE: recordShop
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 22
+        uses: actions/setup-java@v3
+        with:
+          java-version: '22'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Use secret variable (conditionally)
+        if: github.event_name == 'push'
+        run: echo "The secret value is ${{ secrets.MY_SQL_PASSWORD }}"
+
+      - name: Build with Maven
+        run: mvn -B package
+        env:
+          MY_SQL_PASSWORD: ${{ secrets.MY_SQL_PASSWORD }}
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/recordShop
+          SPRING_DATASOURCE_USER: root
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.MY_SQL_PASSWORD }}
+
+      - name: Test with Maven
+        run: mvn -B test
+        env:
+          MY_SQL_PASSWORD: ${{ secrets.MY_SQL_PASSWORD }}
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/recordShop
+          SPRING_DATASOURCE_USER: root
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.MY_SQL_PASSWORD }}
+
+      - name: Run Flyway migrations
+        run: mvn flyway:migrate -X
+        env:
+          FLYWAY_URL: jdbc:mysql://localhost:3306/recordShop?createDatabaseIfNotExist=true
+          FLYWAY_USER: root
+          FLYWAY_PASSWORD: ${{ secrets.MY_SQL_PASSWORD }}
+
