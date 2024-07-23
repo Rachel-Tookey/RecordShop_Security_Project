@@ -16,14 +16,15 @@ import java.util.Map;
 @RestControllerAdvice
 public class CustomErrorController implements ErrorController {
 
+    // custom controller to catch any errors not already caught in the endpoint logic
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> errorPage(WebRequest request, Exception ex){
 
         Map<String, Object> body = new HashMap<>();
         String url = ((ServletWebRequest)request).getRequest().getRequestURI().toString();
         Object details = ex.getMessage();
-        body.put("Further details", details);
         body.put("You attempted to access the following URL", url);
+        body.put("Further details", details);
 
         log.error("User sent request to " + url + " and the following error occured: " + details);
 

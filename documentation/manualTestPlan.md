@@ -1,15 +1,17 @@
 ## Manual Test Plan
 
+We plan to carry out the following manual tests using Postman to verify our app is working as expected: 
+
 ## **PurchaseControllerTests**
 
 | Test Case ID | Description                                       | Expected Result                                                           |
 |--------------|---------------------------------------------------|---------------------------------------------------------------------------|
-| TC-01        | Test successful purchase with correct parameters. | Returns HTTP 200 OK with a message "Purchase successful! Purchase ID 1"   |
+| TC-01        | Test successful purchase with correct parameters. | Returns HTTP 200 OK with a message "Purchase successful! Purchase Id 1"   |
 | TC-02        | Test purchase when customer name is missing.      | Returns HTTP 400 Bad Request with a message "Customer name not provided"  |
 | TC-03        | Test purchase when customer name is too short.    | Returns HTTP 400 Bad Request with a message "Customer name too short"     |
-| TC-04        | Test purchase when ID is missing.                 | Returns HTTP 400 Bad Request with a message "No ID provided"              |
-| TC-05        | Test purchase with wrong type for ID.             | Returns HTTP 400 Bad Request with a message "ID must be numerical value"  |
-| TC-06        | Test purchase with an invalid ID.                 | Returns HTTP 400 Bad Request with a message "This is not a valid item id" |
+| TC-04        | Test purchase when Id is missing.                 | Returns HTTP 400 Bad Request with a message "No Id provided"              |
+| TC-05        | Test purchase with wrong type for Id.             | Returns HTTP 400 Bad Request with a message "Id must be numerical value"  |
+| TC-06        | Test purchase with an invalid Id.                 | Returns HTTP 400 Bad Request with a message "This is not a valid item Id" |
 | TC-07        | Test purchase with an out-of-stock item.          | Returns HTTP 409 Conflict with a message "Item not in stock"              |
 
 ## **RecordControllerTests**
@@ -29,15 +31,15 @@
 
 | Test Case ID | Description                                                                  | Expected Result                                                                                                |
 |--------------|------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| TC-16        | Test successful conversion of ID to Long in `pullID`.                        | Returns Long type ID from the `pullID` method                                                                  |
+| TC-16        | Test successful conversion of Id to Long in `pullId`.                        | Returns Long type Id from the `pullId` method                                                                  |
 | TC-17        | Test `checkStock` method returns true for in-stock item.                     | Returns true from `checkStock` method when item quantity is greater than 0                                     |
 | TC-18        | Test `checkStock` method returns false for out-of-stock item.                | Returns false from `checkStock` method when item quantity is 0                                                 |
-| TC-19        | Test `checkIdExists` method returns true for a valid ID.                     | Returns true from `checkIdExists` method when the ID exists in the repository                                  |
-| TC-20        | Test `checkIdExists` method returns false for an invalid ID.                 | Returns false from `checkIdExists` method when the ID does not exist in the repository                         |
+| TC-19        | Test `checkIdExists` method returns true for a valid Id.                     | Returns true from `checkIdExists` method when the ID exists in the repository                                  |
+| TC-20        | Test `checkIdExists` method returns false for an invalid Id.                 | Returns false from `checkIdExists` method when the ID does not exist in the repository                         |
 | TC-21        | Test `adjustPrice` method returns price with no discount for valid input.    | Returns the original price from `adjustPrice` method when no discount is applied                               |
 | TC-22        | Test `adjustPrice` method applies discount correctly for valid input.        | Returns the discounted price from `adjustPrice` method when a valid discount is applied                        |
 | TC-23        | Test `adjustPrice` method returns original price for invalid discount input. | Returns the original price from `adjustPrice` method when an invalid discount is applied                       |
-| TC-24        | Test `commitPurchase` method returns ID and saves the purchase correctly.    | Returns the purchase ID from `commitPurchase` method and verifies that the purchase is saved in the repository |
+| TC-24        | Test `commitPurchase` method returns Id and saves the purchase correctly.    | Returns the purchase Id from `commitPurchase` method and verifies that the purchase is saved in the repository |
 
 ## **DateUtilTests**
 
@@ -45,16 +47,44 @@
 |--------------|------------------------------------------------------------------------------|--------------------------------------------------------------------|
 | TC-25        | Test `DateUtil.getDate()` returns the current date and is of type LocalDate. | Returns the current date and verifies that it is of type LocalDate |
 
+
+## **CustomErrorControllerTests**
+
+
+| Test Case ID | Description                                                              | Expected Result                                                                                                         |
+|-------------|--------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| TC-26       | Test `CustomErrorController` catches errors not caught in endpoint logic | Returns HTTP 404 status with a custom body message stating the url the user tried to access and the error that occurred |
+
+
 ---
 
 ### Test Execution Steps
+
+**Coverage** 
+
+Our aim is to have 70% and above testing coverage on all methods (including those used in Controller files, ServiceImpl files, and Util files)
+
+This has been achieved: 
+
+![testCoverage.png](testCoverage.png)
+
+This file can be viewed in "/documentation/testCoverage.png"
+
+You can review the coverage of this project using the Jacoco plugin. 
+
+Simply follow these steps: 
+
+* In the terminal, run "foo@bar:~$ mvn clean", or run Maven clean in the sidebar 
+* In the terminal, run "foo@bar:~$ mvn test", or run Maven test in the sidebar 
+* Navigate to 'target/site/jacoco/index.html' and open in browser 
+
 
 ## **PurchaseControllerTests**
 
 ### **TC-01: Test Successful Purchase with Correct Parameters**
 
 1. **Setup**: Ensure the `PurchaseController` is correctly mocked and configured.
-2. **Request**: Send a POST request to `/makePurchase` with JSON body:
+2. **Request**: Send a POST request to `/purchase` with JSON body:
     ```json
     {
       "customer": "John",
@@ -63,13 +93,13 @@
     ```
 3. **Verify**: Check the response status code is `200 OK` and the body contains:
     ```
-    Purchase successful! Purchase ID 1
+    Purchase successful! Purchase Id 1
     ```
 
 ### **TC-02: Test Purchase When Customer Name is Missing**
 
 1. **Setup**: Ensure the `PurchaseController` is correctly mocked and configured.
-2. **Request**: Send a POST request to `/makePurchase` with JSON body:
+2. **Request**: Send a POST request to `/purchase` with JSON body:
     ```json
     {
       "id": 1
@@ -83,7 +113,7 @@
 ### **TC-03: Test Purchase When Customer Name is Too Short**
 
 1. **Setup**: Ensure the `PurchaseController` is correctly mocked and configured.
-2. **Request**: Send a POST request to `/makePurchase` with JSON body:
+2. **Request**: Send a POST request to `/purchase` with JSON body:
     ```json
     {
       "customer": "Jo",
@@ -98,7 +128,7 @@
 ### **TC-04: Test Purchase When ID is Missing**
 
 1. **Setup**: Ensure the `PurchaseController` is correctly mocked and configured.
-2. **Request**: Send a POST request to `/makePurchase` with JSON body:
+2. **Request**: Send a POST request to `/purchase` with JSON body:
     ```json
     {
       "customer": "John"
@@ -106,13 +136,13 @@
     ```
 3. **Verify**: Check the response status code is `400 Bad Request` and the body contains:
     ```
-    No ID provided
+    No Id provided
     ```
 
 ### **TC-05: Test Purchase with Wrong Type for ID**
 
 1. **Setup**: Ensure the `PurchaseController` is correctly mocked and configured.
-2. **Request**: Send a POST request to `/makePurchase` with JSON body:
+2. **Request**: Send a POST request to `/purchase` with JSON body:
     ```json
     {
       "customer": "John",
@@ -121,13 +151,13 @@
     ```
 3. **Verify**: Check the response status code is `400 Bad Request` and the body contains:
     ```
-    ID must be numerical value
+    Id must be numerical value
     ```
 
 ### **TC-06: Test Purchase with Invalid ID**
 
 1. **Setup**: Ensure the `PurchaseController` is correctly mocked and configured.
-2. **Request**: Send a POST request to `/makePurchase` with JSON body:
+2. **Request**: Send a POST request to `/purchase` with JSON body:
     ```json
     {
       "customer": "John",
@@ -136,13 +166,13 @@
     ```
 3. **Verify**: Check the response status code is `400 Bad Request` and the body contains:
     ```
-    This is not a valid item id
+    This is not a valid item Id
     ```
 
 ### **TC-07: Test Purchase with Out-of-Stock Item**
 
 1. **Setup**: Ensure the `PurchaseController` is correctly mocked and configured.
-2. **Request**: Send a POST request to `/makePurchase` with JSON body:
+2. **Request**: Send a POST request to `/purchase` with JSON body:
     ```json
     {
       "customer": "John",
@@ -159,7 +189,7 @@
 ### **TC-08: Test Successful Retrieval of Records with Artist and Name Parameters**
 
 1. **Setup**: Ensure the `RecordController` is correctly mocked and configured.
-2. **Request**: Send a GET request to `/getRecord` with parameters:
+2. **Request**: Send a GET request to `/records` with parameters:
     ```
     artist=Michael Jackson
     name=Thriller
@@ -177,7 +207,7 @@
 ### **TC-09: Test Successful Retrieval of Records with Artist Parameter**
 
 1. **Setup**: Ensure the `RecordController` is correctly mocked and configured.
-2. **Request**: Send a GET request to `/getRecord` with parameter:
+2. **Request**: Send a GET request to `/records` with parameter:
     ```
     artist=Michael Jackson
     ```
@@ -193,7 +223,7 @@
 ### **TC-10: Test Successful Retrieval of Records with Name Parameter**
 
 1. **Setup**: Ensure the `RecordController` is correctly mocked and configured.
-2. **Request**: Send a GET request to `/getRecord` with parameter:
+2. **Request**: Send a GET request to `/records` with parameter:
     ```
     name=Thriller
     ```
@@ -209,13 +239,13 @@
 ### **TC-11: Test Successful Retrieval of All Records with No Parameters**
 
 1. **Setup**: Ensure the `RecordController` is correctly mocked and configured.
-2. **Request**: Send a GET request to `/getRecord` with no parameters.
+2. **Request**: Send a GET request to `/records` with no parameters.
 3. **Verify**: Check the response status code is `200 OK` and the response body contains all records.
 
 ### **TC-12: Test Retrieval of Records with Non-existing Artist and Name**
 
 1. **Setup**: Ensure the `RecordController` is correctly mocked and configured.
-2. **Request**: Send a GET request to `/getRecord` with parameters:
+2. **Request**: Send a GET request to `/records` with parameters:
     ```
     artist=SEVENTEEN
     name=17 Is Right Here
@@ -232,7 +262,7 @@
 ### **TC-13: Test Retrieval of Records with Non-existing Artist**
 
 1. **Setup**: Ensure the `RecordController` is correctly mocked and configured.
-2. **Request**: Send a GET request to `/getRecord` with parameter:
+2. **Request**: Send a GET request to `/records` with parameter:
     ```
     artist=SEVENTEEN
     ```
@@ -250,7 +280,7 @@
 ### **TC-14: Test Retrieval of Records with Non-existing Name**
 
 1. **Setup**: Ensure the `RecordController` is correctly mocked and configured.
-2. **Request**: Send a GET request to `/getRecord` with parameter:
+2. **Request**: Send a GET request to `/records` with parameter:
     ```
     name=17 Is Right Here
     ```
@@ -266,7 +296,7 @@
 ### **TC-15: Test Retrieval of Records with Incorrect Parameter Keys**
 
 1. **Setup**: Ensure the `RecordController` is correctly mocked and configured.
-2. **Request**: Send a GET request to `/getRecord` with parameters:
+2. **Request**: Send a GET request to `/records` with parameters:
     ```
     http://localhost:8080/getRecord
     ```
@@ -274,10 +304,10 @@
 ---
 ## **PurchaseServiceImplTests**
 
-### **TC-16: Test Successful Conversion of ID to Long in `pullID`**
+### **TC-16: Test Successful Conversion of Id to Long in `pullId`**
 
 1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly mocked and configured.
-2. **Request**: Call `pullID` method with a map containing:
+2. **Request**: Call `pullId` method with a map containing:
     ```json
     {
       "customer": "John",
@@ -317,7 +347,7 @@
     assertFalse(checkStockTest);
     ```
 
-### **TC-19: Test `checkIdExists` Method Returns True for Valid ID**
+### **TC-19: Test `checkIdExists` Method Returns True for Valid Id**
 
 1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly mocked and configured.
 2. **Request**: Call `checkIdExists` method with a map containing:
@@ -331,7 +361,7 @@
     assertTrue(checkStockTest);
     ```
 
-### **TC-20: Test `checkIdExists` Method Returns False for Invalid ID**
+### **TC-20: Test `checkIdExists` Method Returns False for Invalid Id**
 
 1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly mocked and configured.
 2. **Request**: Call `checkIdExists` method with a map containing:
@@ -413,3 +443,23 @@
 3. **Verify**: Ensure the returned date is of type `LocalDate` and matches the current date.
 
 ---
+
+## **CustomErrorController**
+
+### **TC-26: Test 'CustomErrorController' catches errors not caught by the endpoints and returns 404 error with a body message specifying issue
+
+1. **Setup**: Ensure the `PurchaseController` is correctly mocked and configured.
+2. **Request**: Send a POST request to `/purchase` with JSON body:
+    ```json
+    {
+      "customer": 12[],
+      "id": 1
+    }
+    ```
+3. **Verify**: Check the response status code is `404` and the body contains:
+    ```
+    {
+    "Further details": "JSON parse error: Unexpected character ('[' (code 91)): was expecting comma to separate Object entries",
+    "You attempted to access the following URL": "/purchase"
+}
+    ```

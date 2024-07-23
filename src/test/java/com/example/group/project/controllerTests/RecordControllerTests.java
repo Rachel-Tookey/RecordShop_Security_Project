@@ -21,7 +21,6 @@ import java.util.Map;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
 
-
 @ExtendWith(MockitoExtension.class)
 public class RecordControllerTests {
     @Mock

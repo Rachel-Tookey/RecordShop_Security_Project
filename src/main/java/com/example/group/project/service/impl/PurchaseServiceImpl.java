@@ -29,13 +29,13 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     // takes out record ID json input, converts it to Long record ID:
     @Override
-    public Long pullID(Map<String, Object>userPurchase) {
-        Object userID = userPurchase.get("id");
-        if (userID instanceof Long) {
-            return (Long) userID;
-        } else if (userID instanceof Integer) {
-            Integer userIDInt = (Integer) userID;
-            return userIDInt.longValue();
+    public Long pullId(Map<String, Object>userPurchase) {
+        Object userId = userPurchase.get("id");
+        if (userId instanceof Long) {
+            return (Long) userId;
+        } else if (userId instanceof Integer) {
+            Integer userIdInt = (Integer) userId;
+            return userIdInt.longValue();
         } else {
         throw new IllegalArgumentException("Not correct variable type");
         }
@@ -44,20 +44,20 @@ public class PurchaseServiceImpl implements PurchaseService {
     // checks if the item requested is present in the stock
     @Override
     public boolean checkStock(Map<String, Object>userPurchase){
-        return recordRepository.getReferenceById(pullID(userPurchase)).getQuantity() != 0;
+        return recordRepository.getReferenceById(pullId(userPurchase)).getQuantity() != 0;
     }
 
     // checks if the item requested exists
     @Override
     public boolean checkIdExists(Map<String, Object>userPurchase){
-        Long newID = pullID(userPurchase);
+        Long newID = pullId(userPurchase);
         return recordRepository.existsById(newID);
     }
 
     // gets item price and adjusts it if a valid discount code is provided
     @Override
     public double adjustPrice(Map<String, Object>  userPurchase){
-        double itemPrice = recordRepository.getReferenceById(pullID(userPurchase)).getPrice();
+        double itemPrice = recordRepository.getReferenceById(pullId(userPurchase)).getPrice();
         itemPrice = itemPrice * 100;
         if (userPurchase.containsKey("discount")) {
             try {
@@ -84,7 +84,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         // getting object fields
         double itemPrice = adjustPrice(userPurchase);
         String customerName = userPurchase.get("customer").toString();
-        Record newRecord = recordRepository.getReferenceById(pullID(userPurchase));
+        Record newRecord = recordRepository.getReferenceById(pullId(userPurchase));
 
         // make new purchase:
         Purchase newPurchase = Purchase.builder()

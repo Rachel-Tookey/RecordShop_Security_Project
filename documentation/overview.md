@@ -2,27 +2,33 @@
 
 ### Summary of the App
 
-The **CD Store Database App** is designed to manage purchases and records in a music store.
+The **Record Shop Database App** is designed to manage purchases and records in a music store.
 
-The application allows users to track customer purchases and manage inventory records, it also stores more specific details about the records such as:
-- Record ID
+The application allows users to search for stock and make a purchase. It also stores more specific details about the records such as:
+- Record Id
 - Name
 - Artist
 - Quantity
 - Price
 
+For the purchase, it stores: 
+- Purchase Id
+- Customer name 
+- Record Id 
+- Price 
+- Date 
+
 ### Application Requirements
 
+Minimal Viable Product: 
 
 1. **Purchase Management:**
    - Ability to create, read, and update purchases.
    - Each purchase must include:
-     - Purchase ID
      - Customer Name
      - Item ID
-     - Price
+     - Price (with optional discount applied)
      - Purchase Date
-     - Discount code (optional)
 
 
 2. **Record Management:**
@@ -42,6 +48,12 @@ The application allows users to track customer purchases and manage inventory re
    - Provide endpoints to manage purchases and records.
 
 
+Stretch goals: 
+
+- Add in a Service layer to manage business logic 
+- Integrate Flyway to allow database management within IntelliJ
+- Set up a CI/CD pipeline with Github actions
+
 ---
 
 ## How to Achieve These
@@ -54,6 +66,7 @@ The application allows users to track customer purchases and manage inventory re
 - **JDBC API:** It provides methods for running SQL queries, updating data, and managing connections to a database.
 - **Spring Data JPA:** A project within the Spring ecosystem that simplifies working with databases. It builds on top of JPA (Java Persistence API) and helps in minimising code writing.
 - **Flyway Migration:** Tool for managing changes to the database schema. It helps in applying updates and track which changes have been made, ensuring the database stays in sync across different environments.
+- *Flyway-MySQL** Allows Flyway to talk to MySQL databases. 
 - **MySQL Driver:** Allows Java applications talk to MySQL databases. It handles the connection between the Java code and the MySQL database.
 - **Mockito:** Java library used for unit testing.  It creates mock objects, which are dummy versions of real objects used to test specific parts of one's code.
 
@@ -64,6 +77,12 @@ The application allows users to track customer purchases and manage inventory re
 3. **Develop Services:** Build service layers to handle the business logic for managing purchases and records.
 4. **Create Controllers:** Set up RESTful endpoints that allow interaction with the service layer.
 5. **Testing:** Write unit and integration tests to verify that the application functions correctly.
+
+### Team roles: 
+
+Fabiola: Will develop the "/record" endpoint, appropriate testing and docker 
+Rachel: Will develop the "/purchase" endpoint, appropriate testing and pipeline 
+Alyssa: Will develop documentation for the project, as well as reviewing code 
 
 ---
 
