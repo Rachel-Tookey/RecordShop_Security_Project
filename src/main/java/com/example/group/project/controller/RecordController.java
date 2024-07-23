@@ -1,50 +1,36 @@
 package com.example.group.project.controller;
 
-import com.example.group.project.model.entity.Record;
-import com.example.group.project.model.repository.RecordRepository;
+import com.example.group.project.exceptions.InvalidParameterException;
+import com.example.group.project.exceptions.ResourceNotFoundException;
+import com.example.group.project.service.impl.RecordServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestController
 public class  RecordController {
-
     @Autowired
-    RecordRepository recordRepository;
+    private RecordServiceImpl recordServiceImpl;
 
-    @GetMapping("/getRecord")
-    public ResponseEntity<?> getRecord(@RequestParam(required = false) String artist,
-                                          @RequestParam(required = false) String name) {
+    @GetMapping("/records")
+    public ResponseEntity<?> getRecords(@RequestParam(required = false) Map<String, String> requestParams) {
+        try {
+            Map<String, String> params = (requestParams == null) ? new HashMap<>(Map.of()) : requestParams;
 
-        List<Record> records;
-        String message = "";
-
-        if (artist != null && name != null) {
-            log.debug("Artist and record name provided: {}, {}", artist, name);
-            records = recordRepository.findByNameAndArtistIgnoreCase(name, artist);
-            message = "No record found with name " + name + " and artist " + artist;
-
+               return ResponseEntity.status(HttpStatus.OK).body(recordServiceImpl.requestHandler(params));
+        } catch (InvalidParameterException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-        else if (artist != null) {
-            log.debug("Artist name provided: {}", artist);
-            records = recordRepository.findByArtistIgnoreCase(artist);
-            message = "No record found having artist " + artist;
-
-        } else if (name != null) {
-            log.debug("Record name provided: {}", name);
-            records = recordRepository.findByNameIgnoreCase(name);
-            message = "No record found with name " + name;
-        } else {
-            log.debug("No param provided");
-            records = recordRepository.findAll();
-            message = "No records found in the database";
-        }
-        return ResponseEntity.ok(records.isEmpty() ? message : records);
     }
 }
