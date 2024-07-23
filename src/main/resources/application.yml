@@ -1,6 +1,7 @@
 spring:
   application:
     name: "Record shop"
+    message: "Welcome to the Record Shop"
   datasource:
     url: jdbc:mysql://localhost:3306/recordShop?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
