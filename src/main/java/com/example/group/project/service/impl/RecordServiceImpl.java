@@ -6,7 +6,6 @@ import com.example.group.project.exceptions.ResourceNotFoundException;
 import com.example.group.project.model.entity.Record;
 import com.example.group.project.model.repository.RecordRepository;
 import com.example.group.project.service.RecordService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,16 +16,12 @@ public class RecordServiceImpl implements RecordService {
 
     private final String artist;
     private final String record;
-
-    @Autowired
     private final RecordRepository recordRepository;
 
-    @Autowired
     public RecordServiceImpl(RecordRepository recordRepository) {
         this.recordRepository = recordRepository;
         this.artist = RecordParam.ARTIST_PARAM;
         this.record = RecordParam.RECORD_PARAM;
-
     }
 
     @Override

@@ -23,7 +23,7 @@ import java.util.Map;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
 
-@SpringBootTest
+
 @ExtendWith(MockitoExtension.class)
 public class RecordControllerTests {
     @Mock
@@ -45,7 +45,7 @@ public class RecordControllerTests {
 
     // Test successful requests
     @Test
-    public void getRecord_givenExistingArtistAndName_returnsCorrectRecords () {
+    public void getRecords_givenExistingArtistAndName_returnsCorrectRecords() {
         String recordName = "Thriller";
         String artist = "Michael Jackson";
 
@@ -65,7 +65,7 @@ public class RecordControllerTests {
                     .param("name", "Thriller")
                     .param("artist","Michael Jackson")
                 .when()
-                    .get("/getRecord")
+                    .get("/records")
                 .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("$.size()", equalTo(recordByNameAndArtist.size()))
@@ -74,7 +74,7 @@ public class RecordControllerTests {
     }
 
     @Test
-    public void getRecord_givenExistingArtist_returnsArtistRecords () {
+    public void getRecords_givenExistingArtist_returnsArtistRecords() {
         Record record1 = new Record();
         Record record2 = new Record();
 
@@ -97,7 +97,7 @@ public class RecordControllerTests {
                 .given()
                     .param("artist", "Michael Jackson")
                 .when()
-                    .get("/getRecord")
+                    .get("/records")
                 .then()
                     .statusCode(200)
                     .body("$.size()", equalTo(recordsByArtist.size()))
@@ -106,7 +106,7 @@ public class RecordControllerTests {
     }
 
     @Test
-    public void getRecord_givenExistingRecord_returnsThatRecord () {
+    public void getRecord_givenExistingRecord_returnsThatRecords() {
         String recordName = "Rec1";
         Record record1 = new Record();
         record1.setName(recordName);
@@ -122,7 +122,7 @@ public class RecordControllerTests {
                 .given()
                 .param("name", "Rec1")
                 .when()
-                .get("/getRecord")
+                .get("/records")
                 .then()
                 .statusCode(200)
                 .body("$.size()", equalTo(recordByName.size()))
@@ -130,7 +130,7 @@ public class RecordControllerTests {
     }
 
     @Test
-    public void getRecord_givenNoParam_returnsAllRecords () {
+    public void getRecords_givenNoParam_returnsAllRecords() {
         Record record1 = new Record();
         Record record2 = new Record();
         Record record3 = new Record();
@@ -148,7 +148,7 @@ public class RecordControllerTests {
 
         RestAssuredMockMvc
                 .when()
-                .get("/getRecord")
+                .get("/records")
                 .then()
                 .statusCode(200)
                 .body("$.size()", equalTo(allRecords.size()))
@@ -160,7 +160,7 @@ public class RecordControllerTests {
 
     // Test unsuccessful requests
     @Test
-    public void getRecord_givenNotExistingDetails_returnsNotFoundStatus () {
+    public void getRecords_givenNotExistingDetails_returnsNotFoundStatus() {
         String artist = "Bob Dylan";
         String record = "Blowing in the wind";
 
@@ -175,7 +175,7 @@ public class RecordControllerTests {
                     .param("artist",artist)
                     .param("name", record)
                 .when()
-                    .get("/getRecord")
+                    .get("/records")
                 .then()
                     .statusCode(HttpStatus.NOT_FOUND.value())
                     .body(equalTo(exceptionMessage));
@@ -183,7 +183,7 @@ public class RecordControllerTests {
 
 
     @Test
-    public void getRecord_givenWrongParameterKeys_returnsBadRequest () {
+    public void getRecords_givenWrongParameterKeys_returnsBadRequest() {
         String exceptionMessage = "Invalid Parameters used in the request";
 
         Mockito
@@ -194,7 +194,7 @@ public class RecordControllerTests {
                 .given()
                     .param("not a param", "not a value")
                 .when()
-                    .get("/getRecord")
+                    .get("/records")
                 .then()
                     .statusCode(HttpStatus.BAD_REQUEST.value())
                     .body(equalTo(exceptionMessage));

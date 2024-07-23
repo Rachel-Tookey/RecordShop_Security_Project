@@ -22,9 +22,9 @@ public class  RecordController {
     @Autowired
     private RecordServiceImpl recordServiceImpl;
 
-    @GetMapping("/getRecord")
-    public ResponseEntity<?> getRecord(@RequestParam(required = false) String artist,
-                                          @RequestParam(required = false) String name) {
+    @GetMapping("/records")
+    public ResponseEntity<?> getRecords(@RequestParam(required = false) String artist,
+                                        @RequestParam(required = false) String name) {
         try {
             Map<String, String> params = new HashMap<>(Map.of());
             if (name != null) { params.put(RecordParam.RECORD_PARAM, name); }
