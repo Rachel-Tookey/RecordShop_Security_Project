@@ -58,9 +58,7 @@ We plan to carry out the following manual tests using Postman to verify our app 
 
 ---
 
-### Test Execution Steps
-
-**Coverage** 
+## **Coverage** 
 
 Our aim is to have 70% and above testing coverage on all methods (including those used in Controller files, ServiceImpl files, and Util files)
 
@@ -68,22 +66,25 @@ This has been achieved:
 
 ![testCoverage.png](testCoverage.png)
 
-This file can be viewed in "/documentation/testCoverage.png"
+This file can be viewed in `/documentation/testCoverage.png`
 
 You can review the coverage of this project using the Jacoco plugin. 
 
 Simply follow these steps: 
 
-* In the terminal, run "foo@bar:~$ mvn clean", or run Maven clean in the sidebar 
-* In the terminal, run "foo@bar:~$ mvn test", or run Maven test in the sidebar 
-* Navigate to 'target/site/jacoco/index.html' and open in browser 
+* In the terminal, run `foo@bar:~$ mvn clean`, or run Maven clean in the sidebar 
+* In the terminal, run `foo@bar:~$ mvn test`, or run Maven test in the sidebar 
+* Navigate to `target/site/jacoco/index.html` and open in browser 
 
+---
+
+# Test Execution Steps
 
 ## **PurchaseControllerTests**
 
 ### **TC-01: Test Successful Purchase with Correct Parameters**
 
-1. **Setup**: Ensure the `PurchaseController` is correctly mocked and configured.
+1. **Setup**: Ensure the `PurchaseController` is correctly configured.
 2. **Request**: Send a POST request to `/purchase` with JSON body:
     ```json
     {
@@ -98,7 +99,7 @@ Simply follow these steps:
 
 ### **TC-02: Test Purchase When Customer Name is Missing**
 
-1. **Setup**: Ensure the `PurchaseController` is correctly mocked and configured.
+1. **Setup**: Ensure the `PurchaseController` is correctly configured.
 2. **Request**: Send a POST request to `/purchase` with JSON body:
     ```json
     {
@@ -112,7 +113,7 @@ Simply follow these steps:
 
 ### **TC-03: Test Purchase When Customer Name is Too Short**
 
-1. **Setup**: Ensure the `PurchaseController` is correctly mocked and configured.
+1. **Setup**: Ensure the `PurchaseController` is correctly configured.
 2. **Request**: Send a POST request to `/purchase` with JSON body:
     ```json
     {
@@ -127,7 +128,7 @@ Simply follow these steps:
 
 ### **TC-04: Test Purchase When ID is Missing**
 
-1. **Setup**: Ensure the `PurchaseController` is correctly mocked and configured.
+1. **Setup**: Ensure the `PurchaseController` is correctly configured.
 2. **Request**: Send a POST request to `/purchase` with JSON body:
     ```json
     {
@@ -141,7 +142,7 @@ Simply follow these steps:
 
 ### **TC-05: Test Purchase with Wrong Type for ID**
 
-1. **Setup**: Ensure the `PurchaseController` is correctly mocked and configured.
+1. **Setup**: Ensure the `PurchaseController` is correctly configured.
 2. **Request**: Send a POST request to `/purchase` with JSON body:
     ```json
     {
@@ -156,7 +157,7 @@ Simply follow these steps:
 
 ### **TC-06: Test Purchase with Invalid ID**
 
-1. **Setup**: Ensure the `PurchaseController` is correctly mocked and configured.
+1. **Setup**: Ensure the `PurchaseController` is correctly configured.
 2. **Request**: Send a POST request to `/purchase` with JSON body:
     ```json
     {
@@ -171,7 +172,7 @@ Simply follow these steps:
 
 ### **TC-07: Test Purchase with Out-of-Stock Item**
 
-1. **Setup**: Ensure the `PurchaseController` is correctly mocked and configured.
+1. **Setup**: Ensure the `PurchaseController` is correctly configured.
 2. **Request**: Send a POST request to `/purchase` with JSON body:
     ```json
     {
@@ -188,7 +189,7 @@ Simply follow these steps:
 
 ### **TC-08: Test Successful Retrieval of Records with Artist and Name Parameters**
 
-1. **Setup**: Ensure the `RecordController` is correctly mocked and configured.
+1. **Setup**: Ensure the `RecordController` is correctly configured.
 2. **Request**: Send a GET request to `/records` with parameters:
     ```
     artist=Michael Jackson
@@ -206,7 +207,7 @@ Simply follow these steps:
 
 ### **TC-09: Test Successful Retrieval of Records with Artist Parameter**
 
-1. **Setup**: Ensure the `RecordController` is correctly mocked and configured.
+1. **Setup**: Ensure the `RecordController` is correctly configured.
 2. **Request**: Send a GET request to `/records` with parameter:
     ```
     artist=Michael Jackson
@@ -222,7 +223,7 @@ Simply follow these steps:
 
 ### **TC-10: Test Successful Retrieval of Records with Name Parameter**
 
-1. **Setup**: Ensure the `RecordController` is correctly mocked and configured.
+1. **Setup**: Ensure the `RecordController` is correctly configured.
 2. **Request**: Send a GET request to `/records` with parameter:
     ```
     name=Thriller
@@ -238,13 +239,13 @@ Simply follow these steps:
 
 ### **TC-11: Test Successful Retrieval of All Records with No Parameters**
 
-1. **Setup**: Ensure the `RecordController` is correctly mocked and configured.
+1. **Setup**: Ensure the `RecordController` is correctly configured.
 2. **Request**: Send a GET request to `/records` with no parameters.
 3. **Verify**: Check the response status code is `200 OK` and the response body contains all records.
 
 ### **TC-12: Test Retrieval of Records with Non-existing Artist and Name**
 
-1. **Setup**: Ensure the `RecordController` is correctly mocked and configured.
+1. **Setup**: Ensure the `RecordController` is correctly configured.
 2. **Request**: Send a GET request to `/records` with parameters:
     ```
     artist=SEVENTEEN
@@ -261,7 +262,7 @@ Simply follow these steps:
 
 ### **TC-13: Test Retrieval of Records with Non-existing Artist**
 
-1. **Setup**: Ensure the `RecordController` is correctly mocked and configured.
+1. **Setup**: Ensure the `RecordController` is correctly configured.
 2. **Request**: Send a GET request to `/records` with parameter:
     ```
     artist=SEVENTEEN
@@ -279,7 +280,7 @@ Simply follow these steps:
 
 ### **TC-14: Test Retrieval of Records with Non-existing Name**
 
-1. **Setup**: Ensure the `RecordController` is correctly mocked and configured.
+1. **Setup**: Ensure the `RecordController` is correctly configured.
 2. **Request**: Send a GET request to `/records` with parameter:
     ```
     name=17 Is Right Here
@@ -295,7 +296,7 @@ Simply follow these steps:
 
 ### **TC-15: Test Retrieval of Records with Incorrect Parameter Keys**
 
-1. **Setup**: Ensure the `RecordController` is correctly mocked and configured.
+1. **Setup**: Ensure the `RecordController` is correctly configured.
 2. **Request**: Send a GET request to `/records` with parameters:
     ```
     http://localhost:8080/getRecord
@@ -306,7 +307,7 @@ Simply follow these steps:
 
 ### **TC-16: Test Successful Conversion of Id to Long in `pullId`**
 
-1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly mocked and configured.
+1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly configured.
 2. **Request**: Call `pullId` method with a map containing:
     ```json
     {
@@ -321,7 +322,7 @@ Simply follow these steps:
 
 ### **TC-17: Test `checkStock` Method Returns True for In-stock Item**
 
-1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly mocked and configured.
+1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly configured.
 2. **Request**: Call `checkStock` method with a map containing:
     ```json
     {
@@ -335,7 +336,7 @@ Simply follow these steps:
 
 ### **TC-18: Test `checkStock` Method Returns False for Out-of-stock Item**
 
-1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly mocked and configured.
+1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly configured.
 2. **Request**: Call `checkStock` method with a map containing:
     ```json
     {
@@ -349,7 +350,7 @@ Simply follow these steps:
 
 ### **TC-19: Test `checkIdExists` Method Returns True for Valid Id**
 
-1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly mocked and configured.
+1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly configured.
 2. **Request**: Call `checkIdExists` method with a map containing:
     ```json
     {
@@ -363,7 +364,7 @@ Simply follow these steps:
 
 ### **TC-20: Test `checkIdExists` Method Returns False for Invalid Id**
 
-1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly mocked and configured.
+1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly configured.
 2. **Request**: Call `checkIdExists` method with a map containing:
     ```json
     {
@@ -377,7 +378,7 @@ Simply follow these steps:
 
 ### **TC-21: Test `adjustPrice` Method Returns Price with No Discount**
 
-1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly mocked and configured.
+1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly configured.
 2. **Request**: Call `adjustPrice` method with a map containing:
     ```json
     {
@@ -391,7 +392,7 @@ Simply follow these steps:
 
 ### **TC-22: Test `adjustPrice` Method Applies Discount Correctly**
 
-1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly mocked and configured.
+1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly configured.
 2. **Request**: Call `adjustPrice` method with a map containing:
     ```json
     {
@@ -406,7 +407,7 @@ Simply follow these steps:
 
 ### **TC-23: Test `adjustPrice` Method Returns Original Price for Invalid Discount**
 
-1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly mocked and configured.
+1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly configured.
 2. **Request**: Call `adjustPrice` method with a map containing:
     ```json
     {
@@ -421,7 +422,7 @@ Simply follow these steps:
 
 ### **TC-24: Test `commitPurchase` Method Returns ID and Saves the Purchase**
 
-1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly mocked and configured.
+1. **Setup**: Ensure the `PurchaseServiceImpl` is correctly configured.
 2. **Request**: Call `commitPurchase` method with a map containing:
     ```json
     {
@@ -446,9 +447,9 @@ Simply follow these steps:
 
 ## **CustomErrorController**
 
-### **TC-26: Test 'CustomErrorController' catches errors not caught by the endpoints and returns 404 error with a body message specifying issue
+### **TC-26: Test `CustomErrorController` catches errors not caught by the endpoints and returns 404 error with a body message specifying issue**
 
-1. **Setup**: Ensure the `PurchaseController` is correctly mocked and configured.
+1. **Setup**: Ensure the `PurchaseController` is correctly configured.
 2. **Request**: Send a POST request to `/purchase` with JSON body:
     ```json
     {
@@ -461,5 +462,5 @@ Simply follow these steps:
     {
     "Further details": "JSON parse error: Unexpected character ('[' (code 91)): was expecting comma to separate Object entries",
     "You attempted to access the following URL": "/purchase"
-}
-    ```
+   }
+   ```

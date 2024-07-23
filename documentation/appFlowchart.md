@@ -7,5 +7,4 @@ flowchart TD;
     API -->|INSERT|DB[(Database)]
     API -->|UPDATE|DB
     API <-->|SELECT|DB
-    API -->|DELETE|DB
 ```

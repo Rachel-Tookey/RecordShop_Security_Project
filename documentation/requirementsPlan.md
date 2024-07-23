@@ -16,7 +16,3 @@
 - Get records sorted in specific order
 - Get purchases from a date
 - Get purchases of a specific customer
-
-
-## Deleting from Database
-- Remove records
