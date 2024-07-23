@@ -97,6 +97,11 @@ This will help in generating interactive API documentation so you can play aroun
 
 ---
 
+### Further development: 
+
+- Use JSON Web Tokens and encryption when sending calls to the "/purchase" endpoint to ensure security 
+
+
 ### Developers + Github profiles:
 
 - [Rachel](https://github.com/Tookles)
