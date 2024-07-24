@@ -64,7 +64,7 @@ Our aim is to have 70% and above testing coverage on all methods (including thos
 
 This has been achieved: 
 
-![testCoverage.png](testCoverage.png)
+![testCoverage.png](../images/testCoverage.png)
 
 This file can be viewed in `/documentation/testCoverage.png`
 

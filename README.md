@@ -57,7 +57,7 @@ Before you begin, please ensure you have the following:
 
 4. **Configure the database**:
     - Go to your IntelliJ configuration
-    - Navigate to [GroupProjectApplication], and edit the configuration to add in a new environment variable `MYSQL_ROOT_PASSWORD` and set it to your password for your database. For example `MYSQL_ROOT_PASSWORD="your password"`
+    - Navigate to [GroupProjectApplication](src/test/java/com/example/group/project/GroupProjectApplicationTests.java), and edit the configuration to add in a new environment variable `MYSQL_ROOT_PASSWORD` and set it to your password for your database. For example `MYSQL_ROOT_PASSWORD="your password"`
     - Navigate to [GroupProjectApplicationTests](src/test/java/com/example/group/project/GroupProjectApplicationTests.java) and add in a new environment variable "MY_SQL_PASSWORD" and set it to your password for your database. For example `MYSQL_ROOT_PASSWORD="your password"`
     - Then run [GroupProjectApplication](src/main/java/com/example/group/project/GroupProjectApplication.java)
     - The Flyway integration should automatically create the database and migrate the relevant files to create and populate the tables.
@@ -109,7 +109,7 @@ To follow these instructions you have to have Docker Desktop installed on your m
 3. (MAC users only) In the terminal run the command `MYSQL_ROOT_PASSWORD=yourMySQLpassword docker compose up --build` using your own password instead of "yourMySQLpassword".
    b. (WINDOWS users only) In the terminal run the command `docker compose up --build`.
 4. (WINDOWS users surely, MAC users if needed) Insert your MySQL root password in the environment variables
-   As showed in the image ![MYSQL_ROOT_PASSWORD](documentation/MYSQL_ROOT_PASSWORD.png), click on the Services to see your docker containers, select the mysql container and click on Dashboard.
+   As showed in the image ![MYSQL_ROOT_PASSWORD](documentation/images/MYSQL_ROOT_PASSWORD.png), click on the Services to see your docker containers, select the mysql container and click on Dashboard.
 5. Insert your personal MySQL password for the MYSQL_ROOT_PASSWORD variable
 6. Check if the app is running by visiting http://localhost:8080/records. You should see the list of records from the database. 
 
@@ -117,7 +117,7 @@ To follow these instructions you have to have Docker Desktop installed on your m
 
 ### Further development: 
 
-- Use JSON Web Tokens and encryption when sending calls to the "/purchase" endpoint to ensure security 
+- Use JSON Web Tokens and encryption when sending calls to the `/purchase` endpoint to ensure security 
 
 
 ### Developers + Github profiles:
