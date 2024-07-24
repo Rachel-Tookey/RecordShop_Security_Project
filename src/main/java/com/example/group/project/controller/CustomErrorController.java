@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 
@@ -20,7 +20,7 @@ public class CustomErrorController implements ErrorController {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> errorPage(WebRequest request, Exception ex){
 
-        Map<String, Object> body = new HashMap<>();
+        Map<String, Object> body = new LinkedHashMap<>();
         String url = ((ServletWebRequest)request).getRequest().getRequestURI().toString();
         Object details = ex.getMessage();
         body.put("You attempted to access the following URL", url);
