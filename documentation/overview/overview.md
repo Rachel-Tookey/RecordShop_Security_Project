@@ -137,18 +137,18 @@ cfg_mastersplus_java_group_two [group-project]
 │   │       │   ├── V1_Create_Records_Table.sql
 │   │       │   └── V2_Create_Purchases_Table.sql
 │   │       └── application.yml
-│   ├── test
-│   │   └── java
-│   │       └── com.example.group.project
-│   │           ├── controllerTests
-│   │           │   ├── PurchaseControllerTests
-│   │           │   └── RecordControllerTests
-│   │           ├── serviceTests
-│   │           │   ├── PurchaseServiceImplTests
-│   │           │   └── RecordServiceImplTests
-│   │           └── utilTests
-│   │               └── DateUtilTests
-│   │               └── GroupProjectApplicationTests
+│   └── test
+│       └── java
+│           └── com.example.group.project
+│               ├── controllerTests
+│               │   ├── PurchaseControllerTests
+│               │   └── RecordControllerTests
+│               ├── serviceTests
+│               │   ├── PurchaseServiceImplTests
+│               │   └── RecordServiceImplTests
+│               ├── utilTests
+│               │     └── DateUtilTests
+│               └── GroupProjectApplicationTests
 ├── target
 ├── .gitignore
 ├── docker-compose.yml
