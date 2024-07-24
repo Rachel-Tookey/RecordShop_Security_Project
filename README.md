@@ -143,7 +143,7 @@ To follow these instructions you have to have Docker Desktop installed on your m
    - Click on the Services to see your docker containers
    - Select **mysql** container and click on Dashboard. Insert your personal MySQL password for the environment variable called MYSQL_ROOT_PASSWORD.
 
-   ![MYSQL_ROOT_PASSWORD](documentation/MYSQL_ROOT_PASSWORD.png)
+   ![MYSQL_ROOT_PASSWORD](documentation/images/MYSQL_ROOT_PASSWORD.png)
 
 ---
 
@@ -160,6 +160,7 @@ ___
 
 - Use JSON Web Tokens and encryption when sending calls to the "/purchase" endpoint to ensure security
 - Develop frontend through Thymeleaf template engine
+
 
 
 ### Developers + Github profiles:
