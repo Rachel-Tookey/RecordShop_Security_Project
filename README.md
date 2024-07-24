@@ -83,10 +83,10 @@ USE recordShop;
 
     Once the application is running, you can access the following endpoints:
 
-    | Endpoint URL                                                     | Method | Description                                                                                                                              | Example Request                                                           |
-    |------------------------------------------------------------------|--------|------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
-    | `http://localhost:8080/purchase`                                 | POST   | Endpoint to make a purchase.<br><br>**Please note:** Discount is optional, and the customer field must contain more than two characters. | ```{"customer": "John",```<br>```"id": 3,```<br>```"discount": "CFG" }``` |
-    | `http://localhost:8080/records?artist={ARTISTNAME}&name={ALBUM}` | GET    | Endpoint to retrieve the information on a specific artist.                                                                               | http://localhost:8080/getRecord?artist=Michael%20Jackson&name=Thriller    |
+    | Endpoint URL                                                     | Method | Description                                                                                                                                                        | Example Request                                                           |
+    |------------------------------------------------------------------|--------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
+    | `http://localhost:8080/purchase`                                 | POST   | Endpoint to make a purchase. It requires a JSON body. <br><br>**Please note:** Discount is optional, and the customer field must contain more than two characters. | ```{"customer": "John",```<br>```"id": 3,```<br>```"discount": "CFG" }``` |
+    | `http://localhost:8080/records?artist={ARTISTNAME}&name={ALBUM}` | GET    | Endpoint to retrieve the information on a specific artist. It takes artist ('artist') and album name ('name') as parameters.                                       | http://localhost:8080/getRecord?artist=Michael%20Jackson&name=Thriller    |
 
 ---
 
