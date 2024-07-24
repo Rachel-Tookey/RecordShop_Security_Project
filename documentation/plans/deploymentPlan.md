@@ -2,7 +2,7 @@
 
 As our deployment process for “Record Shop”, we have elected to use a Continuous Integration and Continuous Delivery pipeline.
 
-We have identified the following stages.
+We have identified the following stages:
 
 **Stage 1: Source**
 
