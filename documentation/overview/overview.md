@@ -82,7 +82,9 @@ Minimal Viable Product:
 ### Team roles: 
 
 **Fabiola:** Will develop the `/record` endpoint, appropriate testing and docker 
+
 **Rachel:** Will develop the `/purchase` endpoint, appropriate testing and pipeline 
+
 **Alyssa:** Will develop documentation for the project, as well as reviewing code 
 
 ---
