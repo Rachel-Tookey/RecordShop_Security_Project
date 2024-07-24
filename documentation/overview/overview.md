@@ -98,13 +98,19 @@ cfg_mastersplus_java_group_two [group-project]
 ├── .idea
 ├── .mvn
 ├── documentation
-│   ├── appFlowchart.md
-│   ├── deploymentPlan.md
-│   ├── manualTestPlan.md
-│   ├── overview.md
-│   ├── requirementsPlan.md
-│   ├── testCoverage.png
-│    └──userStories.md
+│   ├── images
+│   │    ├── MYSQL_ROOT_PASSWORD.png
+│   │    └── testCoverage.png
+│   ├── overview
+│   │    └── overview.md
+│   ├── plans
+│   │    ├── deploymentPlan.md
+│   │    └── requirementsPlan.md
+│   ├── stories
+│   │    └── userStories.md
+│   └── testplan
+│       ├── getPostTestingFabi.md
+│       └── manualTestPlan.md
 ├── src
 │   ├── main
 │   │   ├── java
