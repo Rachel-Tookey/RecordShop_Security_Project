@@ -46,41 +46,41 @@ Before you begin, please ensure you have the following:
 
 
 2. **Ensure the proper dependencies are installed. Please refer to `pom.xml` in the file for your reference**
-    - Spring Boot 
-    - Spring Web
-    - Spring Data JPA
-    - My SQL Driver 
+    - Spring Boot Starter Data JPA
+    - Spring Boot Starter Web 
+    - Spring Boot Starter Test 
     - Flyway Core 
     - Flyway MySQL
-    - MySQl Connector Java
-    - Lombok
-    - Spring Boot Test
-    - Flyway Maven
-    - Open AI 
-    - Rest Assured 
+    - MySQL Connector/J
+    - Lombok 
+    - Flyway Maven 
+    - OpenAPI
+    - Spring Mock MVC (Rest Assured)
 
-
+   
 3. **Ensure the proper plugins are installed. Please refer to `pom.xml` in the file for your reference**
-    - Jacoco
+    - JaCoCo Maven Plugin
     - Maven Surefire Plugin
-    - Springboot Maven plugin 
+    - Spring Boot Maven plugin 
 
 
 4. **Configure the database**:
     - Go to your IntelliJ configuration
-    - Navigate to [GroupProjectApplication](src/test/java/com/example/group/project/GroupProjectApplicationTests.java), and edit the configuration to add in a new environment variable `MYSQL_ROOT_PASSWORD` and set it to your password for your database. For example `MYSQL_ROOT_PASSWORD="your password"`
+    - Navigate to [GroupProjectApplication](src/main/java/com/example/group/project/GroupProjectApplication.java), and edit the configuration to add in a new environment variable `MYSQL_ROOT_PASSWORD` and set it to your password for your database. For example `MYSQL_ROOT_PASSWORD="your password"`
     - Navigate to [GroupProjectApplicationTests](src/test/java/com/example/group/project/GroupProjectApplicationTests.java) and add in a new environment variable "MY_SQL_PASSWORD" and set it to your password for your database. For example `MYSQL_ROOT_PASSWORD="your password"`
     - Then run [GroupProjectApplication](src/main/java/com/example/group/project/GroupProjectApplication.java)
     - The Flyway integration should automatically create the database and migrate the relevant files to create and populate the tables.
 
 
 5. **Debugging:**
-    - Should you have any issue with the Flyway integration, you can manually deploy the MySQL by running the MySQL script includes in resources/db/migration 
-    - Please add the following lines of codes at the start before running:
+    - Should you have any issue with the Flyway integration, you can manually create the database by running the MySQL script found in resources/db/migration 
+    - You should remove Flyway Core, FlywaySQL and Flyway Maven from your pom.xml (please note: should you wish to run the docker file, you will need to replace these dependencies)
+    - Please add the following lines of codes at the start before running on your preferred platform:
 
 ``` 
 CREATE DATABASE IF NOT EXISTS recordShop;
 USE recordShop;
+
 ```
 
 ---
@@ -139,7 +139,16 @@ To follow these instructions you have to have Docker Desktop installed on your m
 
 ---
 
+## "Pipeline" or maven.yml:
+
+- Should you wish to test the Github Actions maven.yml file, you should fork the repository 
+- Set up a [Github secret](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions) with your MySQL root password with variable name "MY_SQL_PASSWORD"
+- Trigger the workflow through a push or pull request to main 
+
+___
+
 ### Further development: 
+
 
 - Use JSON Web Tokens and encryption when sending calls to the "/purchase" endpoint to ensure security
 - Develop frontend through Thymeleaf template engine
@@ -154,7 +163,9 @@ To follow these instructions you have to have Docker Desktop installed on your m
 ---
 ### Notes to the Marker:
 
+
 In the [test folder](src/test) you will find all the tests written.
 [GroupProjectApplicationTests](src/test/java/com/example/group/project/GroupProjectApplicationTests.java) is the only test that uses `@SpringBootTest` annotation, as it is the only test that will check if the app context can successfully be loaded. For this reason ensure your MySQL server (or docker container) is running before running this test.
-ALl other tests use Mockito to mock interactions with the database so they can be run without MySQL server running.
+All other tests use Mockito to mock interactions with the database so they can be run without MySQL server running.
+For further development, we would investigate using this on other test files and what other beans could be useful (i.e. Autowired)
 
