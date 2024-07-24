@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+// RecordServiceImpl class allows us to separate business logic from the Controller class
 @Slf4j
 @Service
 public class RecordServiceImpl implements RecordService {
@@ -26,26 +27,31 @@ public class RecordServiceImpl implements RecordService {
         this.record = RecordParam.RECORD_PARAM;
     }
 
+    // fetch and return all records from the repository
     @Override
     public List<Record> getAllRecords(){
         return recordRepository.findAll();
     }
 
+    // ignores case of records fetched and returned
     @Override
     public List<Record> getRecordByName(String recordName) {
         return recordRepository.findByNameIgnoreCase(recordName);
     }
 
+    // ignores case of artists fetched and returned
     @Override
     public List<Record> getRecordsByArtist(String artist) {
         return recordRepository.findByArtistIgnoreCase(artist);
     }
 
+    // ignores case of records and artists fetched and returned
     @Override
     public List<Record> getRecordsByNameAndArtist(String recordName, String artist) {
         return recordRepository.findByNameAndArtistIgnoreCase(recordName, artist);
     }
 
+    // exception handling
     @Override
     public List<Record> requestHandler(Map<String, String> param) throws ResourceNotFoundException,
             InvalidParameterException{

@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-
+// Known bug when using Data & Builder together: you have to add NoArgsConstructor as well to allow them to run
+// AllArgsConstructor then added to meet the application specific requirements
 @Entity
 @Table(name = "purchases")
 @Data
@@ -30,6 +31,7 @@ public class Purchase {
     @Column(name = "purchase_date", nullable = false)
     private LocalDate date;
 
+    // Annotation allows foreign key mapping
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id", nullable = false)
     private Record recordLink;

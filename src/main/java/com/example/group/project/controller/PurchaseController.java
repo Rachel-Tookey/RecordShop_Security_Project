@@ -47,6 +47,7 @@ public class PurchaseController {
             log.info("ID does not exist");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This is not a valid item Id");
         } else if (!purchaseServiceImpl.checkStock(userPurchase)) {
+            // Conflict status code has been selected here as in a fully fledged application with a frontend, prior logic should prevent the request getting this far
             log.info("Item not in stock");
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Item not in stock");
         }

@@ -68,7 +68,7 @@ Before you begin, please ensure you have the following:
 
 4. **Configure the database**:
     - Go to your IntelliJ configuration
-    - Navigate to [GroupProjectApplication], and edit the configuration to add in a new environment variable `MYSQL_ROOT_PASSWORD` and set it to your password for your database. For example `MYSQL_ROOT_PASSWORD="your password"`
+    - Navigate to [GroupProjectApplication](src/test/java/com/example/group/project/GroupProjectApplicationTests.java), and edit the configuration to add in a new environment variable `MYSQL_ROOT_PASSWORD` and set it to your password for your database. For example `MYSQL_ROOT_PASSWORD="your password"`
     - Navigate to [GroupProjectApplicationTests](src/test/java/com/example/group/project/GroupProjectApplicationTests.java) and add in a new environment variable "MY_SQL_PASSWORD" and set it to your password for your database. For example `MYSQL_ROOT_PASSWORD="your password"`
     - Then run [GroupProjectApplication](src/main/java/com/example/group/project/GroupProjectApplication.java)
     - The Flyway integration should automatically create the database and migrate the relevant files to create and populate the tables.
