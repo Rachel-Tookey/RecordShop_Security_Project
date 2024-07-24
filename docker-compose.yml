@@ -1,7 +1,33 @@
-version: '3.8'
+version: "3.9"
 
 services:
   mysql:
-    image: mysql:8.0
+    image: mysql:8
     environment:
-      MYSQL_ROOT_PASSWORD: SleepyDjYawns1!
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: recordShop
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: mysql --user="root" --password="${MYSQL_ROOT_PASSWORD}" --silent --execute "USE recordShop;"
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  group-project:
+    build:
+      context: .
+      target: run
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: curl --fail http://localhost:8080/records
+      interval: 10s
+      timeout: 10s
+      retries: 3

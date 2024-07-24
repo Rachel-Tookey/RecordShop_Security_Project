@@ -1,4 +1,4 @@
-CREATE TABLE Records (
+CREATE TABLE records (
     record_id INT AUTO_INCREMENT PRIMARY KEY,
     record_name VARCHAR(55) NOT NULL,
     artist VARCHAR(55) NOT NULL,
@@ -6,7 +6,7 @@ CREATE TABLE Records (
     price FLOAT NOT NULL
 );
 
-INSERT INTO Records (record_name, artist, quantity, price)
+INSERT INTO records (record_name, artist, quantity, price)
 VALUES
 ('Thriller', 'Michael Jackson', 1, 9.99),
 ('Back in Black', 'AC/DC', 2, 2.98),
