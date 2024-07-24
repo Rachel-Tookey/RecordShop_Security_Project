@@ -107,15 +107,15 @@ This will help in generating interactive API documentation in order to test the 
 
 ### Documentation:
 
-Located [here](https://github.com/Tookles/cfg_mastersplus_java_group_two/tree/main/documentation)
+Located [here](https://github.com/Tookles/cfg_mastersplus_java_group_two/blob/ef228c984a4ed05e0d5931792c5eec2568af15f2/documentation)
 
 Quick links: 
 
-- [Overview](/Users/racheltookey/Desktop/Java/group_project_folder/group-project/documentation/overview/overview.md)
-- [Requirements plan](/Users/racheltookey/Desktop/Java/group_project_folder/group-project/documentation/plans/requirementsPlan.md)
-- [User stories](/Users/racheltookey/Desktop/Java/group_project_folder/group-project/documentation/stories/userStories.md)
-- [Manual Test Plan](/Users/racheltookey/Desktop/Java/group_project_folder/group-project/documentation/testplan/manualTestPlan.md) and [further test resources](/Users/racheltookey/Desktop/Java/group_project_folder/group-project/documentation/testplan/getPostTestingFabi.md)
-- [Deployment plan](/Users/racheltookey/Desktop/Java/group_project_folder/group-project/documentation/plans/deploymentPlan.md)
+- [Overview](https://github.com/Tookles/cfg_mastersplus_java_group_two/blob/34be0409e72a8b0aed221af52bd3fefd1dafd8ff/documentation/overview/overview.md)
+- [Requirements plan](https://github.com/Tookles/cfg_mastersplus_java_group_two/blob/9f56401b24901530be67468dbf6873d72fc1a287/documentation/plans/requirementsPlan.md)
+- [User stories](https://github.com/Tookles/cfg_mastersplus_java_group_two/blob/9f56401b24901530be67468dbf6873d72fc1a287/documentation/stories/userStories.md)
+- [Manual Test Plan](https://github.com/Tookles/cfg_mastersplus_java_group_two/blob/ef228c984a4ed05e0d5931792c5eec2568af15f2/documentation/testplan/manualTestPlan.md) and [further test resources](https://github.com/Tookles/cfg_mastersplus_java_group_two/blob/9f56401b24901530be67468dbf6873d72fc1a287/documentation/testplan/getPostTestingFabi.md)
+- [Deployment plan](https://github.com/Tookles/cfg_mastersplus_java_group_two/blob/1a371f9224423dcd1e1a7b777dfe01aecacdea00/documentation/plans/deploymentPlan.md)
 
 ---
 
