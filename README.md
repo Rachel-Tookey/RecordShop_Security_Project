@@ -109,6 +109,14 @@ This will help in generating interactive API documentation in order to test the 
 
 Located [here](https://github.com/Tookles/cfg_mastersplus_java_group_two/tree/main/documentation)
 
+Quick links: 
+
+- [Overview](/Users/racheltookey/Desktop/Java/group_project_folder/group-project/documentation/overview/overview.md)
+- [Requirements plan](/Users/racheltookey/Desktop/Java/group_project_folder/group-project/documentation/plans/requirementsPlan.md)
+- [User stories](/Users/racheltookey/Desktop/Java/group_project_folder/group-project/documentation/stories/userStories.md)
+- [Manual Test Plan](/Users/racheltookey/Desktop/Java/group_project_folder/group-project/documentation/testplan/manualTestPlan.md) and [further test resources](/Users/racheltookey/Desktop/Java/group_project_folder/group-project/documentation/testplan/getPostTestingFabi.md)
+- [Deployment plan](/Users/racheltookey/Desktop/Java/group_project_folder/group-project/documentation/plans/deploymentPlan.md)
+
 ---
 
 ## Docker Instructions:
