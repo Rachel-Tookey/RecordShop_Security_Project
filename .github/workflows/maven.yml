@@ -32,9 +32,6 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Use secret variable (conditionally)
-        if: github.event_name == 'push'
-        run: echo "The secret value is ${{ secrets.MY_SQL_PASSWORD }}"
 
       - name: Build with Maven
         run: mvn -B package
