@@ -125,7 +125,7 @@ ___
 
 ### Further development: 
 
-- Use JSON Web Tokens and encryption when sending calls to the `/purchase` endpoint to ensure security 
+- Use JSON Web Tokens and encryption when sending calls to the "/purchase" endpoint to ensure security 
 
 
 ### Developers + Github profiles:
