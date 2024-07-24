@@ -6,11 +6,13 @@ import com.example.group.project.exceptions.ResourceNotFoundException;
 import com.example.group.project.model.entity.Record;
 import com.example.group.project.model.repository.RecordRepository;
 import com.example.group.project.service.RecordService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class RecordServiceImpl implements RecordService {
 
@@ -49,6 +51,7 @@ public class RecordServiceImpl implements RecordService {
             InvalidParameterException{
 
         if (param.containsKey(artist) && param.containsKey(record)) {
+            log.debug("Artist and Record params inserted.");
             List<Record> recordsByNameAndArtist = getRecordsByNameAndArtist(param.get(record), param.get(artist));
             if (recordsByNameAndArtist.isEmpty()) {
                 String exceptionMessage =
@@ -57,6 +60,7 @@ public class RecordServiceImpl implements RecordService {
             } else { return recordsByNameAndArtist; }
 
         } else if(param.containsKey(record)) {
+            log.debug("Record param inserted.");
             List<Record> recordByName = getRecordByName(param.get(record));
             if (recordByName.isEmpty()) {
                 String exceptionMessage = "No record found with name " + param.get(record);
@@ -64,6 +68,7 @@ public class RecordServiceImpl implements RecordService {
             } else { return recordByName; }
 
         } else if (param.containsKey(artist)) {
+            log.debug("Artist param inserted.");
             List<Record> recordsByArtist = getRecordsByArtist(param.get(artist));
             if (recordsByArtist.isEmpty()) {
                 String exceptionMessage = "No record found having artist " + param.get(artist);
@@ -71,12 +76,14 @@ public class RecordServiceImpl implements RecordService {
             } else { return recordsByArtist; }
 
         } else if(param.isEmpty()){
+            log.debug("No param inserted.");
             List<Record> allRecords = getAllRecords();
             if (allRecords.isEmpty()) {
                 String exceptionMessage = "No records found in the database";
                 throw new ResourceNotFoundException(exceptionMessage);
             } else { return allRecords; }
         } else {
+            log.debug("Incorrect key as param inserted.");
             throw new InvalidParameterException("Invalid Parameters used in the request");
         }
     }
