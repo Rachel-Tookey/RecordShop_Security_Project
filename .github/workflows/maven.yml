@@ -33,7 +33,7 @@ jobs:
           cache: maven
 
       - name: Use secret variable (conditionally)
-        if: github.event_name == 'push' || github.event_name == 'pull_request'
+        if: github.event_name == 'push'
         run: echo "The secret value is ${{ secrets.MY_SQL_PASSWORD }}"
 
       - name: Build with Maven
