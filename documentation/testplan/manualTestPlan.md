@@ -460,7 +460,7 @@ Simply follow these steps:
 3. **Verify**: Check the response status code is `404` and the body contains:
     ```
     {
-    "Further details": "JSON parse error: Unexpected character ('[' (code 91)): was expecting comma to separate Object entries",
-    "You attempted to access the following URL": "/purchase"
+    "You attempted to access the following URL": "/purchase",
+    "Further details": "JSON parse error: Unexpected character ('[' (code 91)): was expecting comma to separate Object entries"
    }
    ```
