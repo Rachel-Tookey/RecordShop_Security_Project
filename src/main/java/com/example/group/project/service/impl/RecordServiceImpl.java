@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
+// RecordServiceImpl class allows us to separate business logic from the Controller class
 @Service
 public class RecordServiceImpl implements RecordService {
 
