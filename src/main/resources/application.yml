@@ -6,7 +6,7 @@ spring:
     url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/recordShop?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: SleepyDjYawns1!
+    password: ${MYSQL_ROOT_PASSWORD}
   flyway:
     enabled: true
     locations: classpath:db/migration

@@ -4,12 +4,12 @@ services:
   mysql:
     image: mysql:8
     environment:
-      MYSQL_ROOT_PASSWORD: SleepyDjYawns1!
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: recordShop
     ports:
       - "3307:3306"
     healthcheck:
-      test: mysql --user="root" --password="SleepyDjYawns1!" --silent --execute "USE recordShop;"
+      test: mysql --user="root" --password="${MYSQL_ROOT_PASSWORD}" --silent --execute "USE recordShop;"
       interval: 10s
       timeout: 10s
       retries: 5
@@ -20,8 +20,7 @@ services:
       target: run
     environment:
       MYSQL_HOST: mysql
-      MYSQL_ROOT_PASSWORD: SleepyDjYawns1!
-      target: run
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     depends_on:
       mysql:
         condition: service_healthy
