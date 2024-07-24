@@ -3,14 +3,15 @@ spring:
     name: "Record shop"
     message: "Welcome to the Record Shop"
   datasource:
-    url: jdbc:mysql://localhost:3306/recordShop?createDatabaseIfNotExist=true
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/recordShop?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: ${MY_SQL_PASSWORD}
+    password: SleepyDjYawns1!
   flyway:
     enabled: true
     locations: classpath:db/migration
-    jpa:
-      hibernate:
-        naming:
-          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  jpa:
+    properties:
+      temp:
+        use_jdbc_metadata_defaults: false
+      dialect: org.hibernate.dialect.MySQLDialect
