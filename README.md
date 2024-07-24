@@ -86,7 +86,7 @@ USE recordShop;
     | Endpoint URL                                                     | Method | Description                                                                                                                              | Example Request                                                           |
     |------------------------------------------------------------------|--------|------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
     | `http://localhost:8080/purchase`                                 | POST   | Endpoint to make a purchase.<br><br>**Please note:** Discount is optional, and the customer field must contain more than two characters. | ```{"customer": "John",```<br>```"id": 3,```<br>```"discount": "CFG" }``` |
-    | `http://localhost:8080/records?artist={ARTISTNAME}&name={ALBUM}` | GET    | Endpoint to retrieve the information on a specific artist.                                                                               | http://localhost:8080/getRecord?artist=Michael%20Jackson&name=Thriller    |
+    | `http://localhost:8080/records?artist={ARTISTNAME}&name={ALBUM}` | GET    | Endpoint to retrieve the information on a specific artist.                                                                               | http://localhost:8080/records?artist=Michael%20Jackson&name=Thriller      |
 
 ---
 
@@ -105,13 +105,24 @@ Located [here](https://github.com/Tookles/cfg_mastersplus_java_group_two/tree/ma
 To follow these instructions you have to have Docker Desktop installed on your machine.
 
 1. Start docker engine by opening Docker Desktop (or start it from IntelliJ)
-2. Building the containers
-3. (MAC users only) In the terminal run the command `MYSQL_ROOT_PASSWORD=yourMySQLpassword docker compose up --build` using your own password instead of "yourMySQLpassword".
-   b. (WINDOWS users only) In the terminal run the command `docker compose up --build`.
-4. (WINDOWS users surely, MAC users if needed) Insert your MySQL root password in the environment variables
-   As showed in the image ![MYSQL_ROOT_PASSWORD](documentation/MYSQL_ROOT_PASSWORD.png), click on the Services to see your docker containers, select the mysql container and click on Dashboard.
-5. Insert your personal MySQL password for the MYSQL_ROOT_PASSWORD variable
-6. Check if the app is running by visiting http://localhost:8080/records. You should see the list of records from the database. 
+2. Insert your MySQL user password in the terminal
+   - bash terminal: `export MYSQL_ROOT_PASSWORD=your_password_here`
+   - command prompt: `$env:MYSQL_ROOT_PASSWORD = "your_password_here"`
+3. Run the command to build the docker containers: `docker compose up --build`
+4. Check if the app is running by visiting http://localhost:8080/records. You should see the list of records from the database.
+
+#### NOTE
+   Should you have an issue when exporting your password you can try the following:
+
+   **MAC USERS** 
+   In the terminal run the command `MYSQL_ROOT_PASSWORD=yourMySQLpassword docker compose up --build` using your own password instead of "yourMySQLpassword".
+
+   **WINDOWS USERS**
+   - In the terminal run the command `docker compose up --build`.
+   - Click on the Services to see your docker containers
+   - Select **mysql** container and click on Dashboard. Insert your personal MySQL password for the environment variable called MYSQL_ROOT_PASSWORD.
+
+   ![MYSQL_ROOT_PASSWORD](documentation/MYSQL_ROOT_PASSWORD.png)
 
 ---
 
