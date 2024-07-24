@@ -13,6 +13,3 @@ COPY --from=build /opt/target/group-project-0.0.1-SNAPSHOT.jar .
 
 ENTRYPOINT ["java", "-jar", "group-project-0.0.1-SNAPSHOT.jar"]
 EXPOSE 8080
-
-#RUN apt update -y && apt install -y nmap
-#ENTRYPOINT ["sleep", "infinity"]
