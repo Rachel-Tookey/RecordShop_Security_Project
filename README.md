@@ -94,13 +94,24 @@ USE recordShop;
 
 This will help in generating interactive API documentation in order to test the API calls. Please see Open API: [here](http://localhost:8080/swagger-ui/index.html).
 
-### Documentstion:
+### Documentation:
 
 Located [here](https://github.com/Tookles/cfg_mastersplus_java_group_two/tree/main/documentation)
 
 ---
 
-## Docker Instructions please help lol:
+## Docker Instructions:
+
+To follow these instructions you have to have Docker Desktop installed on your machine.
+
+1. Start docker engine by opening Docker Desktop (or start it from IntelliJ)
+2. Building the containers
+3. (MAC users only) In the terminal run the command `MYSQL_ROOT_PASSWORD=yourMySQLpassword docker compose up --build` using your own password instead of "yourMySQLpassword".
+   b. (WINDOWS users only) In the terminal run the command `docker compose up --build`.
+4. (WINDOWS users surely, MAC users if needed) Insert your MySQL root password in the environment variables
+   As showed in the image ![MYSQL_ROOT_PASSWORD](documentation/MYSQL_ROOT_PASSWORD.png), click on the Services to see your docker containers, select the mysql container and click on Dashboard.
+5. Insert your personal MySQL password for the MYSQL_ROOT_PASSWORD variable
+6. Check if the app is running by visiting http://localhost:8080/records. You should see the list of records from the database. 
 
 ---
 
