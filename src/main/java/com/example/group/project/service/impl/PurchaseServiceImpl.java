@@ -57,18 +57,16 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     // gets item price and adjusts it if a valid discount code is provided
     @Override
-    public double adjustPrice(Map<String, Object>  userPurchase){
+    public double adjustprice(Map<String, Object>  userPurchase){
         double itemPrice = recordRepository.getReferenceById(pullId(userPurchase)).getPrice();
         itemPrice = itemPrice * 100;
         if (userPurchase.containsKey("discount")) {
-            try {
-                String userDiscount = (String) userPurchase.get("discount");
-                if (userDiscount.equals("CFG")) {
-                    log.info("Discount code applied");
-                    itemPrice = itemPrice * 0.8;
-                }
-            } catch (ClassCastException e) {
-                log.error("User discount code could not be cast {}", userPurchase.get("discount"));
+            String userDiscount = String.valueOf(userPurchase.get("discount"));
+            if (userDiscount.equals("CFG")) {
+                log.info("Discount code applied");
+                itemPrice = itemPrice * 0.8;
+            } else {
+                log.info("Incorrect discount code supplied");
             }
         } else {
             log.info("No discount code applied");
@@ -83,7 +81,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     public Long commitPurchase(Map<String, Object> userPurchase){
 
         // getting object fields
-        double itemPrice = adjustPrice(userPurchase);
+        double itemPrice = adjustprice(userPurchase);
         String customerName = userPurchase.get("customer").toString();
         Record newRecord = recordRepository.getReferenceById(pullId(userPurchase));
 

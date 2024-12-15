@@ -1,6 +1,6 @@
 CREATE TABLE purchases (
     purchase_id INT AUTO_INCREMENT PRIMARY KEY,
-    customer_name VARCHAR(30) NOT NULL,
+    customer_name VARCHAR(40) NOT NULL,
     item_id INT NOT NULL,
     price FLOAT NOT NULL,
     purchase_date DATE NOT NULL
