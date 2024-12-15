@@ -1,14 +1,10 @@
 package com.example.group.project.service.impl;
 
-
-import com.example.group.project.model.entity.Staff;
-import com.example.group.project.model.repository.StaffRepository;
-import com.example.group.project.service.StaffService;
+import com.example.group.project.model.entity.User;
+import com.example.group.project.model.repository.UserRepository;
+import com.example.group.project.service.UserDetailsService;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.sql.ast.tree.expression.Over;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,32 +14,32 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class StaffServiceImpl implements StaffService, UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final StaffRepository StaffRepository;
+    private final UserRepository UserRepository;
 
     @Autowired
-    public StaffServiceImpl(StaffRepository staffRepository) {
-        this.StaffRepository = staffRepository;
+    public UserDetailsServiceImpl(UserRepository userRepository) {
+        this.UserRepository = userRepository;
     }
 
     @Override
-    public List<Staff> getAllStaff(){
-        return StaffRepository.findAll();
+    public List<User> getAllUsers(){
+        return UserRepository.findAll();
     }
 
     @Override
-    public Staff findByUsername(String username){
-        return StaffRepository.findByUsername(username);
+    public User findByUsername(String username){
+        return UserRepository.findByUsername(username);
     }
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Staff user = findByUsername(username);
+        User user = findByUsername(username);
         {
             if(user != null) {
-                return User.builder()
+                return org.springframework.security.core.userdetails.User.builder()
                         .username(user.getUsername())
                         .password(user.getPassword())
                         .roles(user.getRole())
