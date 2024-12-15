@@ -6,8 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// Known bug when using Data & Builder together: you have to add NoArgsConstructor as well to allow them to run
-// AllArgsConstructor then added to meet the application specific requirements
+
 @Entity
 @Table(name = "staff")
 @Data

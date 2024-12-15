@@ -17,7 +17,7 @@ public class StaffController {
 
     @GetMapping("/staff")
     public ResponseEntity<?> getStaff(){
-        return ResponseEntity.status(HttpStatus.OK).body("Test");
+        return ResponseEntity.status(HttpStatus.OK).body(staffServiceImpl.getAllStaff());
     }
 
 

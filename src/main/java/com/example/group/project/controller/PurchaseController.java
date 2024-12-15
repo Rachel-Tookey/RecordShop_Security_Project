@@ -21,7 +21,6 @@ public class PurchaseController {
     @Autowired
     public PurchaseServiceImpl purchaseServiceImpl;
 
-    // POST endpoint to make purchase
     @PostMapping("/purchase")
     public ResponseEntity<?> makePurchase(@RequestBody Map<String, Object> userPurchase){
         log.info("Attempting to make new purchase");
