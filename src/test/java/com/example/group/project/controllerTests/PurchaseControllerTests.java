@@ -52,7 +52,6 @@ public class PurchaseControllerTests {
                 .recordLink(recordTest)
                 .build();
 
-        when(purchaseServiceImpl.pullId(any(Map.class))).thenReturn(recordTest.getId());
         when(purchaseServiceImpl.checkIdExists(any(Map.class))).thenReturn(true);
         when(purchaseServiceImpl.checkStock(any(Map.class))).thenReturn(true);
         when(purchaseServiceImpl.commitPurchase(any(Map.class))).thenReturn(purchaseTest.getId());
@@ -134,8 +133,6 @@ public class PurchaseControllerTests {
         userPurchase.put("customer", "John");
         userPurchase.put("id", "three");
 
-        when(purchaseServiceImpl.pullId(any(Map.class))).thenThrow(IllegalArgumentException.class);
-
         RestAssuredMockMvc
                 .given()
                 .contentType("application/json")
@@ -181,7 +178,6 @@ public class PurchaseControllerTests {
         userPurchase.put("customer", "John");
         userPurchase.put("id", recordTest.getId());
 
-        when(purchaseServiceImpl.pullId(any(Map.class))).thenReturn(recordTest.getId());
         when(purchaseServiceImpl.checkIdExists(any(Map.class))).thenReturn(true);
 
 

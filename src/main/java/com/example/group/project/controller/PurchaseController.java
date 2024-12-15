@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 @Slf4j
 @RestController
@@ -29,17 +32,17 @@ public class PurchaseController {
         }
 
         if (userPurchase.get("customer").toString().length() < 3) {
-            log.info("Customer name not too short");
+            log.info("Customer name too short");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Customer name too short");
         } else if (!userPurchase.containsKey("id")) {
             log.info("No Id provided");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No Id provided");
         }
 
-        try {
-            purchaseServiceImpl.pullId(userPurchase);
-        } catch (IllegalArgumentException e) {
-            log.error("Id incorrect type");
+        Pattern numericalPattern = Pattern.compile("^\\d+$");
+        Matcher matcher = numericalPattern.matcher(userPurchase.get("id").toString());
+        if (!matcher.find()) {
+            log.info("Id not numerical value");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Id must be numerical value");
         }
 
