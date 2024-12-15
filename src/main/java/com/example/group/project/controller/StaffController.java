@@ -1,6 +1,7 @@
 package com.example.group.project.controller;
 
 import com.example.group.project.LoginRequest;
+import com.example.group.project.model.entity.User;
 import com.example.group.project.service.impl.UserDetailsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,30 +10,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 
 @Slf4j
-@RestController("auth")
+@RestController()
 public class StaffController {
 
     @Autowired
-    private UserDetailsServiceImpl userServiceImpl;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @GetMapping("/getusers")
+    @GetMapping("/auth/getusers")
     public ResponseEntity<?> getStaff(){
-        return ResponseEntity.status(HttpStatus.OK).body(userServiceImpl.getAllUsers());
+        return ResponseEntity.status(HttpStatus.OK).body(userDetailsServiceImpl.getAllUsers());
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request){
-        //String token = JwtUtil.generateToken(request.getUsername());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
@@ -44,5 +43,18 @@ public class StaffController {
         }
 
     }
+
+    @PostMapping("/newuser")
+    public ResponseEntity<?> newuser(@RequestBody HashMap<String, Object> newUser){
+        User returnUser = User.builder()
+                .username(newUser.get("Username").toString())
+                .password(userDetailsServiceImpl.hashPassword(newUser.get("Password").toString()))
+                .role(newUser.get("Role").toString()).build();
+
+        userDetailsServiceImpl.saveUser(returnUser);
+        return ResponseEntity.status(HttpStatus.OK).body("New User!");
+    }
+
+
 
 }

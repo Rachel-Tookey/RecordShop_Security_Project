@@ -6,6 +6,7 @@ import com.example.group.project.service.UserDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -23,6 +24,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.UserRepository = userRepository;
     }
 
+    @Autowired
+    private PasswordEncoder PasswordEncoder;
+
     @Override
     public List<User> getAllUsers(){
         return UserRepository.findAll();
@@ -36,6 +40,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.info("Here");
         User user = findByUsername(username);
         {
             if(user != null) {
@@ -48,6 +53,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 throw new UsernameNotFoundException("User not found");
             }
         }
+    }
+
+    public String hashPassword(String rawPassword){
+        return PasswordEncoder.encode(rawPassword);
+    }
+
+    public boolean verifyPassword(String rawPassword, String storedHashedPassword){
+        return PasswordEncoder.matches(rawPassword, storedHashedPassword);
+    }
+
+    public void saveUser(User newUser){
+        UserRepository.save(newUser);
     }
 
 
