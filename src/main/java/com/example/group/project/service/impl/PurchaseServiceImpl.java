@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import static com.example.group.project.util.DateUtil.getDate;
 
-// PurchaseServiceImpl class allows us to separate business logic from the Controller class
 @Slf4j
 @Service
 public class PurchaseServiceImpl implements PurchaseService {
