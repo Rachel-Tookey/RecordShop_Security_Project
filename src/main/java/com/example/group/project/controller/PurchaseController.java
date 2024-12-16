@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -23,7 +25,7 @@ public class PurchaseController {
     public PurchaseServiceImpl purchaseServiceImpl;
 
     @PostMapping("/purchase")
-    public ResponseEntity<?> makePurchase(@RequestBody Map<String, Object> userPurchase){
+    public ResponseEntity<?> makePurchase(@RequestHeader("Authorization") String authHeader, @RequestBody Map<String, Object> userPurchase){
         log.info("Attempting to make new purchase");
 
         if (!userPurchase.containsKey("customer")) {
