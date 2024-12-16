@@ -31,10 +31,15 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
         throws ServletException, IOException {
+
         log.info("Parsing token");
 
         String token = getJWTFromRequest(request);
         String username = null;
+
+        if (token == null) {
+            // get it from the cookies?
+        }
 
         if (token != null){
             username = jwtGenerator.extractUsername(token);

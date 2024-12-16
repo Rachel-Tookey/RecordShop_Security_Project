@@ -46,6 +46,7 @@ public class WebSecurityConfig {
         configuration.addAllowedOrigin("*");
         configuration.addAllowedMethod("GET");
         configuration.addAllowedMethod("POST");
+        configuration.addExposedHeader("Authorization");
         configuration.addAllowedHeader("Authorization");
         configuration.addAllowedHeader("Content-Type");
         configuration.setAllowCredentials(true);
