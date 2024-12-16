@@ -1,12 +1,12 @@
 package com.example.group.project.config;
 
 import com.example.group.project.JwtFilter;
-import com.example.group.project.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,13 +41,12 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-
+// set this to get from the database, don't hardcode:
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = User
-                .withUsername("user")
-                .password(passwordEncoder().encode("password"))
-                .roles("ADMIN")
+                .withUsername("kjones1")
+                .password(passwordEncoder().encode("password1"))
                 .build();
         return new InMemoryUserDetailsManager(user);
     }
@@ -58,8 +57,14 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+
+        authenticationManagerBuilder.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+
+        return authenticationManagerBuilder.build();
     }
 
 

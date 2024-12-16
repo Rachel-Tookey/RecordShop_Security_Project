@@ -17,7 +17,7 @@ import java.util.HashMap;
 
 @Slf4j
 @RestController()
-public class StaffController {
+public class UserController {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsServiceImpl;
@@ -37,7 +37,7 @@ public class StaffController {
         );
 
         if (authentication.isAuthenticated()) {
-            return ResponseEntity.status(HttpStatus.OK).body("Login successful!");
+            return ResponseEntity.status(HttpStatus.OK).body("Return token");
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Login unsuccessful");
         }
