@@ -2,9 +2,9 @@ package com.example.group.project.service.impl;
 
 import com.example.group.project.model.entity.User;
 import com.example.group.project.model.repository.UserRepository;
-import com.example.group.project.service.UserDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,12 +27,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private PasswordEncoder PasswordEncoder;
 
-    @Override
     public List<User> getAllUsers(){
         return UserRepository.findAll();
     }
 
-    @Override
     public User findByUsername(String username){
         return UserRepository.findByUsername(username);
     }
@@ -40,7 +38,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("Here");
+        log.info("Loading username");
         User user = findByUsername(username);
         {
             if(user != null) {

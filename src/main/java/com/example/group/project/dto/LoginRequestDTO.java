@@ -1,6 +1,8 @@
-package com.example.group.project;
+package com.example.group.project.dto;
 
-public class LoginRequest {
+
+public class LoginRequestDTO {
+
     private String username;
     private String password;
 
