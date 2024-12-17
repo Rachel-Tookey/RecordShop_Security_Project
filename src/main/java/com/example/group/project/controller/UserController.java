@@ -30,9 +30,8 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    // does it need authorisation?
     @GetMapping("/auth/getusers")
-    public ResponseEntity<?> getUsers(@RequestHeader("Authorization") String authHeader){
+    public ResponseEntity<?> getUsers(){
         return ResponseEntity.status(HttpStatus.OK).body(userDetailsServiceImpl.getAllUsers());
     }
 

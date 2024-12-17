@@ -22,8 +22,9 @@ public class PurchaseController {
     @Autowired
     public PurchaseServiceImpl purchaseServiceImpl;
 
-    @PostMapping("/purchase")
-    public ResponseEntity<?> makePurchase(@RequestHeader("Authorization") String authHeader, @RequestBody Map<String, Object> userPurchase){
+// @RequestHeader("Authorization") String authHeader,
+    @PostMapping("/auth/purchase")
+    public ResponseEntity<?> makePurchase(@RequestBody Map<String, Object> userPurchase){
         log.info("Attempting to make new purchase");
 
         if (!userPurchase.containsKey("customer")) {

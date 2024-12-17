@@ -21,7 +21,7 @@ public class  RecordController {
     @Autowired
     private RecordServiceImpl recordServiceImpl;
 
-    @GetMapping("/records")
+    @GetMapping("/auth/records")
     public ResponseEntity<?> getRecords(@RequestParam(required = false) Map<String, String> requestParams) {
         try {
             Map<String, String> params = (requestParams == null) ? new HashMap<>(Map.of()) : requestParams;

@@ -1,33 +1,33 @@
-package com.example.group.project.controller;
-
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.ServletWebRequest;
-import org.springframework.web.context.request.WebRequest;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-
-@Slf4j
-@RestControllerAdvice
-public class CustomErrorController implements ErrorController {
-
-    // custom controller to catch any errors not already caught in the endpoint logic
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> errorPage(WebRequest request, Exception ex){
-
-        Map<String, Object> body = new LinkedHashMap<>();
-        String url = ((ServletWebRequest)request).getRequest().getRequestURI().toString();
-        Object details = ex.getMessage();
-        body.put("You attempted to access the following URL", url);
-        body.put("Further details", details);
-
-        log.error("User sent request to " + url + " and the following error occured: " + details);
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
-    }
-}
+//package com.example.group.project.controller;
+//
+//import lombok.extern.slf4j.Slf4j;
+//import org.springframework.boot.web.servlet.error.ErrorAttributes;
+//import org.springframework.boot.web.servlet.error.ErrorController;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.web.bind.annotation.*;
+//import org.springframework.web.context.request.ServletWebRequest;
+//import org.springframework.web.context.request.WebRequest;
+//
+//import java.util.LinkedHashMap;
+//import java.util.Map;
+//
+//
+//@Slf4j
+//@RestControllerAdvice
+//public class CustomErrorController implements ErrorController {
+//
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<?> errorPage(WebRequest request, Exception ex){
+//
+//        Map<String, Object> body = new LinkedHashMap<>();
+//        String url = ((ServletWebRequest)request).getRequest().getRequestURI().toString();
+//        Object details = ex.getMessage();
+//        body.put("You attempted to access the following URL", url);
+//        body.put("Further details", details);
+//
+//        log.error("User sent request to " + url + " and the following error occured: " + details);
+//
+//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+//    }
+//}
