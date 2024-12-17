@@ -31,9 +31,6 @@ public class WebSecurityConfig {
         this.jwtFilter = jwtFiler;
     }
 
-    // csrf returns a token on auth requests and this can be used to validate the post requests
-    // how to get the correct token? as the returned one is not as a detailed
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
