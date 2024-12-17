@@ -37,10 +37,6 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = getJWTFromRequest(request);
         String username = null;
 
-        if (token == null) {
-            // get it from the cookies?
-        }
-
         if (token != null){
             username = jwtGenerator.extractUsername(token);
         }
