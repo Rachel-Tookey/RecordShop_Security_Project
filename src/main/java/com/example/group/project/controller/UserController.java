@@ -6,6 +6,7 @@ import com.example.group.project.model.entity.User;
 import com.example.group.project.security.GetCookies;
 import com.example.group.project.security.JwtGenerator;
 import com.example.group.project.service.impl.UserDetailsServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -15,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -31,7 +33,9 @@ public class UserController {
     private AuthenticationManager authenticationManager;
 
     @GetMapping("/auth/getusers")
-    public ResponseEntity<?> getUsers(){
+    public ResponseEntity<?> getUsers(HttpServletRequest request){
+        CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
+        log.info("{}={}", token.getHeaderName(), token.getToken());
         return ResponseEntity.status(HttpStatus.OK).body(userDetailsServiceImpl.getAllUsers());
     }
 

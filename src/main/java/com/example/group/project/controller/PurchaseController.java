@@ -2,10 +2,12 @@ package com.example.group.project.controller;
 
 
 import com.example.group.project.service.impl.PurchaseServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -22,9 +24,9 @@ public class PurchaseController {
     @Autowired
     public PurchaseServiceImpl purchaseServiceImpl;
 
-// @RequestHeader("Authorization") String authHeader,
     @PostMapping("/auth/purchase")
     public ResponseEntity<?> makePurchase(@RequestBody Map<String, Object> userPurchase){
+
         log.info("Attempting to make new purchase");
 
         if (!userPurchase.containsKey("customer")) {
