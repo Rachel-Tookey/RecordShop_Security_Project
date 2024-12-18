@@ -9,4 +9,4 @@ CREATE TABLE users (
 
 INSERT INTO users (firstname, lastname, username, password, role)
 VALUES
-("Gillian",  "Thompson",  "GillyT10", "$2a$10$kTJMa8NiWpcGW8GC.NtUy.q28VUCpO5H1/v9exYNr8BgUgN2yWi4q" , 'ADMIN');
+("Gillian",  "Thompson",  "GillyT10", "$2a$10$kTJMa8NiWpcGW8GC.NtUy.q28VUCpO5H1/v9exYNr8BgUgN2yWi4q" , "ADMIN");

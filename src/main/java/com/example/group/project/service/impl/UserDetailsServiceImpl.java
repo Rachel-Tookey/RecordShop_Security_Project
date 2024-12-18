@@ -27,10 +27,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private PasswordEncoder PasswordEncoder;
 
-    public List<User> getAllUsers(){
-        return UserRepository.findAll();
-    }
-
     public User findByUsername(String username){
         return UserRepository.findByUsername(username);
     }

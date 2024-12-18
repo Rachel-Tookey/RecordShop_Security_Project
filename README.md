@@ -1,4 +1,4 @@
-# GROUP 2 PROJECT
+# Record Shop Auth Project 
 ## Record Shop Database App
 
 ```mermaid
