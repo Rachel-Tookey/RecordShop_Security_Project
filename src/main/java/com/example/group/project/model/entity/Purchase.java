@@ -29,7 +29,7 @@ public class Purchase {
     @Column(name = "purchase_date", nullable = false)
     private LocalDate date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id", nullable = false)
     private Record recordLink;
 

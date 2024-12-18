@@ -1,5 +1,8 @@
 package com.example.group.project.service;
 
+import com.example.group.project.model.entity.Purchase;
+
+import java.util.List;
 import java.util.Map;
 
 public interface PurchaseService {
@@ -13,5 +16,7 @@ public interface PurchaseService {
     double adjustPrice(Map<String,Object> userPurchase);
 
     Long commitPurchase(Map<String,Object> userPurchase);
+
+    List<Purchase> getPurchases();
 
 }

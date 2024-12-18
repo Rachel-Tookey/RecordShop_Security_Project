@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 import java.util.Map;
 import static com.example.group.project.util.DateUtil.getDate;
@@ -26,6 +27,12 @@ public class PurchaseServiceImpl implements PurchaseService {
         this.recordRepository = recordRepository;
         this.purchaseRepository = purchaseRepository;
     }
+
+    @Override
+    public List<Purchase> getPurchases(){
+        return purchaseRepository.findAll();
+    }
+
 
     @Override
     public Long pullId(Map<String, Object>userPurchase) {
