@@ -24,21 +24,22 @@ public class PurchaseController {
 
     @GetMapping("/getpurchases")
     public ResponseEntity<?> getPurchases(){
+        log.info("Getting all purchases");
         return ResponseEntity.status(HttpStatus.OK).body(purchaseServiceImpl.getPurchases());
     }
 
     @PostMapping("/auth/purchase")
-    public ResponseEntity<?> makePurchase(@RequestBody Map<String, Object> userPurchase){
+    public ResponseEntity<?> makePurchase(@RequestBody Map<String, String> userPurchase){
 
         log.info("Attempting to make new purchase");
 
         if (!userPurchase.containsKey("customer")) {
             log.info("Customer name not provided");
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Customer name not provided");
-        } else if (userPurchase.get("customer").toString().length() < 3) {
+        } else if (userPurchase.get("customer").length() < 3) {
             log.info("Customer name too short");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Customer name too short");
-        } else if (userPurchase.get("customer").toString().length() > 40){
+        } else if (userPurchase.get("customer").length() > 40){
             log.info("Customer name too long");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Customer name too long");
         } else if (!userPurchase.containsKey("id")) {
@@ -46,17 +47,18 @@ public class PurchaseController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No Id provided");
         }
 
+        String productId = userPurchase.get("id");
         Pattern numericalPattern = Pattern.compile("^\\d+$");
-        Matcher matcher = numericalPattern.matcher(userPurchase.get("id").toString());
+        Matcher matcher = numericalPattern.matcher(productId);
         if (!matcher.find()) {
             log.info("Id not numerical value");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Id must be numerical value");
         }
 
-        if (!purchaseServiceImpl.checkIdExists(userPurchase)) {
+        if (!purchaseServiceImpl.checkIdExists(productId)) {
             log.info("Id does not exist");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This is not a valid item Id");
-        } else if (!purchaseServiceImpl.checkStock(userPurchase)) {
+        } else if (!purchaseServiceImpl.checkStock(productId)) {
             log.info("Item not in stock");
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Item not in stock");
         }

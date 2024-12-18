@@ -34,59 +34,48 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
 
-    @Override
-    public Long pullId(Map<String, Object>userPurchase) {
-        Object userId = userPurchase.get("id");
-        if (userId instanceof Long) {
-            return (Long) userId;
-        } else if (userId instanceof Integer) {
-            Integer userIdInt = (Integer) userId;
-            return userIdInt.longValue();
-        } else {
-        throw new IllegalArgumentException("Not correct variable type");
-        }
+    public Long parseId(String id) {
+        return Long.parseLong(id);
     }
 
     @Override
-    public boolean checkStock(Map<String, Object>userPurchase){
-        return recordRepository.getReferenceById(pullId(userPurchase)).getQuantity() != 0;
+    public boolean checkStock(String id){
+        return recordRepository.getReferenceById(parseId(id)).getQuantity() != 0;
     }
 
     @Override
-    public boolean checkIdExists(Map<String, Object>userPurchase){
-        Long newID = pullId(userPurchase);
+    public boolean checkIdExists(String id){
+        Long newID = parseId(id);
         return recordRepository.existsById(newID);
     }
 
     @Override
-    public double adjustPrice(Map<String, Object>  userPurchase){
-        double itemPrice = recordRepository.getReferenceById(pullId(userPurchase)).getPrice();
-        itemPrice = itemPrice * 100;
-        if (userPurchase.containsKey("discount")) {
-            String userDiscount = String.valueOf(userPurchase.get("discount"));
-            if (userDiscount.equals("CFG")) {
-                log.info("Discount code applied");
-                itemPrice = itemPrice * 0.8;
-            } else {
-                log.info("Incorrect discount code supplied");
-            }
+    public double adjustPrice(double itemPrice, boolean HasDiscount){
+        if (HasDiscount) {
+           log.info("Discount code applied");
+           itemPrice = Math.round(itemPrice * 80);
         } else {
             log.info("No discount code applied");
+            itemPrice = Math.round(itemPrice * 100);
         }
-        itemPrice = (Math.round(itemPrice));
         return itemPrice / 100;
     }
 
     @Override
-    @Transactional
-    public Long commitPurchase(Map<String, Object> userPurchase){
+    public boolean IsDiscount(Map<String, String> userPurchase){
+        return userPurchase.containsKey("discount") && userPurchase.get("discount").equals("CFG");
+    }
 
-        double itemPrice = adjustPrice(userPurchase);
-        String customerName = userPurchase.get("customer").toString();
-        Record newRecord = recordRepository.getReferenceById(pullId(userPurchase));
+    @Override
+    @Transactional
+    public Long commitPurchase(Map<String, String> userPurchase){
+
+        Record newRecord = recordRepository.getReferenceById(parseId(userPurchase.get("id")));
+
+        double itemPrice = adjustPrice(newRecord.getPrice(), IsDiscount(userPurchase));
 
         Purchase newPurchase = Purchase.builder()
-                .customer(customerName)
+                .customer(userPurchase.get("customer"))
                 .price(itemPrice)
                 .date(getDate())
                 .recordLink(newRecord)

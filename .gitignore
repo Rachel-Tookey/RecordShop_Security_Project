@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### HTTPS cert ###
-src/main/resources/keystore.p12
+src/main/resources/certs/keystore.p12

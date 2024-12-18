@@ -52,8 +52,8 @@ public class PurchaseControllerTests {
                 .recordLink(recordTest)
                 .build();
 
-        when(purchaseServiceImpl.checkIdExists(any(Map.class))).thenReturn(true);
-        when(purchaseServiceImpl.checkStock(any(Map.class))).thenReturn(true);
+        when(purchaseServiceImpl.checkIdExists(any(String.class))).thenReturn(true);
+        when(purchaseServiceImpl.checkStock(any(String.class))).thenReturn(true);
         when(purchaseServiceImpl.commitPurchase(any(Map.class))).thenReturn(purchaseTest.getId());
 
         Map<String, Object> userPurchase = new HashMap<>();
@@ -178,7 +178,7 @@ public class PurchaseControllerTests {
         userPurchase.put("customer", "John");
         userPurchase.put("id", recordTest.getId());
 
-        when(purchaseServiceImpl.checkIdExists(any(Map.class))).thenReturn(true);
+        when(purchaseServiceImpl.checkIdExists(any(String.class))).thenReturn(true);
 
 
         RestAssuredMockMvc

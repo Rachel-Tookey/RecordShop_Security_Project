@@ -1,8 +1,8 @@
 package com.example.group.project.controller;
 
+
 import com.example.group.project.dto.AuthResponseDTO;
 import com.example.group.project.dto.LoginRequestDTO;
-import com.example.group.project.model.entity.User;
 import com.example.group.project.security.utils.GetCookies;
 import com.example.group.project.security.tokens.JwtGenerator;
 import com.example.group.project.service.impl.UserDetailsServiceImpl;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 
 
+
 @Slf4j
 @RestController()
 public class UserController {
@@ -32,18 +33,24 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO request){
+
+        // check for null values?
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
 
         if (authentication.isAuthenticated()) {
+            log.info("Credentials authenticated");
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String token = JwtGenerator.generateToken(authentication.getName());
 
             HttpHeaders returnHeaders = new HttpHeaders();
             returnHeaders.add(HttpHeaders.SET_COOKIE, GetCookies.GetCookie(token));
+            log.info("Returning token");
             return ResponseEntity.status(HttpStatus.OK).headers(returnHeaders).body(new AuthResponseDTO(token));
         } else {
+            log.info("Credentials not authenticated");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Login unsuccessful");
         }
 
@@ -52,14 +59,22 @@ public class UserController {
     @PostMapping("/auth/register")
     public ResponseEntity<?> register(@RequestBody HashMap<String, String> newUser){
         log.info("Registering new user");
-        User returnUser = User.builder()
-                .firstname(newUser.get("firstname"))
-                .lastname(newUser.get("lastname"))
-                .username(newUser.get("username"))
-                .password(userDetailsServiceImpl.hashPassword(newUser.get("password")))
-                .role(newUser.get("role")).build();
 
-        userDetailsServiceImpl.saveUser(returnUser);
+        String[] params = new String[] {"firstname", "lastname", "username", "password", "role"};
+
+        for (String param : params) {
+            if (!newUser.containsKey(param)) {
+                log.info("User missing info");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Must contain " + param + " key");
+            } else if (newUser.get(param) == null) {
+                log.info("User invalid info");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Must contain " + param + " value");
+            }
+        }
+
+        log.info("Saving user");
+        userDetailsServiceImpl.saveUser(newUser);
+
         return ResponseEntity.status(HttpStatus.OK).body("New User!");
     }
 

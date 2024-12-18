@@ -32,7 +32,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
         throws ServletException, IOException {
 
-        log.info("Parsing token");
+        log.info("Filtering token");
 
         String token = getJWTFromRequest(request);
         String username = null;

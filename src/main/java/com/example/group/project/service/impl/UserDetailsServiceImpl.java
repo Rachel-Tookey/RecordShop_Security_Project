@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -38,6 +39,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = findByUsername(username);
         {
             if(user != null) {
+                log.info("Username found");
                 return org.springframework.security.core.userdetails.User.builder()
                         .username(user.getUsername())
                         .password(user.getPassword())
@@ -50,15 +52,25 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public String hashPassword(String rawPassword){
+        log.info("Hashing password");
         return PasswordEncoder.encode(rawPassword);
     }
 
     public boolean verifyPassword(String rawPassword, String storedHashedPassword){
+        log.info("Verifying password");
         return PasswordEncoder.matches(rawPassword, storedHashedPassword);
     }
 
-    public void saveUser(User newUser){
-        UserRepository.save(newUser);
+    public void saveUser(HashMap<String, String> newUser){
+        User returnUser = User.builder()
+                .firstname(newUser.get("firstname"))
+                .lastname(newUser.get("lastname"))
+                .username(newUser.get("username"))
+                .password(hashPassword(newUser.get("password")))
+                .role(newUser.get("role")).build();
+
+        UserRepository.save(returnUser);
+        log.info("New user saved");
     }
 
 

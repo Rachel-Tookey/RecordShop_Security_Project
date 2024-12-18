@@ -7,16 +7,17 @@ import java.util.Map;
 
 public interface PurchaseService {
 
-    Long pullId(Map<String,Object> userPurchase);
+    Long parseId(String Id);
 
-    boolean checkStock(Map<String,Object> userPurchase);
+    boolean checkStock(String Id);
 
-    boolean checkIdExists(Map<String,Object> userPurchase);
+    boolean checkIdExists(String Id);
 
-    double adjustPrice(Map<String,Object> userPurchase);
+    double adjustPrice(double itemPrice, boolean HasDiscount);
 
-    Long commitPurchase(Map<String,Object> userPurchase);
+    Long commitPurchase(Map<String,String> userPurchase);
 
     List<Purchase> getPurchases();
 
+    boolean IsDiscount(Map<String, String> userPurchase);
 }
