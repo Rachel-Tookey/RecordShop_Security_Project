@@ -49,10 +49,12 @@ public class UserController {
 
     }
 
-    @PostMapping("/register")
+    @PostMapping("/auth/register")
     public ResponseEntity<?> register(@RequestBody HashMap<String, String> newUser){
         log.info("Registering new user");
         User returnUser = User.builder()
+                .firstname(newUser.get("firstname"))
+                .lastname(newUser.get("lastname"))
                 .username(newUser.get("username"))
                 .password(userDetailsServiceImpl.hashPassword(newUser.get("password")))
                 .role(newUser.get("role")).build();

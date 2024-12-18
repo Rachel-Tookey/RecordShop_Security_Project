@@ -32,12 +32,14 @@ public class WebSecurityConfig {
         this.csrfFilter = csrfFilter;
     }
 
-    // add in a filter so only one page can have access to
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .securityMatcher("/auth/**")
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().hasRole("ADMIN"))
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/auth/register").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(c -> c.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .build();
