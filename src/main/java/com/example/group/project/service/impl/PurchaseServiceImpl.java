@@ -27,7 +27,6 @@ public class PurchaseServiceImpl implements PurchaseService {
         this.purchaseRepository = purchaseRepository;
     }
 
-    // takes out record ID json input, converts it to Long record ID:
     @Override
     public Long pullId(Map<String, Object>userPurchase) {
         Object userId = userPurchase.get("id");
@@ -41,20 +40,17 @@ public class PurchaseServiceImpl implements PurchaseService {
         }
     }
 
-    // checks if the item requested is present in the stock
     @Override
     public boolean checkStock(Map<String, Object>userPurchase){
         return recordRepository.getReferenceById(pullId(userPurchase)).getQuantity() != 0;
     }
 
-    // checks if the item requested exists
     @Override
     public boolean checkIdExists(Map<String, Object>userPurchase){
         Long newID = pullId(userPurchase);
         return recordRepository.existsById(newID);
     }
 
-    // gets item price and adjusts it if a valid discount code is provided
     @Override
     public double adjustPrice(Map<String, Object>  userPurchase){
         double itemPrice = recordRepository.getReferenceById(pullId(userPurchase)).getPrice();
@@ -74,17 +70,14 @@ public class PurchaseServiceImpl implements PurchaseService {
         return itemPrice / 100;
     }
 
-    // makes the purchase -> adding the purchase table, adjusting stock and returning a purchase ID
     @Override
     @Transactional
     public Long commitPurchase(Map<String, Object> userPurchase){
 
-        // getting object fields
         double itemPrice = adjustPrice(userPurchase);
         String customerName = userPurchase.get("customer").toString();
         Record newRecord = recordRepository.getReferenceById(pullId(userPurchase));
 
-        // make new purchase:
         Purchase newPurchase = Purchase.builder()
                 .customer(customerName)
                 .price(itemPrice)
@@ -95,7 +88,6 @@ public class PurchaseServiceImpl implements PurchaseService {
 
         log.info("Purchase made");
 
-        // adjust quantity in record table:
         int newQuant = newRecord.getQuantity() - 1;
         newRecord.setQuantity(newQuant);
 

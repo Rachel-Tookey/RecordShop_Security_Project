@@ -1,4 +1,4 @@
-package com.example.group.project.security;
+package com.example.group.project.security.tokens;
 import lombok.extern.slf4j.Slf4j;
 
 import io.jsonwebtoken.Jwts;

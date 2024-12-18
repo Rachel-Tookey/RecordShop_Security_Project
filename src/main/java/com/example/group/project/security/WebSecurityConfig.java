@@ -1,9 +1,7 @@
 package com.example.group.project.security;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.example.group.project.security.tokens.CsrfFilter;
+import com.example.group.project.security.tokens.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -17,10 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
 
 
 @Configuration
@@ -29,11 +24,15 @@ public class WebSecurityConfig {
 
     private final JwtFilter jwtFilter;
 
+    private final CsrfFilter csrfFilter;
+
     @Autowired
-    public WebSecurityConfig(JwtFilter jwtFiler){
+    public WebSecurityConfig(JwtFilter jwtFiler, CsrfFilter csrfFilter){
         this.jwtFilter = jwtFiler;
+        this.csrfFilter = csrfFilter;
     }
 
+    // add in a filter so only one page can have access to
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -57,24 +56,9 @@ public class WebSecurityConfig {
     @Bean
     public FilterRegistrationBean<OncePerRequestFilter> csrfHeaderFilterRegistration() {
         FilterRegistrationBean<OncePerRequestFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(csrfHeaderFilter());
+        registrationBean.setFilter(csrfFilter);
         registrationBean.setOrder(100);
         return registrationBean;
     }
 
-    // Move this to its own class?
-    @Bean
-    public OncePerRequestFilter csrfHeaderFilter() {
-        return new OncePerRequestFilter() {
-            @Override
-            protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-                    throws ServletException, IOException {
-                CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-                if (csrfToken != null) {
-                    response.setHeader("X-XSRF-TOKEN", csrfToken.getToken());
-                }
-                filterChain.doFilter(request, response);
-            }
-        };
     }
-}

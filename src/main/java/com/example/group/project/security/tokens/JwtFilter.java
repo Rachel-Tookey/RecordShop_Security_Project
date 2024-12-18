@@ -1,4 +1,4 @@
-package com.example.group.project.security;
+package com.example.group.project.security.tokens;
 
 import com.example.group.project.service.impl.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
