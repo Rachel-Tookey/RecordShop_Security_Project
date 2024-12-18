@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.HashMap;
-import java.util.List;
 
 
 @Slf4j
@@ -32,6 +31,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return UserRepository.findByUsername(username);
     }
 
+    public boolean checkUserExists(String username){
+        return UserRepository.existsByUsername(username);
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

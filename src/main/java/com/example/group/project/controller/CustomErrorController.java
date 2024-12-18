@@ -31,16 +31,12 @@ public class CustomErrorController implements ErrorController {
     public ResponseEntity<?> errorPage(HttpServletRequest request, Exception ex){
 
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-        Integer statusCode = null;
 
-        if (status != null) {
-            statusCode = Integer.valueOf(status.toString());
-        }
-
+        Integer statusCode = Integer.valueOf(status.toString());
         HttpStatus castStatus = getStatusFromCode(statusCode);
 
         Map<String, Object> body = new LinkedHashMap<>();
-        String url = ((ServletWebRequest)request).getRequest().getRequestURI().toString();
+        String url = ((ServletWebRequest)request).getRequest().getRequestURI();
         Object details = ex.getMessage();
         body.put("You attempted to access the following URL", url);
         body.put("Further details", details);

@@ -72,6 +72,10 @@ public class UserController {
             }
         }
 
+        if (userDetailsServiceImpl.checkUserExists(newUser.get("username"))) {
+            return ResponseEntity.status((HttpStatus.BAD_REQUEST)).body("Username already in use");
+        }
+
         log.info("Saving user");
         userDetailsServiceImpl.saveUser(newUser);
 
