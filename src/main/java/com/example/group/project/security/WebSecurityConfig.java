@@ -62,7 +62,7 @@ public class WebSecurityConfig {
         return registrationBean;
     }
 
-
+    // Move this to its own class?
     @Bean
     public OncePerRequestFilter csrfHeaderFilter() {
         return new OncePerRequestFilter() {
@@ -71,7 +71,7 @@ public class WebSecurityConfig {
                     throws ServletException, IOException {
                 CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
                 if (csrfToken != null) {
-                    response.setHeader("X-CSRF-TOKEN", csrfToken.getToken());
+                    response.setHeader("X-XSRF-TOKEN", csrfToken.getToken());
                 }
                 filterChain.doFilter(request, response);
             }
