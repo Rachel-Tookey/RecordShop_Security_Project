@@ -32,6 +32,7 @@ public class WebSecurityConfig {
         this.csrfFilter = csrfFilter;
     }
 
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http

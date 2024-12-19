@@ -1,8 +1,6 @@
 package com.example.group.project.controllerTests;
 
-import com.example.group.project.controller.PurchaseController;
 import com.example.group.project.controller.UserController;
-import com.example.group.project.service.impl.PurchaseServiceImpl;
 import com.example.group.project.service.impl.UserDetailsServiceImpl;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,5 +20,22 @@ public class UserControllerTests {
 
     @BeforeEach
     public void setUpMockPurchaseController() { RestAssuredMockMvc.standaloneSetup(userController); }
+
+    /*
+    Register:
+    Test for missing parameters
+    Test for missing info
+    Test for username already in use
+    Test for saving user
+
+    // Test only an admin can reach this page?
+
+    Login:
+    Test for bad values
+    Test for good values -> mock authentication manager?
+    Test for returned token as cookie
+
+     */
+
 
 }
