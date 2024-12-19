@@ -9,7 +9,7 @@ RUN mvn clean package -D maven.test.skip
 FROM eclipse-temurin:22-jre AS run
 
 WORKDIR /opt
-COPY --from=build /opt/target/group-project-0.0.1-SNAPSHOT.jar .
+COPY --from=build /opt/target/group.project-0.0.1-SNAPSHOT.jar .
 
-ENTRYPOINT ["java", "-jar", "group-project-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "group.project-0.0.1-SNAPSHOT.jar"]
 EXPOSE 8080
