@@ -16,10 +16,14 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 
 @Configuration
 @EnableWebSecurity
+@EnableWebMvc
+@ComponentScan(basePackages = "com.example.group.project.security.tokens")
 public class WebSecurityConfig {
 
     private final JwtFilter jwtFilter;

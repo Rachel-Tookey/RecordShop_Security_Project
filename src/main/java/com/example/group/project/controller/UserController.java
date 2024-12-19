@@ -21,6 +21,7 @@ import java.util.HashMap;
 
 
 
+
 @Slf4j
 @RestController()
 public class UserController {
@@ -66,7 +67,7 @@ public class UserController {
             if (!newUser.containsKey(param)) {
                 log.info("User missing info");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Must contain " + param + " key");
-            } else if (newUser.get(param) == null) {
+            } else if (newUser.get(param) == null || newUser.get(param).length() < 2) {
                 log.info("User invalid info");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Must contain " + param + " value");
             }

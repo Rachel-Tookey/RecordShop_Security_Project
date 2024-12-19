@@ -16,6 +16,9 @@ import java.util.Date;
 public class JwtGenerator {
 
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+
+    //private static final String ENCODED_KEY =  System.getenv("SECRET_KEY");
+
     private static final String ENCODED_KEY = Base64.getEncoder().encodeToString(SECRET_KEY.getEncoded());
 
     private static final long EXPIRATION_TIME = 864_000_000;
