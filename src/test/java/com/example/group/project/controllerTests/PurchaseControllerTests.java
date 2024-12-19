@@ -21,7 +21,7 @@ import java.util.Map;
 public class PurchaseControllerTests {
 
     @Mock
-    private PurchaseServiceImpl purchaseServiceImpl; // Mock the service
+    private PurchaseServiceImpl purchaseServiceImpl;
 
     @InjectMocks
     private PurchaseController purchaseController;
