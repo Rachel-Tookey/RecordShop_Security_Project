@@ -62,7 +62,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public boolean IsDiscount(Map<String, String> userPurchase){
+    public boolean isDiscount(Map<String, String> userPurchase){
         return userPurchase.containsKey("discount") && userPurchase.get("discount").equals("CFG");
     }
 
@@ -72,7 +72,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
         Record newRecord = recordRepository.getReferenceById(parseId(userPurchase.get("id")));
 
-        double itemPrice = adjustPrice(newRecord.getPrice(), IsDiscount(userPurchase));
+        double itemPrice = adjustPrice(newRecord.getPrice(), isDiscount(userPurchase));
 
         Purchase newPurchase = Purchase.builder()
                 .customer(userPurchase.get("customer"))

@@ -152,6 +152,37 @@ public class PurchaseServiceImplTests {
 
     }
 
+    @Test
+    public void isDiscount_ValidInput_ReturnsTrue() {
+        Map<String, String> userPurchase = new HashMap<>();
+        userPurchase.put("id", "1");
+        userPurchase.put("discount", "CFG");
+
+        boolean returnValue = purchaseServiceImpl.isDiscount(userPurchase);
+
+        assertTrue(returnValue);
+    }
+
+    @Test
+    public void isDiscount_NoDiscount_ReturnsFalse() {
+        Map<String, String> userPurchase = new HashMap<>();
+        userPurchase.put("id", "1");
+
+        boolean returnValue = purchaseServiceImpl.isDiscount(userPurchase);
+
+        assertFalse(returnValue);
+    }
+
+    @Test
+    public void isDiscount_IncorrectDiscount_ReturnsFalse() {
+        Map<String, String> userPurchase = new HashMap<>();
+        userPurchase.put("id", "1");
+        userPurchase.put("discount", "cfg");
+
+        boolean returnValue = purchaseServiceImpl.isDiscount(userPurchase);
+
+        assertFalse(returnValue);
+    }
 
     @Test
     public void commitPurchase_ValidInput_MakesSave() {
@@ -178,14 +209,12 @@ public class PurchaseServiceImplTests {
                 .recordLink(recordTest)
                 .build();
 
-
         when(recordRepository.getReferenceById(recordTestID)).thenReturn(recordTest);
         when(purchaseRepository.save(purchaseTest)).thenAnswer(invocation -> invocation.getArgument(0));
 
         purchaseServiceImpl.commitPurchase(userPurchase);
 
         verify(purchaseRepository).save(purchaseTest);
-
 
     }
 

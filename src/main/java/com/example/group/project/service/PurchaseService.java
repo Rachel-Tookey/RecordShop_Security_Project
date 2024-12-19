@@ -19,5 +19,5 @@ public interface PurchaseService {
 
     List<Purchase> getPurchases();
 
-    boolean IsDiscount(Map<String, String> userPurchase);
+    boolean isDiscount(Map<String, String> userPurchase);
 }

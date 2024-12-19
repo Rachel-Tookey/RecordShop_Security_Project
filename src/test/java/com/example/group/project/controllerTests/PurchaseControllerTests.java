@@ -1,9 +1,6 @@
 package com.example.group.project.controllerTests;
 
 import com.example.group.project.controller.PurchaseController;
-import com.example.group.project.model.entity.Purchase;
-import com.example.group.project.model.entity.Record;
-
 import com.example.group.project.service.impl.PurchaseServiceImpl;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,10 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
