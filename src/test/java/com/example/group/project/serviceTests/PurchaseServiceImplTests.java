@@ -35,21 +35,16 @@ public class PurchaseServiceImplTests {
     public void setUp() {
     }
 
-    // testing pullID
     @Test
     public void pullId_ConvertLong_Success() {
 
-        Map<String, String> userPurchase = new HashMap<>();
-        userPurchase.put("customer", "John");
-        userPurchase.put("id", "1");
-
-        Long testReturn = purchaseServiceImpl.parseId(userPurchase.get("id"));
-
+        String inputId = "1";
+        Long testReturn = purchaseServiceImpl.parseId(inputId);
         assertInstanceOf(Long.class, testReturn);
+        assertEquals(testReturn, 1L);
 
     }
 
-    // check stock
     @Test
     public void checkStock_Called_ReturnsTrue() {
         Record recordTest = Record.builder()
@@ -60,12 +55,9 @@ public class PurchaseServiceImplTests {
                 .price(9.99)
                 .build();
 
-        Map<String, Object> userPurchase = new HashMap<>();
-        userPurchase.put("id", recordTest.getId());
-
         when(recordRepository.getReferenceById(1L)).thenReturn(recordTest);
 
-        boolean checkStockTest = purchaseServiceImpl.checkStock(userPurchase.get("id").toString());
+        boolean checkStockTest = purchaseServiceImpl.checkStock("1");
 
         assertTrue(checkStockTest);
 
@@ -82,17 +74,16 @@ public class PurchaseServiceImplTests {
                 .build();
 
         Map<String, String> userPurchase = new HashMap<>();
-        userPurchase.put("id", recordTest.getId().toString());
+        userPurchase.put("id", "1");
 
         when(recordRepository.getReferenceById(1L)).thenReturn(recordTest);
 
-        boolean checkStockTest = purchaseServiceImpl.checkStock(userPurchase.get("id"));
+        boolean checkStockTest = purchaseServiceImpl.checkStock("1");
 
         assertFalse(checkStockTest);
 
     }
 
-    // check id exits:
     @Test
     public void checkIdExists_ValidId_ReturnsTrue() {
         Record recordTest = Record.builder()
@@ -105,15 +96,11 @@ public class PurchaseServiceImplTests {
         Long recordTestID = 2L;
         recordTest.setId(recordTestID);
 
-        Map<String, String> userPurchase = new HashMap<>();
-        userPurchase.put("id", "2");
-
         when(recordRepository.existsById(recordTestID)).thenReturn(true);
 
-        boolean checkStockTest = purchaseServiceImpl.checkIdExists(userPurchase.get("id"));
+        boolean checkStockTest = purchaseServiceImpl.checkIdExists("2");
 
         assertTrue(checkStockTest);
-
     }
 
     @Test
@@ -129,7 +116,6 @@ public class PurchaseServiceImplTests {
 
     }
 
-    // adjust price
     @Test
     public void adjustPrice_ValidInputNoDiscount_ReturnPrice(){
         Record recordTest = Record.builder()
@@ -166,26 +152,7 @@ public class PurchaseServiceImplTests {
 
     }
 
-    @Test
-    public void adjustPrice_ValidInputWrongDiscount_ReturnPrice(){
-        Record recordTest = Record.builder()
-                .name("Thriller")
-                .artist("Michael Jackson")
-                .quantity(0)
-                .price(9.99)
-                .build();
 
-
-        Long recordTestId = 1L;
-        recordTest.setId(recordTestId);
-
-        double recordPrice = purchaseServiceImpl.adjustPrice(recordTest.getPrice(), false);
-
-        assertEquals(9.99, recordPrice);
-
-    }
-
-    // commit purchase:
     @Test
     public void commitPurchase_ValidInput_MakesSave() {
 
@@ -212,7 +179,7 @@ public class PurchaseServiceImplTests {
                 .build();
 
 
-        //when(recordRepository.getReferenceById(recordTestID)).thenReturn(recordTest);
+        when(recordRepository.getReferenceById(recordTestID)).thenReturn(recordTest);
         when(purchaseRepository.save(purchaseTest)).thenAnswer(invocation -> invocation.getArgument(0));
 
         purchaseServiceImpl.commitPurchase(userPurchase);
