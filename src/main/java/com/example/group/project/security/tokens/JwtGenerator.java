@@ -7,6 +7,7 @@ import io.jsonwebtoken.security.Keys;
 
 import org.springframework.stereotype.Component;
 
+import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
@@ -16,10 +17,10 @@ import java.util.Date;
 public class JwtGenerator {
 
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-
-    //private static final String ENCODED_KEY =  System.getenv("SECRET_KEY");
-
     private static final String ENCODED_KEY = Base64.getEncoder().encodeToString(SECRET_KEY.getEncoded());
+
+//    private static final String SECRET_KEY =  System.getenv("SECRET_KEY");
+//    private static final Key ENCODED_KEY = new SecretKeySpec(Base64.getDecoder().decode(SECRET_KEY), SignatureAlgorithm.HS512.getJcaName());
 
     private static final long EXPIRATION_TIME = 864_000_000;
 
