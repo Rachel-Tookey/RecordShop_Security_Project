@@ -32,6 +32,10 @@ public class CustomErrorController implements ErrorController {
 
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
+        if (status == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("An unknown error occured");
+        }
+
         Integer statusCode = Integer.valueOf(status.toString());
         HttpStatus castStatus = getStatusFromCode(statusCode);
 
