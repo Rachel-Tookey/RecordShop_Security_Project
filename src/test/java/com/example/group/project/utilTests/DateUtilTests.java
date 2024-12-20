@@ -3,7 +3,6 @@ package com.example.group.project.utilTests;
 import com.example.group.project.util.DateUtil;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DateUtilTests {

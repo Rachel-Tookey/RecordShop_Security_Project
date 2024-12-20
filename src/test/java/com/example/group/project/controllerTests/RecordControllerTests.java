@@ -56,7 +56,7 @@ public class RecordControllerTests {
                     .param("name", "Thriller")
                     .param("artist","Michael Jackson")
                 .when()
-                    .get("/records")
+                    .get("/auth/records")
                 .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("$.size()", equalTo(recordByNameAndArtist.size()))
@@ -88,7 +88,7 @@ public class RecordControllerTests {
                 .given()
                     .param("artist", "Michael Jackson")
                 .when()
-                    .get("/records")
+                    .get("/auth/records")
                 .then()
                     .statusCode(200)
                     .body("$.size()", equalTo(recordsByArtist.size()))
@@ -113,7 +113,7 @@ public class RecordControllerTests {
                 .given()
                 .param("name", "Rec1")
                 .when()
-                .get("/records")
+                .get("/auth/records")
                 .then()
                 .statusCode(200)
                 .body("$.size()", equalTo(recordByName.size()))
@@ -139,7 +139,7 @@ public class RecordControllerTests {
 
         RestAssuredMockMvc
                 .when()
-                .get("/records")
+                .get("/auth/records")
                 .then()
                 .statusCode(200)
                 .body("$.size()", equalTo(allRecords.size()))
@@ -166,7 +166,7 @@ public class RecordControllerTests {
                     .param("artist",artist)
                     .param("name", record)
                 .when()
-                    .get("/records")
+                    .get("/auth/records")
                 .then()
                     .statusCode(HttpStatus.NOT_FOUND.value())
                     .body(equalTo(exceptionMessage));
@@ -185,7 +185,7 @@ public class RecordControllerTests {
                 .given()
                     .param("not a param", "not a value")
                 .when()
-                    .get("/records")
+                    .get("/auth/records")
                 .then()
                     .statusCode(HttpStatus.BAD_REQUEST.value())
                     .body(equalTo(exceptionMessage));

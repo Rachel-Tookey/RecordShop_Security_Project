@@ -21,9 +21,7 @@ public class  RecordController {
     @Autowired
     private RecordServiceImpl recordServiceImpl;
 
-    // GET endpoint to view records
-    @GetMapping("/records")
-    // handles request parameters and calls the method; will return the appropriate HTTP response based on the outcome/exceptions
+    @GetMapping("/auth/records")
     public ResponseEntity<?> getRecords(@RequestParam(required = false) Map<String, String> requestParams) {
         try {
             Map<String, String> params = (requestParams == null) ? new HashMap<>(Map.of()) : requestParams;

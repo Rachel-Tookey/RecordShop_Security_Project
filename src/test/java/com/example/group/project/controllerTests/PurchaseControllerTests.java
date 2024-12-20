@@ -1,9 +1,6 @@
 package com.example.group.project.controllerTests;
 
 import com.example.group.project.controller.PurchaseController;
-import com.example.group.project.model.entity.Purchase;
-import com.example.group.project.model.entity.Record;
-
 import com.example.group.project.service.impl.PurchaseServiceImpl;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,10 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +21,7 @@ import java.util.Map;
 public class PurchaseControllerTests {
 
     @Mock
-    private PurchaseServiceImpl purchaseServiceImpl; // Mock the service
+    private PurchaseServiceImpl purchaseServiceImpl;
 
     @InjectMocks
     private PurchaseController purchaseController;
@@ -36,38 +31,25 @@ public class PurchaseControllerTests {
 
     @Test
     public void purchase_CorrectParameters_Success () {
-        Record recordTest = Record.builder()
-                .id(1L)
-                .name("Thriller")
-                .artist("Michael Jackson")
-                .quantity(1)
-                .price(9.99)
-                .build();
 
-        Purchase purchaseTest = Purchase.builder()
-                .id(1L)
-                .customer("John")
-                .price(9.99)
-                .date(LocalDate.parse("2019-07-03"))
-                .recordLink(recordTest)
-                .build();
-
-        when(purchaseServiceImpl.checkIdExists(any(Map.class))).thenReturn(true);
-        when(purchaseServiceImpl.checkStock(any(Map.class))).thenReturn(true);
-        when(purchaseServiceImpl.commitPurchase(any(Map.class))).thenReturn(purchaseTest.getId());
-
-        Map<String, Object> userPurchase = new HashMap<>();
+        Map<String, String> userPurchase = new HashMap<>();
         userPurchase.put("customer", "John");
-        userPurchase.put("id", recordTest.getId());
+        userPurchase.put("id", "1");
 
-        String expectedString = "Purchase successful! Purchase Id " + purchaseTest.getId();
+
+        when(purchaseServiceImpl.checkIdExists("1")).thenReturn(true);
+        when(purchaseServiceImpl.checkStock("1")).thenReturn(true);
+        when(purchaseServiceImpl.commitPurchase(userPurchase)).thenReturn(1L);
+
+
+        String expectedString = "Purchase successful! Purchase Id 1";
 
         RestAssuredMockMvc
                 .given()
                 .contentType("application/json")
                 .body(userPurchase)
                 .when()
-                .post("/purchase")
+                .post("/auth/purchase")
                 .then()
                 .statusCode(HttpStatus.OK.value())
                 .body(equalTo(expectedString));
@@ -77,15 +59,15 @@ public class PurchaseControllerTests {
     @Test
     public void purchase_MissingCustomer_ReturnsBadRequest () {
 
-        Map<String, Object> userPurchase = new HashMap<>();
-        userPurchase.put("id", 1L);
+        Map<String, String> userPurchase = new HashMap<>();
+        userPurchase.put("id", "1");
 
         RestAssuredMockMvc
                 .given()
                 .contentType("application/json")
                 .body(userPurchase)
                 .when()
-                .post("/purchase")
+                .post("/auth/purchase")
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .body(equalTo("Customer name not provided"));
@@ -94,16 +76,16 @@ public class PurchaseControllerTests {
     @Test
     public void purchase_TooShortCustomer_ReturnsBadRequest () {
 
-        Map<String, Object> userPurchase = new HashMap<>();
+        Map<String, String> userPurchase = new HashMap<>();
         userPurchase.put("customer", "Jo");
-        userPurchase.put("id", 1L);
+        userPurchase.put("id", "1");
 
         RestAssuredMockMvc
                 .given()
                 .contentType("application/json")
                 .body(userPurchase)
                 .when()
-                .post("/purchase")
+                .post("/auth/purchase")
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .body(equalTo("Customer name too short"));
@@ -120,7 +102,7 @@ public class PurchaseControllerTests {
                 .contentType("application/json")
                 .body(userPurchase)
                 .when()
-                .post("/purchase")
+                .post("/auth/purchase")
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .body(equalTo("No Id provided"));
@@ -138,7 +120,7 @@ public class PurchaseControllerTests {
                 .contentType("application/json")
                 .body(userPurchase)
                 .when()
-                .post("/purchase")
+                .post("/auth/purchase")
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .body(equalTo("Id must be numerical value"));
@@ -148,16 +130,16 @@ public class PurchaseControllerTests {
     @Test
     public void purchase_InvalidID_ReturnsBadRequest () {
 
-        Map<String, Object> userPurchase = new HashMap<>();
+        Map<String, String> userPurchase = new HashMap<>();
         userPurchase.put("customer", "John");
-        userPurchase.put("id", 1L);
+        userPurchase.put("id", "1");
 
         RestAssuredMockMvc
                 .given()
                 .contentType("application/json")
                 .body(userPurchase)
                 .when()
-                .post("/purchase")
+                .post("/auth/purchase")
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .body(equalTo("This is not a valid item Id"));
@@ -166,27 +148,18 @@ public class PurchaseControllerTests {
     @Test
     public void purchase_OutOfStock_ReturnsConflict () {
 
-        Record recordTest = Record.builder()
-                .id(1L)
-                .name("Thriller")
-                .artist("Michael Jackson")
-                .quantity(0)
-                .price(9.99)
-                .build();
-
-        Map<String, Object> userPurchase = new HashMap<>();
+        Map<String, String> userPurchase = new HashMap<>();
         userPurchase.put("customer", "John");
-        userPurchase.put("id", recordTest.getId());
+        userPurchase.put("id", "1");
 
-        when(purchaseServiceImpl.checkIdExists(any(Map.class))).thenReturn(true);
-
+        when(purchaseServiceImpl.checkIdExists("1")).thenReturn(true);
 
         RestAssuredMockMvc
                 .given()
                 .contentType("application/json")
                 .body(userPurchase)
                 .when()
-                .post("/purchase")
+                .post("/auth/purchase")
                 .then()
                 .statusCode(HttpStatus.CONFLICT.value())
                 .body(equalTo("Item not in stock"));
