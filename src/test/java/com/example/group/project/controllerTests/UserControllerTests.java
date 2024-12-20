@@ -46,7 +46,7 @@ public class UserControllerTests {
     public void Login_IncorrectCredentials_ReturnsNoToken () {
         String loginPayload = "{ \"username\": \"DontExist\", \"password\": \"Wrong\" }";
 
-        String token = RestAssured.given()
+        String token = RestAssuredMockMvc.given()
                 .contentType("application/json")
                 .body(loginPayload)
                 .when()
