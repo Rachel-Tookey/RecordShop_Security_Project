@@ -41,6 +41,12 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: ${{ secrets.MY_SQL_PASSWORD }}
           MYSQL_ROOT_PASSWORD: ${{ secrets.MY_SQL_PASSWORD }}
 
+      - name: Run Flyway migrations
+        run: mvn flyway:migrate -X
+        env:
+          FLYWAY_URL: jdbc:mysql://localhost:3306/recordShop?createDatabaseIfNotExist=true
+          FLYWAY_USER: root
+          FLYWAY_PASSWORD: ${{ secrets.MY_SQL_PASSWORD }}
 
       - name: Test with Maven
         run: mvn -B test
@@ -50,9 +56,4 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: ${{ secrets.MY_SQL_PASSWORD }}
           MYSQL_ROOT_PASSWORD: ${{ secrets.MY_SQL_PASSWORD }}
 
-      - name: Run Flyway migrations
-        run: mvn flyway:migrate -X
-        env:
-          FLYWAY_URL: jdbc:mysql://localhost:3306/recordShop?createDatabaseIfNotExist=true
-          FLYWAY_USER: root
-          FLYWAY_PASSWORD: ${{ secrets.MY_SQL_PASSWORD }}
+
