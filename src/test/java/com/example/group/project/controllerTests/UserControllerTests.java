@@ -43,8 +43,8 @@ public class UserControllerTests {
     }
 
     @Test
-    public void Login_CorrectCredentials_ReturnsOkToken () {
-        String loginPayload = "{ \"username\": \"GillyT10\", \"password\": \"goodbye\" }";
+    public void Login_IncorrectCredentials_ReturnsNoToken () {
+        String loginPayload = "{ \"username\": \"DontExist\", \"password\": \"Wrong\" }";
 
         String token = RestAssured.given()
                 .contentType("application/json")
@@ -52,11 +52,11 @@ public class UserControllerTests {
                 .when()
                 .post("/login")
                 .then()
-                .statusCode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.NOT_FOUND.value())
                 .extract()
                 .cookie("token");
 
-        Assert.notNull(token);
+        Assert.isNull(token);
     }
 
 
