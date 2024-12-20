@@ -32,6 +32,14 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Run Flyway migrations
+        run: mvn flyway:migrate -X
+        env:
+          FLYWAY_URL: jdbc:mysql://localhost:3306/recordShop?createDatabaseIfNotExist=true
+          FLYWAY_USER: root
+          FLYWAY_PASSWORD: ${{ secrets.MY_SQL_PASSWORD }}
+
+
       - name: Build with Maven
         run: mvn -B package
         env:
@@ -49,10 +57,5 @@ jobs:
           MYSQL_ROOT_PASSWORD: ${{ secrets.MY_SQL_PASSWORD }}
 
 
-      - name: Run Flyway migrations
-        run: mvn flyway:migrate -X
-        env:
-          FLYWAY_URL: jdbc:mysql://localhost:3306/recordShop?createDatabaseIfNotExist=true
-          FLYWAY_USER: root
-          FLYWAY_PASSWORD: ${{ secrets.MY_SQL_PASSWORD }}
+
 
