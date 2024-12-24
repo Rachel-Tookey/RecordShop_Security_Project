@@ -1,0 +1,8 @@
+CREATE TABLE roles (
+    role_id INT AUTO_INCREMENT PRIMARY KEY,
+    role VARCHAR(55) NOT NULL
+);
+
+INSERT INTO roles (role)
+VALUES
+("ADMIN"),("STAFF"),("USER");
