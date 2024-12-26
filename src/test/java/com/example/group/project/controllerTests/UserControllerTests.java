@@ -1,63 +1,85 @@
 package com.example.group.project.controllerTests;
 
+import com.example.group.project.controller.UserController;
 import com.example.group.project.security.WebSecurityConfig;
-import io.jsonwebtoken.lang.Assert;
-import io.restassured.RestAssured;
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import com.example.group.project.service.impl.UserDetailsServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-
-
+@WebMvcTest(UserController.class)
+@Import(WebSecurityConfig.class)
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = WebSecurityConfig.class)
-@WebAppConfiguration
 public class UserControllerTests {
 
-    @Autowired
-    private WebApplicationContext context;
+    @MockBean
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
-    private MockMvc mvc;
+
+    @Autowired
+    private MockMvc mockMvc;
 
     @BeforeEach
     public void setup() {
-        mvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .apply(springSecurity())
+        UserDetails userDetails = User.builder()
+                .username("testUser")
+                .password("password")
+                .roles("ADMIN")
                 .build();
-        RestAssuredMockMvc.mockMvc(mvc);
 
-//        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-//        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("GillyT11", "goodbye1", List.of(new SimpleGrantedAuthority("ROLE_ADMIN"))));
-//        SecurityContextHolder.setContext(securityContext);
+        when(userDetailsServiceImpl.loadUserByUsername("testUser"))
+                .thenReturn(userDetails);
     }
 
     @Test
-    public void Login_IncorrectCredentials_ReturnsNoToken () {
-        String loginPayload = "{ \"username\": \"DontExist\", \"password\": \"Wrong\" }";
-
-        String token = RestAssuredMockMvc.given()
-                .contentType("application/json")
-                .body(loginPayload)
-                .when()
-                .post("/login")
-                .then()
-                .statusCode(HttpStatus.NOT_FOUND.value())
-                .extract()
-                .cookie("token");
-
-        Assert.isNull(token);
+    public void GetRequest_NoAuth_OkResponse()  throws Exception {
+        mockMvc.perform(get("/getusers"))
+                .andExpect(status().isOk());
     }
+
+    @Test
+    public void GetRequest_Auth_ForbiddenResponse()  throws Exception {
+        mockMvc.perform(post("/auth/register"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void LoginRequest_BadCredentials_404Response()  throws Exception {
+
+        mockMvc.perform(post("/login") .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"username\": \"wrongUser\", \"password\": \"wrongpassword\"}"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void LoginRequest_CorrectCredentials_OkResponse()  throws Exception {
+        UserDetails userDetails = User.builder()
+                .username("rightUser")
+                .password("$2a$10$kTJMa8NiWpcGW8GC.NtUy.q28VUCpO5H1/v9exYNr8BgUgN2yWi4q")
+                .roles("ADMIN")
+                .build();
+
+        when(userDetailsServiceImpl.loadUserByUsername("rightUser"))
+                .thenReturn(userDetails);
+
+        mockMvc.perform(post("/login") .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"username\": \"rightUser\", \"password\": \"goodbye\"}"))
+                .andExpect(status().isOk());
+    }
+
 
 
 

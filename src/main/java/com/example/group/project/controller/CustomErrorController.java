@@ -17,36 +17,24 @@ import java.util.Map;
 @RestControllerAdvice
 public class CustomErrorController implements ErrorController {
 
-    public static HttpStatus getStatusFromCode(int code) {
-        for (HttpStatus status : HttpStatus.values()) {
-            if (status.value() == code) {
-                return status;
-            }
-        }
-        return HttpStatus.NOT_FOUND;
-    }
-
     @RequestMapping("/error")
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> errorPage(HttpServletRequest request, Exception ex){
 
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+        HttpStatus castStatus = (HttpStatus) status;
+        Map<String, Object> body = new LinkedHashMap<>();
+        String details = ex.getMessage();
+        body.put("Error: ", ex.getMessage());
+
+        log.error(details);
 
         if (status == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("An unknown error occured");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
         }
 
-        Integer statusCode = Integer.valueOf(status.toString());
-        HttpStatus castStatus = getStatusFromCode(statusCode);
-
-        Map<String, Object> body = new LinkedHashMap<>();
         String url = ((ServletWebRequest)request).getRequest().getRequestURI();
-        Object details = ex.getMessage();
         body.put("You attempted to access the following URL", url);
-        body.put("Further details", details);
-
-        log.error("User sent request to " + url + " and the following error occured: " + details);
-
         return ResponseEntity.status(castStatus).body(body);
 
     }
