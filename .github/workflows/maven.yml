@@ -64,7 +64,7 @@ jobs:
       run: |
         STATUS="success"
         if [[ ${{ job.status }} == "failure" ]]; then
-          STATUS="failure"
+          STATUS="failure" 
         fi
         curl -X POST \
           -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
