@@ -56,6 +56,9 @@ jobs:
           FLYWAY_USER: root
           FLYWAY_PASSWORD: ${{ secrets.MY_SQL_PASSWORD }}
 
-
-
+      - name: Report status
+        run: |
+         curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+         -d '{"state": "success", "target_url": "https://example.com", "description": "CI passed"}' \
+         https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }}
 
