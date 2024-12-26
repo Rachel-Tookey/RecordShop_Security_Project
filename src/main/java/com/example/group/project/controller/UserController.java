@@ -32,13 +32,6 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @GetMapping("/getusers")
-    public ResponseEntity<?> getPurchases(){
-        log.info("Getting all purchases");
-        return ResponseEntity.status(HttpStatus.OK).body("This is a test");
-    }
-
-
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO request){
 
