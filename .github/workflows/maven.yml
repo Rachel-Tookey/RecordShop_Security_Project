@@ -56,17 +56,3 @@ jobs:
           FLYWAY_USER: root
           FLYWAY_PASSWORD: ${{ secrets.MY_SQL_PASSWORD }}
 
-  set-status:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-    - name: Set commit status to success or failure
-      run: |
-        STATUS="success"
-        if [[ ${{ job.status }} == "failure" ]]; then
-          STATUS="failure" 
-        fi
-        curl -X POST \
-          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }}
-
