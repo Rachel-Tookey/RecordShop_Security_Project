@@ -56,6 +56,3 @@ jobs:
           FLYWAY_USER: root
           FLYWAY_PASSWORD: ${{ secrets.MY_SQL_PASSWORD }}
 
-
-
-

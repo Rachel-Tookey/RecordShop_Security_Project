@@ -34,7 +34,6 @@ public class RecordControllerTests {
         RestAssuredMockMvc.standaloneSetup(recordController);
     }
 
-    // Test successful requests
     @Test
     public void getRecords_givenExistingArtistAndName_returnsCorrectRecords() {
         String recordName = "Thriller";
