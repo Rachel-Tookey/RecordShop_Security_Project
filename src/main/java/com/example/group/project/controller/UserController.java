@@ -57,7 +57,7 @@ public class UserController {
 
     }
 
-    @PostMapping("/auth/register")
+    @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody HashMap<String, String> newUser){
         log.info("Registering new user");
 

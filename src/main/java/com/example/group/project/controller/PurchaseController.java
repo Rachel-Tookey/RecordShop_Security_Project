@@ -1,18 +1,14 @@
 package com.example.group.project.controller;
 
-
 import com.example.group.project.service.impl.PurchaseServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import static com.example.group.project.util.NumberChecker.isThisANumber;
 
 
 @Slf4j
@@ -22,10 +18,28 @@ public class PurchaseController {
     @Autowired
     public PurchaseServiceImpl purchaseServiceImpl;
 
-    @GetMapping("/getpurchases")
+    @GetMapping("/auth/getPurchases")
     public ResponseEntity<?> getPurchases(){
         log.info("Getting all purchases");
         return ResponseEntity.status(HttpStatus.OK).body(purchaseServiceImpl.getPurchases());
+    }
+
+    @DeleteMapping("/auth/deletePurchase")
+    public ResponseEntity<?> deletePurchase(@RequestParam String id){
+        log.info("Attempting to delete a purchase");
+
+        if (!isThisANumber(id)) {
+            log.info("Id not a number");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Id must be numerical value");
+        }
+
+        if (!purchaseServiceImpl.checkPurchaseIdExists(id)) {
+            log.info("Id is invalid");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Purchase Id invalid");
+        }
+
+        purchaseServiceImpl.deleteById(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Purchase deleted");
     }
 
     @PostMapping("/auth/purchase")
@@ -48,14 +62,13 @@ public class PurchaseController {
         }
 
         String productId = userPurchase.get("id");
-        Pattern numericalPattern = Pattern.compile("^\\d+$");
-        Matcher matcher = numericalPattern.matcher(productId);
-        if (!matcher.find()) {
+
+        if (!isThisANumber(productId)) {
             log.info("Id not numerical value");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Id must be numerical value");
         }
 
-        if (!purchaseServiceImpl.checkIdExists(productId)) {
+        if (!purchaseServiceImpl.checkProductIdExists(productId)) {
             log.info("Id does not exist");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This is not a valid item Id");
         } else if (!purchaseServiceImpl.checkStock(productId)) {
