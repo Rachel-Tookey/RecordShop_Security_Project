@@ -25,7 +25,7 @@ public class PurchaseController {
     }
 
     @DeleteMapping("/auth/deletePurchase")
-    public ResponseEntity<?> deletePurchase(@RequestParam String id){
+    public ResponseEntity<?> deletePurchase(@RequestParam("id") String id){
         log.info("Attempting to delete a purchase");
 
         if (!isThisANumber(id)) {
