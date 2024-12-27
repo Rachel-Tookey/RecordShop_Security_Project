@@ -60,8 +60,8 @@ public class WebSecurityConfigTests {
     }
 
     @Test
-    public void GetPurchases_NoAuth_200Response()  throws Exception {
-        mockMvc.perform(get("/getpurchases"))
+    public void GetWelcomeRequest_NoAuth_200Response()  throws Exception {
+        mockMvc.perform(get("/"))
                 .andExpect(status().isOk());
     }
 

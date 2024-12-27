@@ -21,6 +21,12 @@ public class  RecordController {
     @Autowired
     private RecordServiceImpl recordServiceImpl;
 
+    @GetMapping("/")
+    public ResponseEntity<?> welcome()
+    {
+        return ResponseEntity.status((HttpStatus.OK)).body("Welcome to the Record Shop");
+    }
+
     @GetMapping("/auth/records")
     public ResponseEntity<?> getRecords(@RequestParam(required = false) Map<String, String> requestParams) {
         try {
