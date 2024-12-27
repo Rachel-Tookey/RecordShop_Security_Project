@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
-import static com.example.group.project.util.NumberChecker.isThisANumber;
+import static com.example.group.project.util.LongCheck.isInLongRange;
 
 
 @Slf4j
@@ -28,7 +28,7 @@ public class PurchaseController {
     public ResponseEntity<?> deletePurchase(@RequestParam("id") String id){
         log.info("Attempting to delete a purchase");
 
-        if (!isThisANumber(id)) {
+        if (!isInLongRange(id)) {
             log.info("Id not a number");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Id must be numerical value");
         }
@@ -63,7 +63,7 @@ public class PurchaseController {
 
         String productId = userPurchase.get("id");
 
-        if (!isThisANumber(productId)) {
+        if (!isInLongRange(productId)) {
             log.info("Id not numerical value");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Id must be numerical value");
         }
