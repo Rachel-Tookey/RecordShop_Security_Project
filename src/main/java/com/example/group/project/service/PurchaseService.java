@@ -11,7 +11,7 @@ public interface PurchaseService {
 
     boolean checkStock(String Id);
 
-    boolean checkIdExists(String Id);
+    boolean checkProductIdExists(String Id);
 
     double adjustPrice(double itemPrice, boolean HasDiscount);
 
@@ -20,4 +20,8 @@ public interface PurchaseService {
     List<Purchase> getPurchases();
 
     boolean isDiscount(Map<String, String> userPurchase);
+
+    void deleteById(String id);
+
+    boolean checkPurchaseIdExists(String id);
 }

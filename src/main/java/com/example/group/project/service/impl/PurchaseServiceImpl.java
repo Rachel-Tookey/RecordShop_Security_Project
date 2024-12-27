@@ -29,6 +29,17 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
+    public boolean checkPurchaseIdExists(String id) {
+        return purchaseRepository.existsById(parseId(id));
+    }
+
+
+    @Override
+    public void deleteById(String id){
+        purchaseRepository.deleteById(parseId(id));
+    }
+
+    @Override
     public List<Purchase> getPurchases(){
         return purchaseRepository.findAll();
     }
@@ -44,7 +55,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public boolean checkIdExists(String id){
+    public boolean checkProductIdExists(String id){
         Long newID = parseId(id);
         return recordRepository.existsById(newID);
     }

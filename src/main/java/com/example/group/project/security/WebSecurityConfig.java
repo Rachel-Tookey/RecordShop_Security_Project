@@ -42,7 +42,7 @@ public class WebSecurityConfig {
         return http
                 .securityMatcher("/auth/**")
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/auth/register").hasRole("ADMIN")
+                        .requestMatchers("/auth/deletePurchase").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

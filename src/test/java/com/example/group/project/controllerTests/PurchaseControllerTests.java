@@ -37,7 +37,7 @@ public class PurchaseControllerTests {
         userPurchase.put("id", "1");
 
 
-        when(purchaseServiceImpl.checkIdExists("1")).thenReturn(true);
+        when(purchaseServiceImpl.checkProductIdExists("1")).thenReturn(true);
         when(purchaseServiceImpl.checkStock("1")).thenReturn(true);
         when(purchaseServiceImpl.commitPurchase(userPurchase)).thenReturn(1L);
 
@@ -152,7 +152,7 @@ public class PurchaseControllerTests {
         userPurchase.put("customer", "John");
         userPurchase.put("id", "1");
 
-        when(purchaseServiceImpl.checkIdExists("1")).thenReturn(true);
+        when(purchaseServiceImpl.checkProductIdExists("1")).thenReturn(true);
 
         RestAssuredMockMvc
                 .given()

@@ -60,26 +60,26 @@ public class WebSecurityConfigTests {
     }
 
     @Test
-    public void GetPurchases_NoAuth_OkResponse()  throws Exception {
-        mockMvc.perform(get("/getpurchases"))
+    public void GetWelcomeRequest_NoAuth_200Response()  throws Exception {
+        mockMvc.perform(get("/"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void GetRecords_NoAuth_ForbiddenResponse()  throws Exception {
+    public void GetRecords_NoAuth_403Response()  throws Exception {
         mockMvc.perform(get("/auth/records"))
                 .andExpect(status().isForbidden());
     }
 
     @Test
-    public void PostPurchase_NoAuth_ForbiddenResponse()  throws Exception {
+    public void PostPurchase_NoAuth_403Response()  throws Exception {
         mockMvc.perform(post("/auth/purchase"))
                 .andExpect(status().isForbidden());
     }
 
 
     @Test
-    public void GetRequest_Auth_ForbiddenResponse()  throws Exception {
+    public void GetRequest_Auth_403Response()  throws Exception {
         mockMvc.perform(post("/auth/register"))
                 .andExpect(status().isForbidden());
     }
@@ -93,17 +93,16 @@ public class WebSecurityConfigTests {
     }
 
     @Test
-    public void LoginRequest_CorrectCredentials_OkResponse()  throws Exception {
+    public void LoginRequest_CorrectCredentials_200Response()  throws Exception {
         mockMvc.perform(post("/login").contentType(MediaType.APPLICATION_JSON)
                         .content("{ \"username\": \"adminUser\", \"password\": \"goodbye\"}"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void LoginRequest_CorrectCredentials_TokenResponse()  throws Exception {
+    public void Login_CorrectCredentials_ReceiveJWTToken()  throws Exception {
         String tokenResult = mockMvc.perform(post("/login") .contentType(MediaType.APPLICATION_JSON)
                         .content("{ \"username\": \"adminUser\", \"password\": \"goodbye\"}"))
-                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessToken").exists())
                 .andReturn()
                 .getResponse()
@@ -111,10 +110,52 @@ public class WebSecurityConfigTests {
 
         String token = "Bearer " + JsonPath.read(tokenResult, "$.accessToken");
         Assert.notNull(token);
+    }
+
+
+    @Test
+    public void AuthGetRequest_UseJWTToken_200Response()  throws Exception {
+        String tokenResult = mockMvc.perform(post("/login") .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"username\": \"adminUser\", \"password\": \"goodbye\"}"))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String token = "Bearer " + JsonPath.read(tokenResult, "$.accessToken");
+
+        mockMvc.perform(get("/auth/records")
+                        .header("Authorization", token))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    public void AuthGetRequest_NoToken_403Response()  throws Exception {
+        mockMvc.perform(get("/auth/records"))
+                .andExpect(status().isForbidden());
+    }
+
+
+    @Test
+    public void AuthGetRequest_InvalidToken_403Response()  throws Exception {
+        mockMvc.perform(get("/auth/records")
+                        .header("Authorization", "1234"))
+                .andExpect(status().isForbidden());
+    }
+
+
+    @Test
+    public void AuthGetRequest_UseToken_ReceiveCSRFHeaderAndCookie()  throws Exception {
+        String tokenResult = mockMvc.perform(post("/login") .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"username\": \"adminUser\", \"password\": \"goodbye\"}"))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String token = "Bearer " + JsonPath.read(tokenResult, "$.accessToken");
 
         MvcResult csrfResult = mockMvc.perform(get("/auth/records")
                         .header("Authorization", token))
-                .andExpect(status().isOk())
                 .andExpect(header().exists("X-XSRF-TOKEN"))
                 .andExpect(cookie().exists("XSRF-TOKEN"))
                 .andReturn();
@@ -124,8 +165,26 @@ public class WebSecurityConfigTests {
 
         Assert.notNull(csrfTokenHeader);
         Assert.notNull(csrfTokenCookie);
+    }
 
-        when(purchaseServiceImpl.checkIdExists("4")).thenReturn(true);
+    @Test
+    public void AuthPostRequest_JWTAndCSRFTokens_200Response()  throws Exception {
+        String tokenResult = mockMvc.perform(post("/login") .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"username\": \"adminUser\", \"password\": \"goodbye\"}"))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String token = "Bearer " + JsonPath.read(tokenResult, "$.accessToken");
+
+        MvcResult csrfResult = mockMvc.perform(get("/auth/records")
+                        .header("Authorization", token))
+                .andReturn();
+
+        String csrfTokenHeader = csrfResult.getResponse().getHeader("X-XSRF-TOKEN");
+        String csrfTokenCookie = csrfResult.getResponse().getCookie("XSRF-TOKEN").getValue();
+
+        when(purchaseServiceImpl.checkProductIdExists("4")).thenReturn(true);
         when(purchaseServiceImpl.checkStock("4")).thenReturn(true);
 
         mockMvc.perform(post("/auth/purchase")
@@ -135,9 +194,50 @@ public class WebSecurityConfigTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{ \"customer\": \"john\", \"id\": \"4\"}"))
                 .andExpect(status().isOk());
-
-
     }
+
+    @Test
+    public void AuthPostRequest_ValidJWTAndInvalidCSRFTokens_403Response()  throws Exception {
+        String tokenResult = mockMvc.perform(post("/login") .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"username\": \"adminUser\", \"password\": \"goodbye\"}"))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String token = "Bearer " + JsonPath.read(tokenResult, "$.accessToken");
+
+        mockMvc.perform(post("/auth/purchase")
+                        .header("Authorization", token)
+                        .header("X-XSRF-TOKEN", "1234")
+                        .cookie(new Cookie("XSRF-TOKEN", "1234"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"customer\": \"john\", \"id\": \"4\"}"))
+                .andExpect(status().isForbidden());
+    }
+
+
+    @Test
+    public void AuthPostRequest_UseOnlyJWToken_403Response()  throws Exception {
+        String tokenResult = mockMvc.perform(post("/login") .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"username\": \"adminUser\", \"password\": \"goodbye\"}"))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        String token = "Bearer " + JsonPath.read(tokenResult, "$.accessToken");
+
+        mockMvc.perform(post("/auth/purchase")
+                        .header("Authorization", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"customer\": \"john\", \"id\": \"4\"}"))
+                .andExpect(status().isForbidden());
+    }
+
+    /*
+
+    Role based checking
+
+     */
 
 
 }

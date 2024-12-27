@@ -85,7 +85,7 @@ public class PurchaseServiceImplTests {
     }
 
     @Test
-    public void checkIdExists_ValidId_ReturnsTrue() {
+    public void checkIdExists_ValidProductId_ReturnsTrue() {
         Record recordTest = Record.builder()
                 .name("Thriller")
                 .artist("Michael Jackson")
@@ -98,19 +98,19 @@ public class PurchaseServiceImplTests {
 
         when(recordRepository.existsById(recordTestID)).thenReturn(true);
 
-        boolean checkStockTest = purchaseServiceImpl.checkIdExists("2");
+        boolean checkStockTest = purchaseServiceImpl.checkProductIdExists("2");
 
         assertTrue(checkStockTest);
     }
 
     @Test
-    public void checkIdExists_InvalidId_ReturnsFalse() {
+    public void checkIdExists_InvalidProductId_ReturnsFalse() {
 
         Long testID = 2L;
 
         when(recordRepository.existsById(testID)).thenReturn(false);
 
-        boolean checkStockTest = purchaseServiceImpl.checkIdExists("2");
+        boolean checkStockTest = purchaseServiceImpl.checkProductIdExists("2");
 
         assertFalse(checkStockTest);
 
