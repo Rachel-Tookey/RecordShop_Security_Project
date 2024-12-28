@@ -31,8 +31,11 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "role", nullable = false)
-    private String role;
-
+//    @Column(name = "role", nullable = false)
+//    private String role;
+//    foreign key referring to table Roles
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role roleLink;
 
 }
