@@ -64,12 +64,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public void saveUser(HashMap<String, String> newUser){
+        // get the role id
+
+
         User returnUser = User.builder()
                 .firstname(newUser.get("firstname"))
                 .lastname(newUser.get("lastname"))
                 .username(newUser.get("username"))
                 .password(hashPassword(newUser.get("password")))
-                .role(newUser.get("role")).build();
+                .roleLink(newUser.get("role"))
+                .build();
 
         UserRepository.save(returnUser);
         log.info("New user saved");
