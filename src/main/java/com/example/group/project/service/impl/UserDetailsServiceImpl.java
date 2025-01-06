@@ -1,7 +1,9 @@
 package com.example.group.project.service.impl;
 
 import com.example.group.project.model.entity.User;
+import com.example.group.project.model.entity.Role;
 import com.example.group.project.model.repository.UserRepository;
+import com.example.group.project.model.repository.RoleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.HashMap;
 
+import static java.lang.Long.parseLong;
+
 
 @Slf4j
 @Service
@@ -19,9 +23,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository UserRepository;
 
+    private final RoleRepository RoleRepository;
+
     @Autowired
-    public UserDetailsServiceImpl(UserRepository userRepository) {
+    public UserDetailsServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+
         this.UserRepository = userRepository;
+        this.RoleRepository = roleRepository;
     }
 
     @Autowired
@@ -45,7 +53,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 return org.springframework.security.core.userdetails.User.builder()
                         .username(user.getUsername())
                         .password(user.getPassword())
-                        .roles(user.getRole())
+                        .roles(user.getRoleLink().getRole())
                         .build();
             } else {
                 throw new UsernameNotFoundException("User not found");
@@ -64,15 +72,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public void saveUser(HashMap<String, String> newUser){
-        // get the role id
-
+        // get the Role reference
+        Role newUserRoleLink = RoleRepository.getReferenceById(parseLong(newUser.get("roleLink")));
 
         User returnUser = User.builder()
                 .firstname(newUser.get("firstname"))
                 .lastname(newUser.get("lastname"))
                 .username(newUser.get("username"))
                 .password(hashPassword(newUser.get("password")))
-                .roleLink(newUser.get("role"))
+                .roleLink(newUserRoleLink)
                 .build();
 
         UserRepository.save(returnUser);
