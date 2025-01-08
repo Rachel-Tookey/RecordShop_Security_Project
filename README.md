@@ -165,7 +165,7 @@ ___
 
 ### Developers + Github profiles:
 
-- [Rachel](https://github.com/Tookles)
+- [Rachel](https://github.com/Rachel-Tookey)
 - [Fabiola](https://github.com/Fabi-P)
 - [Alyssa](https://github.com/lyscodes)
 

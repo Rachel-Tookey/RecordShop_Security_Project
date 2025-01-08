@@ -97,6 +97,30 @@ public class AdminAuthTests {
                 .andExpect(status().isForbidden());
     }
 
+    @Test
+    public void AuthPostRequest_ValidJWTAndInvalidCSRFTokens_403Response() throws Exception {
+        mockMvc.perform(post("/auth/purchase")
+                        .header("X-XSRF-TOKEN", "1234")
+                        .cookie(new Cookie("XSRF-TOKEN", "1234"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"customer\": \"john\", \"id\": \"4\"}"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void AuthPostRequest_JWTAndCSRFTokens_200Response() throws Exception {
+
+        when(purchaseServiceImpl.checkProductIdExists("4")).thenReturn(true);
+        when(purchaseServiceImpl.checkStock("4")).thenReturn(true);
+
+        mockMvc.perform(post("/auth/purchase")
+                        .header("X-XSRF-TOKEN", csrfTokenHeader)
+                        .cookie(new Cookie("XSRF-TOKEN", csrfTokenCookie))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"customer\": \"john\", \"id\": \"4\"}"))
+                .andExpect(status().isOk());
+    }
+
 
     @Test
     public void AuthDeleteRequest_CorrectTokensCorrectRole_200Response() throws Exception {
