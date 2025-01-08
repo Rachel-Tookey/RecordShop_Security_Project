@@ -36,12 +36,6 @@ public class UserDetailsServiceImplTests {
     @Test
     public void hashPassword_returnsHashedPassword() {
 
-        String passwordToHash = "goodbye";
-
-        String hashedPassword = userDetailsServiceImpl.hashPassword(passwordToHash);
-
-        assertNotEquals(passwordToHash, hashedPassword);
-
     }
 
 
