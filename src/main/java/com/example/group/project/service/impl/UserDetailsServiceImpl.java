@@ -47,13 +47,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("Loading username");
         User user = findByUsername(username);
+
         {
             if(user != null) {
                 log.info("Username found");
+                // get the role as a string from the "roles" table
+                Role userRoleLink = user.getRoleLink();
+                String role = userRoleLink.getRole();
+
                 return org.springframework.security.core.userdetails.User.builder()
                         .username(user.getUsername())
                         .password(user.getPassword())
-                        .roles(user.getRoleLink().getRole())
+                        .roles(role)
                         .build();
             } else {
                 throw new UsernameNotFoundException("User not found");

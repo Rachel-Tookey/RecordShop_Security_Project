@@ -35,7 +35,7 @@ public class User {
 //    private String role;
 //    foreign key referring to table Roles
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id", nullable = false)
+    @JoinColumn(name = "role", nullable = false)
     private Role roleLink;
 
 }
