@@ -47,18 +47,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("Loading username");
         User user = findByUsername(username);
+        log.info(user.getRoleLink().getRole());
 
         {
             if(user != null) {
                 log.info("Username found");
-                // get the role as a string from the "roles" table
-                Role userRoleLink = user.getRoleLink();
-                String role = userRoleLink.getRole();
 
                 return org.springframework.security.core.userdetails.User.builder()
                         .username(user.getUsername())
                         .password(user.getPassword())
-                        .roles(role)
+                        .roles(user.getRoleLink().getRole())
                         .build();
             } else {
                 throw new UsernameNotFoundException("User not found");
@@ -78,7 +76,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public void saveUser(HashMap<String, String> newUser){
         // get the Role reference
-        Role newUserRoleLink = RoleRepository.getReferenceById(parseLong(newUser.get("roleLink")));
+        Role newUserRoleLink = RoleRepository.getReferenceById(parseLong(newUser.get("role")));
+        log.info("New user role is ", newUserRoleLink.getRole());
 
         User returnUser = User.builder()
                 .firstname(newUser.get("firstname"))

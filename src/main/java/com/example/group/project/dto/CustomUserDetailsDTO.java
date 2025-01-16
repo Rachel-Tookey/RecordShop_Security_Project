@@ -20,7 +20,7 @@ public class CustomUserDetailsDTO implements UserDetails {
     public CustomUserDetailsDTO(User user){
         this.username = user.getUsername();
         this.password = user.getPassword();
-        this.authorities = Stream.of(user.getRoleLink().getRole()).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        this.authorities = Stream.of(user.getRoleLink().getRole().split(",")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
 
