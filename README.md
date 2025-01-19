@@ -26,15 +26,15 @@ flowchart LR;
 
 The application has the following endpoints: 
 
-| Endpoint  | Method | Authorisation Required? | Description | Returns | 
-|-----------|--------| ---|----|-----|
-| "/login"  | POST   |  No | Expects a request body of username and password, which it validates against the database | If authenticated, Ok and a JWT token as a cookie and body message. If not authenticated, Forbidden.  |
-| "/register" | POST | No | Expects a request body of firstname, lastname, username, password and role. | If all input validated and username is not in use, creates a new user and returns Ok |
-| "/" | GET | No | Home route | Returns "Welcome to the Record Shop" message | 
-| "/auth/records" | GET | Yes | Requires valid JWT token, and optional params of artist or album to search | An authorised response will return a list of artist and albums matching the search params. No params will return a list of all records. Also returns CSRF token. |
-| "/auth/getPurchases" | GET | Yes | Requires valid JWT token | Returns a list of all purchases. Also returns CSRF token. | 
-| "/auth/deletePurchase" | DELETE | Yes | Requires valid JWT and CSRF token and id parameter | An authorised request will delete record with the matching id and return No Content". |
-| "/auth/purchase" | POST | Yes | Requires valid JWT and CSRF token and body object containing customer name, record id and discount code | Authorised valid request returns Ok. | 
+| Endpoint  | Method | Authorisation Required? | User role | Description | Returns | 
+|-----------|--------| ---|----|-----| -----|
+| "/login"  | POST   |  No | n/a | Expects a request body of username and password, which it validates against the database | If authenticated, Ok and a JWT token as a cookie and body message. If not authenticated, Forbidden.  |
+| "/register" | POST | No | n/a | Expects a request body of firstname, lastname, username, password and role. | If all input validated and username is not in use, creates a new user and returns Ok |
+| "/" | GET | No | n/a | Home route | Returns "Welcome to the Record Shop" message | 
+| "/auth/records" | GET | Yes | Any| Requires valid JWT token, and optional params of artist or album to search | An authorised response will return a list of artist and albums matching the search params. No params will return a list of all records. Also returns CSRF token. |
+| "/auth/getPurchases" | GET | Yes | Any| Requires valid JWT token | Returns a list of all purchases. Also returns CSRF token. | 
+| "/auth/deletePurchase" | DELETE | Yes | ADMIN | Requires valid JWT and CSRF token and id parameter | An authorised request will delete record with the matching id and return No Content". |
+| "/auth/purchase" | POST | Yes | Any | Requires valid JWT and CSRF token and body object containing customer name, record id and discount code | Authorised valid request returns Ok. | 
 
 
 ## Prerequisites
@@ -60,7 +60,8 @@ Before you begin, please ensure you have the following:
     - Flyway MySQL
     - MySQL Connector-J
     - Spring Security
-    - JJWT
+    - JJWT-Api
+    - JJWT-Impl
     - JJWT - Jackson Extension
     - Flyway Maven 
     - OpenAPI
@@ -90,7 +91,6 @@ Before you begin, please ensure you have the following:
 ``` 
 CREATE DATABASE IF NOT EXISTS recordShop;
 USE recordShop;
-
 ```
 
 6. **Generate SSL certificates**
@@ -111,12 +111,24 @@ keytool -genkeypair -alias baeldung -keyalg RSA -keysize 2048 -storetype PKCS12 
 
 2. **API Endpoints**:
 
-    Once the application is running, you can access the following endpoints:
+    Once the application is running, you can explore unauthorised endpoints freely and authorised with the correct credentials. We suggest using the following flow:
 
-    | Endpoint URL                                                     | Method | Description                                                                                                                                                                           | Example Request                                                           |
-    |------------------------------------------------------------------|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
-    | `https://localhost:8443/purchase`                                 | POST   | Endpoint to make a purchase.<br><br>**Please note:** Discount is optional, and the customer field must contain more than two characters.                                              | ```{"customer": "John",```<br>```"id": 3,```<br>```"discount": "CFG" }``` |
-    | `https://localhost:8443/records?artist={ARTISTNAME}&name={ALBUM}` | GET    | Endpoint to retrieve the information on the records in the database. **Please note**: both artist and name of the record can be excluded to retrieve a list of all records available. | https://localhost:8443/records?artist=Michael%20Jackson&name=Thriller      |
+> 💡 Import our pre-made Postman collection to run the following the series of requests. You can download them here.
+
+
+| Endpoint URL  | Method | Example Request   | Expected Response |
+|-------------- |--------| ----------------- | --------------|
+| https://localhost:8443/auth/records | GET | - | 403 Forbidden |
+| https://localhost:8443/login | POST |`{"username":"GillyT10","password":"goodbye"}` | 200. Bearer token in body response. |
+| https://localhost:8443/auth/records / https://localhost:8443/auth/records?artist={ARTISTNAME}&name={ALBUM} | GET | Authorization with Bearer token provided. Optional params or artist and album. | 200. List of records. X-XSRF-TOKEN returned as cookie and header |
+| https://localhost:8443/auth/purchase | POST | Authorization Header: JWT token; Custom header X-XSRF-TOKEN with X-XSRF token; Body: `{"customer" : "john","id" : 1, "discount" : "cfg"}` | 200. Purchase Id in response. |
+| https://localhost:8443/auth/deletePurchase?id=1 | DELETE | Authorization Header: JWT token; Custom header X-XSRF-TOKEN with X-XSRF token; Param id=1 | 204 No content | https://localhost:8443/register | POST | Body: `{ "firstname" : "john","lastname" : "kelly299","username" : "john100","password" : "password123", "role" : "STAFF"}` | 200. New User | 
+| https://localhost:8443/login | POST | `{"username" : "john100","password" : "password"}` | 200. Bearer token in body response. |
+| https://localhost:8443/auth/records / https://localhost:8443/auth/records?artist={ARTISTNAME}&name={ALBUM} | GET | Authorization with Bearer token provided. Optional params or artist and album. | 200. List of records. X-XSRF-TOKEN returned as cookie and header |
+| https://localhost:8443/auth/purchase | POST | Authorization Header: JWT token; Custom header X-XSRF-TOKEN with X-XSRF token; Body: `{"customer" : "john","id" : 1, "discount" : "cfg"}` | 409 Conflict. Item not in stock. |
+| https://localhost:8443/auth/deletePurchase?id=2 | DELETE | Authorization Header: JWT token; Custom header X-XSRF-TOKEN with X-XSRF token; Param id=2 | 403 Forbidden |
+
+
 
 ---
 
