@@ -1,0 +1,362 @@
+{
+	"info": {
+		"_postman_id": "ddc5527d-6ebe-4a9d-83d7-004d86860621",
+		"name": "Java auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "40458608"
+	},
+	"item": [
+		{
+			"name": "Forbidden request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "https://localhost:8443/auth/records"
+			},
+			"response": []
+		},
+		{
+			"name": "Admin logging in",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var token = pm.cookies.get(\"token\");",
+							"pm.environment.set(\"bearer-token\", token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\" : \"GillyT10\",\n    \"password\" : \"goodbye\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8443/login",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"login"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin getting records",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var xsrf_token = pm.response.headers.get(\"X-XSRF-TOKEN\");",
+							"pm.environment.set(\"xsrf-token\", xsrf_token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{bearer-token}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "https://localhost:8443/auth/records"
+			},
+			"response": []
+		},
+		{
+			"name": "Admin making purchase",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{bearer-token}}"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "{{xsrf-token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"customer\" : \"john\",\n    \"id\" : 4, \n    \"discount\" : \"cfg\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:8443/auth/purchase"
+			},
+			"response": []
+		},
+		{
+			"name": "Admin deletes purchase",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{bearer-token}}"
+					}
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "{{xsrf-token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:8443/auth/deletePurchase?id=1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"auth",
+						"deletePurchase"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin registering a new user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var token = pm.cookies.get(\"token\");",
+							"pm.environment.set(\"bearer-token-STAFFONLY\", token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{bearer-token}}"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "{{xsrf-token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstname\" : \"john\",\n    \"lastname\" : \"kelly299\",\n    \"username\" : \"john1002\",\n    \"password\" : \"password123\",\n    \"role\" : \"STAFF\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:8443/register"
+			},
+			"response": []
+		},
+		{
+			"name": "Staff logging in",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var token = pm.cookies.get(\"token\");",
+							"pm.environment.set(\"bearer-token-STAFFONLY\", token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\" : \"jonny12\",\n    \"password\" : \"password123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:8443/login"
+			},
+			"response": []
+		},
+		{
+			"name": "Staff getting records",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var xsrf_token = pm.response.headers.get(\"X-XSRF-TOKEN\");",
+							"pm.environment.set(\"xsrf-token-STAFF\", xsrf_token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{bearer-token-STAFFONLY}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "https://localhost:8443/auth/records"
+			},
+			"response": []
+		},
+		{
+			"name": "Staff making purchase",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{bearer-token-STAFFONLY}}"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "{{xsrf-token-STAFF}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"customer\" : \"kelly\",\n\"id\" : 3\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:8443/auth/purchase"
+			},
+			"response": []
+		},
+		{
+			"name": "Staff tries to delete purchase - denied",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{bearer-token-STAFFONLY}}"
+					}
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "{{xsrf-token-STAFF}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstname\" : \"jane\",\n    \"lastname\" : \"johno\",\n    \"username\" : \"jane1\",\n    \"password\" : \"hillo\",\n    \"role\" : \"USER\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8443/auth/deletePurchase?id=2",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8443",
+					"path": [
+						"auth",
+						"deletePurchase"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
