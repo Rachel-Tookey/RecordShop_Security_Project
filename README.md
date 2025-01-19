@@ -1,5 +1,10 @@
-# Record Shop Auth Project 
-## Record Shop Database App
+# 🔐 Record Shop - Security Project 🔐
+
+This project is a RESTful API written in Java, using Spring Boot and the MVC pattern. The app keeps track of stock, purchases and users for a fictional record shop. The application consists of three main entities: `User`, `Purchase` and `Record`, each mapped to corresponding database tables by JPA. 
+
+The project also fully integrates modern security techniques offered through Spring Security, these include password hashing and salting, JWT tokens, CSRF tokens and CORS. As such, certain endpoints require users to be authenticated and hold certain roles in order to make successful HTTP requests. 
+
+# Project structure: 
 
 ```mermaid
 flowchart LR;
@@ -12,9 +17,7 @@ flowchart LR;
    Controllers -->|HTTP response|APIendpoints
 ```
 
-## Introduction
-
-This project is a Spring Boot application that manages purchases and records of a music shop that sells vinyls. It utilizes JPA for database interactions and Lombok to reduce boilerplate code. The application consists of two main entities: `Purchase` and `Record`, each mapped to corresponding database tables.
+# Endpoints: 
 
 The application should have the following:
 
@@ -26,8 +29,6 @@ The application should have the following:
 |                | Get list of records by artist                   |
 |                | Find record by name and artist                  |
 
-
----
 
 ## Prerequisites
 
@@ -157,9 +158,7 @@ ___
 
 ### Further development: 
 
-
-- Use JSON Web Tokens and encryption when sending calls to the "/purchase" endpoint to ensure security
-- Develop frontend through Thymeleaf template engine
+- Develop frontend with React
 
 
 
