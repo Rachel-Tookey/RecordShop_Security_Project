@@ -111,9 +111,9 @@ keytool -genkeypair -alias baeldung -keyalg RSA -keysize 2048 -storetype PKCS12 
 
 2. **API Endpoints**:
 
-    Once the application is running, you can explore unauthorised endpoints freely and authorised with the correct credentials. We suggest using the following flow:
+Once the application is running, you can explore unauthorised endpoints freely and authorised with the correct credentials. We suggest using the following flow:
 
-> 💡 Import our pre-made Postman collection to run the following the series of requests. You can download them here.
+> 💡 Import our pre-made Postman collection to run the following the series of requests. [You can download them here](https://github.com/Rachel-Tookey/RecordShop_Security_Project/blob/fe08dd0bfad1723fd63579f945cb234a015084ec/documentation/postman/recordshop.postman_collection.json).
 
 
 | Endpoint URL  | Method | Example Request   | Expected Response |
