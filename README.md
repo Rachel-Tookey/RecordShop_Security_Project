@@ -1,6 +1,6 @@
 # Record Shop Security Project 🔒 ➡️ 🔐 ➡️ 🔓 ➡️ 💿 
 
-This project is a Spring MVC RESTful API. The app keeps track of stock, purchases and users for a fictional record shop. It consists of three main entities: `User`, `Purchase` and `Record`, each mapped to corresponding database tables by JPA. 
+This project is a Spring MVC RESTful API. The app manages stock, purchases and users for a fictional record shop. It consists of three main entities: `User`, `Purchase` and `Record`, each mapped to corresponding database tables by JPA. 
 
 The project fully integrates modern security techniques offered through Spring Security, including password hashing and salting, HTTPS, JWT tokens, CSRF tokens and CORS. As such, certain endpoints require users to be authenticated and hold certain roles in order to make successful HTTP requests. 
 
