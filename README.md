@@ -1,33 +1,40 @@
-# 🔐 Record Shop - Security Project 🔐
+# Record Shop Security Project 🔒 ➡️ 🔐 ➡️ 🔓 ➡️ 💿 
 
-This project is a RESTful API written in Java, using Spring Boot and the MVC pattern. The app keeps track of stock, purchases and users for a fictional record shop. The application consists of three main entities: `User`, `Purchase` and `Record`, each mapped to corresponding database tables by JPA. 
+This project is a Spring MVC RESTful API. The app keeps track of stock, purchases and users for a fictional record shop. It consists of three main entities: `User`, `Purchase` and `Record`, each mapped to corresponding database tables by JPA. 
 
-The project also fully integrates modern security techniques offered through Spring Security, these include password hashing and salting, JWT tokens, CSRF tokens and CORS. As such, certain endpoints require users to be authenticated and hold certain roles in order to make successful HTTP requests. 
+The project fully integrates modern security techniques offered through Spring Security, including password hashing and salting, HTTPS, JWT tokens, CSRF tokens and CORS. As such, certain endpoints require users to be authenticated and hold certain roles in order to make successful HTTP requests. 
 
 # Project structure: 
 
 ```mermaid
 flowchart LR;
-   User((User)) -->|visit|APIendpoints
-   APIendpoints{API endpoint} -->|HTTP request|Controllers
-   Controllers -->|Business Logic|Services
-   Services  -->|CRUD operation|MySQL_Database
+   User[User via Web Client, such as Postman] -->|HTTP request|Authorisation
+   Authorisation{Does the user require authorisation?}  --> |Yes| Authorisation2
+   Authorisation --> |No - HTTP request|Controllers
+   Authorisation2-->|No - 401/403 Response|User
+   Authorisation2{Is the user authorised?}-->|Yes - HTTP request|Controllers
+   Controllers[User, Record & Purchase Controllers] -->|Business Logic|Services
+   Services -->|CRUD operation|MySQL_Database
    MySQL_Database[(MySQL Database)] -->|Return data|Services
-   Services -->|Validations|Controllers
-   Controllers -->|HTTP response|APIendpoints
+   Services -->|Validation|Controllers
+   Controllers -->|Authorised Response|User
+   Controllers -->|Unhandled Exception|ErrorController[Error Controller]
+   ErrorController -->|Error Response|User
 ```
 
 # Endpoints: 
 
-The application should have the following:
+The application has the following endpoints: 
 
-| Functionality  | Description                                     |
-|----------------|-------------------------------------------------|
-| **Inserting**  | Add purchases to the `purchases` table          |
-| **Updating**   | Update the quantity of records after a purchase |
-| **Retrieving** | Find specific record by name                    |
-|                | Get list of records by artist                   |
-|                | Find record by name and artist                  |
+| Endpoint  | Method | Authorisation Required? | Description | Returns | 
+|-----------|--------| ---|----|-----|
+| "/login"  | POST   |  No | Expects a request body of username and password, which it validates against the database | If authenticated, Ok and a JWT token as a cookie and body message. If not authenticated, Forbidden.  |
+| "/register" | POST | No | Expects a request body of firstname, lastname, username, password and role. | If all input validated and username is not in use, creates a new user and returns Ok |
+| "/" | GET | No | Home route | Returns "Welcome to the Record Shop" message | 
+| "/auth/records" | GET | Yes | Requires valid JWT token, and optional params of artist or album to search | An authorised response will return a list of artist and albums matching the search params. No params will return a list of all records. Also returns CSRF token. |
+| "/auth/getPurchases" | GET | Yes | Requires valid JWT token | Returns a list of all purchases. Also returns CSRF token. | 
+| "/auth/deletePurchase" | DELETE | Yes | Requires valid JWT and CSRF token and id parameter | An authorised request will delete record with the matching id and return No Content". |
+| "/auth/purchase" | POST | Yes | Requires valid JWT and CSRF token and body object containing customer name, record id and discount code | Authorised valid request returns Ok. | 
 
 
 ## Prerequisites
@@ -39,7 +46,6 @@ Before you begin, please ensure you have the following:
 - An SQL database (e.g., MySQL)
 - IntelliJ Community / Ultimate
 
----
 
 ## Setup Instructions
 
@@ -52,17 +58,21 @@ Before you begin, please ensure you have the following:
     - Spring Boot Starter Test 
     - Flyway Core 
     - Flyway MySQL
-    - MySQL Connector/J
-    - Lombok 
+    - MySQL Connector-J
+    - Spring Security
+    - JJWT
+    - JJWT - Jackson Extension
     - Flyway Maven 
     - OpenAPI
     - Spring Mock MVC (Rest Assured)
+    - Java Servlet API
 
    
 3. **Ensure the proper plugins are installed. Please refer to `pom.xml` in the file for your reference**
     - JaCoCo Maven Plugin
     - Maven Surefire Plugin
-    - Spring Boot Maven plugin 
+    - Spring Boot Maven plugin
+    - Lombok plugin 
 
 
 4. **Configure the database**:
@@ -71,7 +81,6 @@ Before you begin, please ensure you have the following:
     - Navigate to [GroupProjectApplicationTests](src/test/java/com/example/group/project/GroupProjectApplicationTests.java) and add in a new environment variable "MY_SQL_PASSWORD" and set it to your password for your database. For example `MYSQL_ROOT_PASSWORD="your password"`
     - Then run [GroupProjectApplication](src/main/java/com/example/group/project/GroupProjectApplication.java)
     - The Flyway integration should automatically create the database and migrate the relevant files to create and populate the tables.
-
 
 5. **Debugging:**
     - Should you have any issue with the Flyway integration, you can manually create the database by running the MySQL script found in resources/db/migration 
@@ -84,7 +93,16 @@ USE recordShop;
 
 ```
 
----
+6. **Generate SSL certificates**
+
+- Run the following commands on your terminal providing the information prompted where relevant. Be sure to make note of your password. 
+
+```
+keytool -genkeypair -alias baeldung -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore baeldung.p12 -validity 3650
+```
+- This will generate SSL certificates. Save these in `src/resources/certs`. You should be sure to add these to your .gitignore
+- Save your password for the certificates as an environment variable named `KEYSTORE_PASSWORD` 
+
 
 ## How to Run the Application
 
@@ -97,14 +115,14 @@ USE recordShop;
 
     | Endpoint URL                                                     | Method | Description                                                                                                                                                                           | Example Request                                                           |
     |------------------------------------------------------------------|--------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
-    | `http://localhost:8080/purchase`                                 | POST   | Endpoint to make a purchase.<br><br>**Please note:** Discount is optional, and the customer field must contain more than two characters.                                              | ```{"customer": "John",```<br>```"id": 3,```<br>```"discount": "CFG" }``` |
-    | `http://localhost:8080/records?artist={ARTISTNAME}&name={ALBUM}` | GET    | Endpoint to retrieve the information on the records in the database. **Please note**: both artist and name of the record can be excluded to retrieve a list of all records available. | http://localhost:8080/records?artist=Michael%20Jackson&name=Thriller      |
+    | `https://localhost:8443/purchase`                                 | POST   | Endpoint to make a purchase.<br><br>**Please note:** Discount is optional, and the customer field must contain more than two characters.                                              | ```{"customer": "John",```<br>```"id": 3,```<br>```"discount": "CFG" }``` |
+    | `https://localhost:8443/records?artist={ARTISTNAME}&name={ALBUM}` | GET    | Endpoint to retrieve the information on the records in the database. **Please note**: both artist and name of the record can be excluded to retrieve a list of all records available. | https://localhost:8443/records?artist=Michael%20Jackson&name=Thriller      |
 
 ---
 
 ### API Spec:
 
-This will help in generating interactive API documentation in order to test the API calls. Please see Open API: [here](http://localhost:8080/swagger-ui/index.html).
+This will help in generating interactive API documentation in order to test the API calls. Please see Open API: [here](https://localhost:8443/swagger-ui/index.html).
 
 ### Documentation:
 
@@ -161,19 +179,9 @@ ___
 - Develop frontend with React
 
 
-
 ### Developers + Github profiles:
 
 - [Rachel](https://github.com/Rachel-Tookey)
 - [Fabiola](https://github.com/Fabi-P)
 - [Alyssa](https://github.com/lyscodes)
-
----
-### Notes to the Marker:
-
-
-In the [test folder](src/test) you will find all the tests written.
-[GroupProjectApplicationTests](src/test/java/com/example/group/project/GroupProjectApplicationTests.java) is the only test that uses `@SpringBootTest` annotation, as it is the only test that will check if the app context can successfully be loaded. For this reason ensure your MySQL server (or docker container) is running before running this test.
-All other tests use Mockito to mock interactions with the database so they can be run without MySQL server running.
-For further development, we would investigate using this on other test files and what other beans could be useful (i.e. Autowired)
 
