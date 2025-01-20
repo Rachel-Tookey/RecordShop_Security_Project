@@ -116,17 +116,17 @@ Once the application is running, you can explore unauthorised endpoints freely a
 > 💡 Import our pre-made Postman collection to run the following the series of requests. [You can download them here](https://github.com/Rachel-Tookey/RecordShop_Security_Project/blob/fe08dd0bfad1723fd63579f945cb234a015084ec/documentation/postman/recordshop.postman_collection.json).
 
 
-| Endpoint URL  | Method | Example Request   | Expected Response |
-|-------------- |--------| ----------------- | --------------|
-| https://localhost:8443/auth/records | GET | - | 403 Forbidden |
-| https://localhost:8443/login | POST |`{"username":"GillyT10","password":"goodbye"}` | 200. Bearer token in body response. |
-| https://localhost:8443/auth/records / https://localhost:8443/auth/records?artist={ARTISTNAME}&name={ALBUM} | GET | Authorization with Bearer token provided. Optional params or artist and album. | 200. List of records. X-XSRF-TOKEN returned as cookie and header |
-| https://localhost:8443/auth/purchase | POST | Authorization Header: JWT token; Custom header X-XSRF-TOKEN with X-XSRF token; Body: `{"customer" : "john","id" : 1, "discount" : "cfg"}` | 200. Purchase Id in response. |
-| https://localhost:8443/auth/deletePurchase?id=1 | DELETE | Authorization Header: JWT token; Custom header X-XSRF-TOKEN with X-XSRF token; Param id=1 | 204 No content | https://localhost:8443/register | POST | Body: `{ "firstname" : "john","lastname" : "kelly299","username" : "john100","password" : "password123", "role" : "STAFF"}` | 200. New User | 
-| https://localhost:8443/login | POST | `{"username" : "john100","password" : "password"}` | 200. Bearer token in body response. |
-| https://localhost:8443/auth/records / https://localhost:8443/auth/records?artist={ARTISTNAME}&name={ALBUM} | GET | Authorization with Bearer token provided. Optional params or artist and album. | 200. List of records. X-XSRF-TOKEN returned as cookie and header |
-| https://localhost:8443/auth/purchase | POST | Authorization Header: JWT token; Custom header X-XSRF-TOKEN with X-XSRF token; Body: `{"customer" : "john","id" : 1, "discount" : "cfg"}` | 409 Conflict. Item not in stock. |
-| https://localhost:8443/auth/deletePurchase?id=2 | DELETE | Authorization Header: JWT token; Custom header X-XSRF-TOKEN with X-XSRF token; Param id=2 | 403 Forbidden |
+| Endpoint URL | Method | Example Request | Expected Response |
+| :-------- | :--------| :----------- | :---------|
+| /auth/records | GET | - | 403 Forbidden. | |
+| /login | POST |`{"username":GillyT10","password":"goodbye"}` | 200. Bearer token in body response. |
+| /auth/records <br/>  /auth/records?artist={ARTISTNAME}&name={ALBUM} | GET | Authorization with Bearer token provided. <br/> Optional params or artist and album. | 200. List of records. X-XSRF-TOKEN returned as cookie and header |
+| /auth/purchase | POST | Authorization Header: JWT token <br/>  Custom header X-XSRF-TOKEN with X-XSRF token <br/> Body: `{"customer" : "john","id" : 1, "discount" : "cfg"}` | 200. Purchase Id in response. |
+| /auth/deletePurchase?id=1 | DELETE | Authorization Header: JWT token; Custom header X-XSRF-TOKEN with X-XSRF token; Param id=1 | 204 No content | https://localhost:8443/register | POST | Body: <br/>  `{ "firstname" : "john","lastname" : "kelly299","username" : "john100","password" : "password123", "role" : "STAFF"}` | 200. New User | 
+| /login | POST | `{"username" : "john100","password" : "password"}` | 200. Bearer token in body response. |
+| /auth/records <br/>  /auth/records?artist={ARTISTNAME}&name={ALBUM} | GET | Authorization with Bearer token provided. <br/> Optional params or artist and album. | 200. List of records. X-XSRF-TOKEN returned as cookie and header |
+| /auth/purchase | POST | Authorization Header: JWT token <br/> Custom header X-XSRF-TOKEN with X-XSRF token <br/>  Body: `{"customer" : "john","id" : 1, "discount" : "cfg"}` | 409 Conflict. Item not in stock. |
+| /auth/deletePurchase?id=2 | DELETE | Authorization Header: JWT token <br/> Custom header X-XSRF-TOKEN with X-XSRF token <br/> Param id=2 | 403 Forbidden |
 
 
 
